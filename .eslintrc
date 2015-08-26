@@ -7,6 +7,10 @@
     "jsx": true
   },
   "rules": {
+    "react/jsx-uses-react": 2,
+    "react/jsx-uses-vars": 2,
+    "react/react-in-jsx-scope": 2,
+    "no-underscore-dangle": 0,
     "quotes": [2, "single"],
     "camelcase": [2,
       {
@@ -37,5 +41,13 @@
     "node": true,
     "mocha": true,
     "browser": true
+  },
+  "globals": {
+    "__DEVELOPMENT__": true,
+    "__CLIENT__": true,
+    "__SERVER__": true,
+    "__DISABLE_SSR__": true,
+    "__DEVTOOLS__": true,
+    "webpackIsomorphicTools": true
   }
 }
