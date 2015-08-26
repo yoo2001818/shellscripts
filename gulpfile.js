@@ -18,7 +18,7 @@ var webpackConfiguration = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'DungeonTycoon'
+      title: 'Shellscripts'
     })
   ],
   node: {
