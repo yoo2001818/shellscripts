@@ -1,3 +1,5 @@
+import { load } from '../actions/load.js';
+
 const API_MARKER = 'API_MARKER';
 
 export function api(endpoint, options) {
@@ -22,6 +24,10 @@ export const apiMiddleware = client => store => next => action => {
       payload: new Error('Client did not return a Promise object')
     }));
   }
+  // Dispatch load action
+  store.dispatch(load(Object.assign({}, action, {
+    promise: promise
+  })));
   return store.dispatch(Object.assign({}, action, {
     payload: promise
   }));
