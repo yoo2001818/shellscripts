@@ -10,8 +10,13 @@ var del = require('del');
 require('babel/register');
 
 var webpackConfiguration = {
+  devtool: 'eval',
   context: path.resolve(__dirname, 'src'),
-  entry: './client.js',
+  entry: [
+    'webpack-dev-server/client?http://localhost:8080',
+    'webpack/hot/only-dev-server',
+    './client.js'
+  ],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
@@ -19,7 +24,8 @@ var webpackConfiguration = {
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Shellscripts'
-    })
+    }),
+    new webpack.HotModuleReplacementPlugin()
   ],
   node: {
     fs: 'empty'
@@ -29,7 +35,7 @@ var webpackConfiguration = {
       {
         test: /\.jsx?$/i,
         exclude: /(node_modules|bower_components)/,
-        loader: 'babel'
+        loaders: ['react-hot', 'babel']
       },
       {
         test: /\.json$/i,
@@ -83,6 +89,7 @@ gulp.task('devserver', function() {
 
   new WebpackDevServer(compiler, {
     // server and middleware options
+    hot: true
   }).listen(8080, 'localhost', function(err) {
     if (err) throw new gutil.PluginError('webpack-dev-server', err);
     // Server listening
