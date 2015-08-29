@@ -1,15 +1,20 @@
 // Client init point
 import 'babel/polyfill';
 import React from 'react';
-// Why we are using hash? Because BrowserHistory requires a server.
-import { history } from 'react-router/lib/HashHistory';
+// Why we are using hash? Because HistoryLocation requires a server.
+import Router, { HashLocation } from 'react-router';
+import { Provider } from 'react-redux';
 
 import configureStore from './store/index.js';
-import Root from './views/Root.js';
+import routes from './views/routes.js';
 
 const store = configureStore();
 
-React.render(
-  <Root history={history} store={store}/>,
-  document.body
-);
+Router.run(routes, HashLocation, (Handler, routerState) => {
+  React.render(
+    <Provider store={store}>
+      {() => <Handler routerState={routerState} />}
+    </Provider>,
+    document.body
+  );
+});
