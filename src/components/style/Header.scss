@@ -2,7 +2,7 @@ header {
   width: 100%;
   //background-color: #ccc;
   background-color: #3284E3;
-  border-bottom: 1px solid #1766C1;
+  box-shadow: 0 0 8px -2px #000;
   a {
     color: #fff;
     text-decoration: none;
@@ -13,9 +13,9 @@ header {
   .container {
     display: table;
     width: 100%;
-    max-width: 75rem;
+    max-width: 65em;
     margin: 0 auto;
-    padding: 1rem 0;
+    padding: 1em 0;
     vertical-align: middle;
     & > * {
       vertical-align: middle;
@@ -23,8 +23,8 @@ header {
     }
   }
   .logo {
-    padding-left: 1em;
-    font-size: 2rem;
+    padding-left: 1rem;
+    font-size: 1.5em;
     line-height: 2.5rem;
     a:hover {
       text-decoration: none;
@@ -46,35 +46,39 @@ header {
     input {
       width: 100%;
       display: table-cell;
-      color: #000;
-      background-color: #FFFFFF;
-      border: 1px solid #1766C1;
-      padding: 0 0.5rem;
-      font-size: 1rem;
+      color: #085EC1;
+      background-color: #E8F3FF;
+      border: none;
+      padding: 0 0.5em;
+      font-size: 1em;
       height: 2.5em;
-      border-top-left-radius: 0.4rem;
-      border-bottom-left-radius: 0.4rem;
+      border-top-left-radius: 0.4em;
+      border-bottom-left-radius: 0.4em;
       box-sizing: border-box;
+      &:hover, &:focus {
+        background-color: #FAFCFF;
+      }
     }
     button {
       color: #085EC1;
       display: table-cell;
-      background-color: #CAE3FF;
-      border: 1px solid #1766C1;
-      border-left: none;
-      font-size: 1rem;
+      background-color: #E8F3FF;
+      border: none;
+      padding: 0 1em;
+      font-size: 1em;
       height: 2.5em;
-      border-top-right-radius: 0.4rem;
-      border-bottom-right-radius: 0.4rem;
+      border-top-right-radius: 0.4em;
+      border-bottom-right-radius: 0.4em;
       box-sizing: border-box;
     }
   }
   .session {
+    color: #fff;
     padding-right: 1em;
     line-height: 2.5em;
+    vertical-align: middle;
     a {
-      padding: 0.5rem;
-      vertical-align: middle;
+      padding: 0.5em;
     }
   }
 }
