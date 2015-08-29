@@ -16,7 +16,7 @@ export const logout = createAction(LOGOUT,
 export function load() {
   return (dispatch, getState) => {
     const session = getState().session;
-    if (session == null) return dispatch(fetch());
+    if (!session.loaded) return dispatch(fetch());
     return Promise.resolve();
   };
 }

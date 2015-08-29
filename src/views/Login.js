@@ -1,14 +1,85 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 
-export default class Login extends Component {
+import { login, logout } from '../actions/session.js';
+import Dialog from '../components/Dialog.js';
+import Alert from '../components/Alert.js';
+
+class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      username: '',
+      password: ''
+    };
+  }
+  handleChange(key, event) {
+    this.setState({
+      [key]: event.target.value
+    });
+  }
+  handleLogin() {
+    if (this.state.loading) return;
+    const { username, password } = this.state;
+    this.setState({loading: true, error: false});
+    this.props.login({username, password}).then(result => {
+      this.setState({loading: false, username: '', password: ''});
+      this.setState({error: result.error});
+    });
+  }
+  handleLogout() {
+    if (this.state.loading) return;
+    this.setState({loading: true});
+    this.props.logout().then(result => {
+      console.log(result);
+      this.setState({loading: false, username: '', password: ''});
+    });
+  }
   render() {
+    let { logged } = this.props.session;
+    if (logged) {
+      return (
+        <Dialog id='dialog-login' title='Login' loading={this.state.loading}>
+          Already logged in as USERNAME
+          <div className='footer'>
+            <button onClick={this.handleLogout.bind(this)}>Logout</button>
+          </div>
+        </Dialog>
+      );
+    }
     return (
-      <div id='dialog-login' class='dialog'>
-        <h1>Login</h1>
-        <div class='content'>
-          Username Password
-        </div>
-      </div>
+      <Dialog id='dialog-login' title='Login' loading={this.state.loading}>
+        <form onSubmit={this.handleLogin.bind(this)}>
+          {
+            this.state.error ? (
+              <Alert>
+                Invalid username or password
+              </Alert>
+            ) : null
+          }
+          <input type='text' placeholder='Username'
+            value={this.state.username}
+            onChange={this.handleChange.bind(this, 'username')} />
+          <input type='password' placeholder='Password'
+            value={this.state.password}
+            onChange={this.handleChange.bind(this, 'password')} />
+          <div className='footer'>
+            <button>Login</button>
+          </div>
+        </form>
+      </Dialog>
     );
   }
 }
+
+Login.propTypes = {
+  session: PropTypes.object,
+  login: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired
+};
+
+export default connect(
+  store => ({session: store.session}),
+  { login, logout }
+)(Login);

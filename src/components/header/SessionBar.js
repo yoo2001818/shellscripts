@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 class SessionBar extends Component {
   render() {
     const { session } = this.props;
-    if (session == null) {
+    if (!session.loaded) {
       return (
         <div className='session loading'>
           <i className="fa fa-refresh fa-spin"></i>

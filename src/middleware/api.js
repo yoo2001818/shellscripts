@@ -36,6 +36,7 @@ export const apiMiddleware = client => store => next => action => {
     payload: promise
   })).then(result => {
     store.dispatch(complete(result));
+    return result;
   });
 };
 

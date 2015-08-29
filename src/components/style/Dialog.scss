@@ -1,0 +1,90 @@
+.dialog {
+  max-width: 25em;
+  margin: 2em auto;
+  background-color: #f9f9f9;
+  padding: 0.5em;
+  border: 1px solid #ccc;
+  border-radius: 0.2em;
+  overflow: hidden;
+  position: relative;
+  & > h1 {
+    text-align: center;
+    font-size: 1.2em;
+    color: #666;
+  }
+  & > .content {
+    margin: 1em;
+    margin-top: 2em;
+  }
+  &.loading {
+    .footer {
+      button {
+        background-color: #F1F1F1;
+        color: #333;
+        border: 1px solid #bbb;
+      }
+    }
+  }
+  .footer {
+    margin-top: 1em;
+    text-align: center;
+    button {
+      width: 100%;
+      font-size: 1em;
+      background-color: #E8F3FF;
+      color: #085EC1;
+      display: inline-block;
+      box-sizing: border-box;
+      padding: 0.6em 0.8em;
+      margin: 0.5em 0;
+      border-radius: 0.2em;
+      border: 1px solid #94BDEB;
+    }
+    button:hover {
+      border: 1px solid #AECBEB;
+      background-color: #F5FAFF;
+    }
+    button:active {
+      border: 1px solid #94BDEB;
+      background-color: #E8F3FF;
+    }
+  }
+  input {
+    font-size: 1em;
+    background-color: #fff;
+    color: #333;
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+    padding: 0.6em 0.8em;
+    margin: 0.5em 0;
+    border-radius: 0.2em;
+    border: 1px solid #ccc;
+  }
+  input:hover {
+    border: 1px solid #999;
+  }
+  input:focus {
+    border: 1px solid #83B1F2;
+  }
+  & > .loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    .container {
+      display: table;
+      width: 100%;
+      height: 100%;
+      .message {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 2em;
+        color: #fff;
+      }
+    }
+  }
+}

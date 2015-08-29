@@ -2,12 +2,16 @@ import './style/ProgressBar.scss';
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 
 class ProgressBar extends Component {
   render() {
     const { loading, completed, total } = this.props.load;
     const percentage = loading ? (completed / total) * 100 | 0 : 100;
-    const loadingClass = loading ? 'enabled' : '';
+    const loadingClass = classNames({
+      enabled: loading,
+      started: percentage === 0
+    });
     const fillingStyle = {
       width: percentage + '%'
     };
