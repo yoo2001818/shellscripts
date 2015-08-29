@@ -1,0 +1,80 @@
+header {
+  width: 100%;
+  //background-color: #ccc;
+  background-color: #3284E3;
+  border-bottom: 1px solid #1766C1;
+  a {
+    color: #fff;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  .container {
+    display: table;
+    width: 100%;
+    max-width: 75rem;
+    margin: 0 auto;
+    padding: 1rem 0;
+    vertical-align: middle;
+    & > * {
+      vertical-align: middle;
+      display: table-cell;
+    }
+  }
+  .logo {
+    padding-left: 1em;
+    font-size: 2rem;
+    line-height: 2.5rem;
+    a:hover {
+      text-decoration: none;
+    }
+  }
+  .search {
+    padding: 0 1.5em;
+    width: 100%;
+    .search-form {
+      display: table;
+      max-width: 30em;
+      & > * {
+        display: table-cell;
+      }
+      .search-text {
+        width: 100%;
+      }
+    }
+    input {
+      width: 100%;
+      display: table-cell;
+      color: #000;
+      background-color: #FFFFFF;
+      border: 1px solid #1766C1;
+      padding: 0 0.5rem;
+      font-size: 1rem;
+      height: 2.5em;
+      border-top-left-radius: 0.4rem;
+      border-bottom-left-radius: 0.4rem;
+      box-sizing: border-box;
+    }
+    button {
+      color: #085EC1;
+      display: table-cell;
+      background-color: #CAE3FF;
+      border: 1px solid #1766C1;
+      border-left: none;
+      font-size: 1rem;
+      height: 2.5em;
+      border-top-right-radius: 0.4rem;
+      border-bottom-right-radius: 0.4rem;
+      box-sizing: border-box;
+    }
+  }
+  .session {
+    padding-right: 1em;
+    line-height: 2.5em;
+    a {
+      padding: 0.5rem;
+      vertical-align: middle;
+    }
+  }
+}

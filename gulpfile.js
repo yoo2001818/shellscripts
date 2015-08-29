@@ -56,6 +56,10 @@ var webpackConfiguration = {
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
         loader: 'file'
+      },
+      {
+        test: /\.(otf|eot|svg|ttf|woff|woff2)(\?.+)?$/,
+        loader: 'file'
       }
     ]
   }
