@@ -4,6 +4,7 @@ import { RouteHandler } from 'react-router';
 import { load } from '../actions/session.js';
 import ProgressBar from '../components/ProgressBar.js';
 import Header from '../components/Header.js';
+import Footer from '../components/Footer.js';
 
 export default class App extends Component {
   constructor(props) {
@@ -18,7 +19,10 @@ export default class App extends Component {
     return (
       <div id='app'>
         <Header />
-        <RouteHandler />
+        <div id='content'>
+          <RouteHandler />
+        </div>
+        <Footer />
         <ProgressBar />
       </div>
     );

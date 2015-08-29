@@ -11,7 +11,7 @@
   height: 0.3rem;
   background-color: #BDDFFF;
   opacity: 0;
-  transition: opacity 1.5s;
+  transition: opacity 1.5s linear;
 }
 
 #loader.enabled {
@@ -24,7 +24,7 @@
   left: 0;
   bottom: 0;
   background-color: #0056B3;
-  transition: width 1s;
+  transition: width 1s linear;
 }
 
 #loader .percentage {
