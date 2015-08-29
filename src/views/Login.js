@@ -41,16 +41,16 @@ class Login extends Component {
     let { logged, load: { loading } } = this.props.session;
     if (logged) {
       return (
-        <Dialog id='dialog-login' title='Login' loading={loading}>
-          Already logged in as USERNAME
+        <Dialog id='dialog-login' title='Sign in' loading={loading}>
+          Already signed in as USERNAME
           <div className='footer'>
-            <button onClick={this.handleLogout.bind(this)}>Logout</button>
+            <button onClick={this.handleLogout.bind(this)}>Sign out</button>
           </div>
         </Dialog>
       );
     }
     return (
-      <Dialog id='dialog-login' title='Login' loading={loading}>
+      <Dialog id='dialog-login' title='Sign in' loading={loading}>
         <form onSubmit={this.handleLogin.bind(this)}>
           {
             this.state.error ? (
@@ -66,7 +66,7 @@ class Login extends Component {
             value={this.state.password}
             onChange={this.handleChange.bind(this, 'password')} />
           <div className='footer'>
-            <button>Login</button>
+            <button>Sign in</button>
           </div>
         </form>
       </Dialog>
