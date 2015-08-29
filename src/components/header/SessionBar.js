@@ -23,6 +23,11 @@ class SessionBar extends Component {
         <div className='session'>
           <Link to='/login'>Login</Link>
           <Link to='/register'>Register</Link>
+          {
+            session.error ? (
+              <span><i className="fa fa-exclamation-triangle"></i></span>
+            ) : null
+          }
         </div>
       );
     }
