@@ -12,6 +12,7 @@ header {
   }
   .container {
     display: table;
+    display: flex;
     width: 100%;
     max-width: 65em;
     margin: 0 auto;
@@ -20,9 +21,13 @@ header {
     & > * {
       vertical-align: middle;
       display: table-cell;
+      // Stupid IE hack, heh.
+      display: flex;
+      align-items: center;
     }
   }
   .logo {
+    flex: 0 0 auto;
     padding-left: 1rem;
     font-size: 1.5em;
     line-height: 2.5rem;
@@ -32,6 +37,7 @@ header {
     }
   }
   .search {
+    flex: 1 1 30em;
     padding: 0 1.5em;
     width: 100%;
     .search-form {
@@ -74,12 +80,13 @@ header {
     }
   }
   .session {
+    flex: 0 0 auto;
     color: #fff;
     padding-right: 1em;
     line-height: 2.5em;
     vertical-align: middle;
     a {
-      padding: 0.5em;
+      padding: 0 0.5em;
     }
   }
 }
