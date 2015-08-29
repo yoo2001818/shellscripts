@@ -1,6 +1,8 @@
 // Just a dummy client. really.
-export default function dummyClient(endpoint, options) {
-  // Return a resolved Promise
-  console.log('DummyClient: ', endpoint, options);
-  return Promise.resolve(options);
+export default function dummyClient(type, endpoint, options) {
+  // Return a Promise that triggers after 1s
+  console.log('DummyClient: ', type, endpoint, options);
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(options), 1000);
+  });
 }

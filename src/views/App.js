@@ -1,40 +1,49 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { login, logout } from '../actions/user.js';
+import { load, login, logout } from '../actions/session.js';
 
 class App extends Component {
   constructor(props) {
     super(props);
   }
+  componentWillMount() {
+    // Doing this because we want an isomorphic app.
+    // Well it's not an isomorphic app currently.
+    return this.constructor.fetchData(this.context.store);
+  }
   render() {
+    let { children } = this;
     return (
-      <div>
+      <div id='app'>
         <p>
-          {this.props.loggedIn ? 'Hello!' : 'Please log in.'}
+          {this.props.session ? 'Hello!' : 'Loading!'}
         </p>
-        {this.props.loggedIn ?
-          <button onClick={this.props.logout.bind(this, null)}>Logout</button>
-        :
-          <button onClick={this.props.login.bind(this, null)}>Login</button>
-        }
+        {children}
       </div>
     );
+  }
+  static fetchData(store) {
+    return store.dispatch(load());
   }
 }
 
 App.propTypes = {
-  loggedIn: PropTypes.bool.isRequired,
-  login: PropTypes.func.isRequired,
-  logout: PropTypes.func.isRequired
+  session: PropTypes.object,
+  load: PropTypes.func.isRequired
+};
+
+App.contextTypes = {
+  router: PropTypes.object.isRequired,
+  store: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    loggedIn: state.user.loggedIn
+    session: state.session
   };
 }
 
 export default connect(
   mapStateToProps,
-  { login, logout }
+  { load, login, logout }
 )(App);

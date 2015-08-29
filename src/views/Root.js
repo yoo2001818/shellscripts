@@ -7,7 +7,7 @@ import App from './App.js';
 export default class Root extends Component {
   render() {
     return (
-      <div>
+      <div id='root'>
         <Provider store={this.props.store}>
           {() =>
             <Router history={this.props.history}>
