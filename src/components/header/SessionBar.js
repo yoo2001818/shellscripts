@@ -2,10 +2,18 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
+import { logout } from '../../actions/session.js';
+
 class SessionBar extends Component {
+  handleLogout() {
+    const { session } = this.props;
+    if (session.load.loading) return false;
+    this.props.logout();
+    return false;
+  }
   render() {
     const { session } = this.props;
-    if (!session.loaded) {
+    if (session.load.loading) {
       return (
         <div className='session loading'>
           <i className="fa fa-refresh fa-spin"></i>
@@ -16,6 +24,9 @@ class SessionBar extends Component {
       return (
         <div className='session'>
           Welcome!
+          <Link to='/logout' onClick={this.handleLogout.bind(this)}>
+            Logout
+          </Link>
         </div>
       );
     } else {
@@ -35,9 +46,11 @@ class SessionBar extends Component {
 }
 
 SessionBar.propTypes = {
-  session: PropTypes.object
+  session: PropTypes.object,
+  logout: PropTypes.func.isRequired
 };
 
 export default connect(
-  state => ({session: state.session})
+  state => ({session: state.session}),
+  { logout }
 )(SessionBar);

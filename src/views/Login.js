@@ -20,27 +20,28 @@ class Login extends Component {
     });
   }
   handleLogin() {
-    if (this.state.loading) return;
+    let { load: { loading } } = this.props.session;
+    if (loading) return;
     const { username, password } = this.state;
-    this.setState({loading: true, error: false});
+    this.setState({error: false});
     this.props.login({username, password}).then(result => {
-      this.setState({loading: false, username: '', password: ''});
+      this.setState({username: '', password: ''});
       this.setState({error: result.error});
     });
   }
   handleLogout() {
-    if (this.state.loading) return;
-    this.setState({loading: true});
+    let { load: { loading } } = this.props.session;
+    if (loading) return;
     this.props.logout().then(result => {
       console.log(result);
-      this.setState({loading: false, username: '', password: ''});
+      this.setState({username: '', password: ''});
     });
   }
   render() {
-    let { logged } = this.props.session;
+    let { logged, load: { loading } } = this.props.session;
     if (logged) {
       return (
-        <Dialog id='dialog-login' title='Login' loading={this.state.loading}>
+        <Dialog id='dialog-login' title='Login' loading={loading}>
           Already logged in as USERNAME
           <div className='footer'>
             <button onClick={this.handleLogout.bind(this)}>Logout</button>
@@ -49,7 +50,7 @@ class Login extends Component {
       );
     }
     return (
-      <Dialog id='dialog-login' title='Login' loading={this.state.loading}>
+      <Dialog id='dialog-login' title='Login' loading={loading}>
         <form onSubmit={this.handleLogin.bind(this)}>
           {
             this.state.error ? (

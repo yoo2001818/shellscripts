@@ -1,3 +1,4 @@
+import actionKeys from '../utils/actionKeys.js';
 import * as LoadActions from '../actions/load.js';
 
 export default function load(state = {
@@ -24,4 +25,13 @@ export default function load(state = {
       };
   }
   return state;
+}
+
+export function loadFilter(actions) {
+  const actionList = actionKeys(actions);
+  return (state, action) => {
+    if (action.payload == null) return state;
+    if (actionList.indexOf(action.payload.type) === -1) return state;
+    return load(state, action);
+  };
 }

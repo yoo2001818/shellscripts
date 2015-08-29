@@ -1,8 +1,12 @@
 import * as SessionActions from '../actions/session.js';
+import { loadFilter } from './load.js';
+
+const loadReducer = loadFilter(SessionActions);
 
 export default function session(state = {
   loaded: false
 }, action) {
+  const load = loadReducer(state.load, action);
   const { type, payload, error } = action;
   switch (type) {
     case SessionActions.FETCH:
@@ -10,18 +14,23 @@ export default function session(state = {
       if (error) return {loaded: true, error: true};
       return Object.assign({}, state, payload, {
         loaded: true,
-        logged: false
+        logged: false,
+        load
       });
     case SessionActions.LOGIN:
       if (error) return state;
       return Object.assign({}, state, payload, {
-        logged: true
+        logged: true,
+        load
       });
     case SessionActions.LOGOUT:
       if (error) return state;
       return Object.assign({}, state, payload, {
-        logged: false
+        logged: false,
+        load
       });
   }
-  return state;
+  return Object.assign({}, state, {
+    load
+  });
 }
