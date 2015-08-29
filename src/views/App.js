@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+
 import { load, login, logout } from '../actions/session.js';
+import ProgressBar from '../components/ProgressBar.js';
 
 class App extends Component {
   constructor(props) {
@@ -19,6 +21,7 @@ class App extends Component {
           {this.props.session ? 'Hello!' : 'Loading!'}
         </p>
         {children}
+        <ProgressBar />
       </div>
     );
   }
@@ -37,13 +40,7 @@ App.contextTypes = {
   store: PropTypes.object.isRequired
 };
 
-function mapStateToProps(state) {
-  return {
-    session: state.session
-  };
-}
-
 export default connect(
-  mapStateToProps,
+  (state) => ({session: state.session}),
   { load, login, logout }
 )(App);

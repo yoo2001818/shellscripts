@@ -1,0 +1,32 @@
+#loadCover {
+  position: fixed;
+  top: 0;
+}
+
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0.5rem;
+  background-color: #BDDFFF;
+  opacity: 0;
+  transition: opacity 1.5s;
+}
+
+#loader.enabled {
+  opacity: 1;
+}
+
+#loader .filling {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-color: #0082FF;
+  transition: width 1s;
+}
+
+#loader .percentage {
+  display: none;
+}
