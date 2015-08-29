@@ -4,6 +4,9 @@ import { loadFilter } from './load.js';
 const loadReducer = loadFilter(SessionActions);
 
 export default function session(state = {
+  load: {
+    completed: 0, total: 0, loading: false
+  },
   loaded: false
 }, action) {
   const load = loadReducer(state.load, action);

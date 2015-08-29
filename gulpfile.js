@@ -2,68 +2,11 @@ var gulp = require('gulp');
 var mocha = require('gulp-mocha');
 var gutil = require('gulp-util');
 var eslint = require('gulp-eslint');
-var path = require('path');
 var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
 var WebpackDevServer = require('webpack-dev-server');
+var webpackConfiguration = require('./webpack.config.js');
 var del = require('del');
 require('babel/register');
-
-var webpackConfiguration = {
-  devtool: 'eval',
-  context: path.resolve(__dirname, 'src'),
-  entry: [
-    'webpack-dev-server/client?http://localhost:8080',
-    'webpack/hot/only-dev-server',
-    './client.js'
-  ],
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js'
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      title: 'Shellscripts'
-    }),
-    new webpack.HotModuleReplacementPlugin()
-  ],
-  node: {
-    fs: 'empty'
-  },
-  module: {
-    loaders: [
-      {
-        test: /\.jsx?$/i,
-        exclude: /(node_modules|bower_components)/,
-        loaders: ['react-hot', 'babel']
-      },
-      {
-        test: /\.json$/i,
-        loader: 'json'
-      },
-      {
-        test: /\.html?$/i,
-        loader: 'html'
-      },
-      {
-        test: /\.css$/i,
-        loader: 'style!css'
-      },
-      {
-        test: /\.s[ca]ss$/i,
-        loader: 'style!css!sass'
-      },
-      {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        loader: 'file'
-      },
-      {
-        test: /\.(otf|eot|svg|ttf|woff|woff2)(\?.+)?$/,
-        loader: 'file'
-      }
-    ]
-  }
-};
 
 gulp.task('lint', function () {
   return gulp.src(['src/**/*.js'])
@@ -93,7 +36,8 @@ gulp.task('devserver', function() {
 
   new WebpackDevServer(compiler, {
     // server and middleware options
-    hot: true
+    hot: true,
+    historyApiFallback: true
   }).listen(8080, 'localhost', function(err) {
     if (err) throw new gutil.PluginError('webpack-dev-server', err);
     // Server listening

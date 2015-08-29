@@ -11,10 +11,23 @@ import routes from './views/routes.js';
 const store = configureStore();
 
 Router.run(routes, HashLocation, (Handler, routerState) => {
+  let devTools = null;
+  if (_DEVELOPMENT_) {
+    const { DevTools, DebugPanel, LogMonitor }
+      = require('redux-devtools/lib/react');
+    devTools = (
+      <DebugPanel top right bottom key="debugPanel">
+        <DevTools store={store} monitor={LogMonitor}/>
+      </DebugPanel>
+    );
+  }
   React.render(
-    <Provider store={store}>
-      {() => <Handler routerState={routerState} />}
-    </Provider>,
+    <div id='root'>
+      <Provider store={store}>
+        {() => <Handler routerState={routerState} />}
+      </Provider>
+      {devTools}
+    </div>,
     document.body
   );
 });

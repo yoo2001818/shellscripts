@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { compose, createStore, applyMiddleware, combineReducers } from 'redux';
 
 import thunkMiddleware from 'redux-thunk';
 import promiseMiddleware from 'redux-promise';
@@ -10,12 +10,24 @@ import dummyClient from '../api/client.js';
 import * as reducers from '../reducers';
 
 const reducer = combineReducers(reducers);
-const createStoreWithMiddleware = applyMiddleware(
+const middlewares = applyMiddleware(
   thunkMiddleware,
   apiMiddleware(dummyClient),
   promiseMiddleware,
   createLogger()
-)(createStore);
+);
+
+let createStoreWithMiddleware = middlewares(createStore);
+
+if (_CLIENT_ && _DEVELOPMENT_) {
+  const { devTools, persistState } = require('redux-devtools');
+  createStoreWithMiddleware = compose(
+    middlewares,
+    devTools(),
+    persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/)),
+    createStore
+  );
+}
 
 export default function configureStore(initialState) {
   return createStoreWithMiddleware(reducer, initialState);
