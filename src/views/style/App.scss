@@ -3,8 +3,16 @@ html, body, #root {
   padding: 0;
   width: 100%;
   height: 100%;
-  font-family: 나눔바른고딕, Noto Sans KR, Noto Sans, 나눔고딕, NanumGothic,
+  font-family: Noto Sans KR, Noto Sans, 나눔고딕, NanumGothic,
    맑은 고딕, 돋움, Dotum, sans-serif;
+}
+
+html {
+  // 10pt on mobile
+  font-size: 10pt;
+  @media screen and (min-width: 400pt) {
+    font-size: 12pt;
+  }
 }
 
 #app {
@@ -15,4 +23,5 @@ html, body, #root {
 #content {
   max-width: 65em;
   margin: 0 auto;
+  padding: 0 0.5em;
 }

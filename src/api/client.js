@@ -27,10 +27,17 @@ export function superagentClient(req) {
       }
       request.end((err, res) => {
         if (err) {
-          const { status, text } = res;
-          return reject({
-            status, body: text, err: err.toString()
-          });
+          if (res) {
+            const { status, text } = res;
+            return reject({
+              status, body: text, error: err.toString()
+            });
+          } else {
+            // Network error!
+            return reject({
+              status: -100, body: err.message, error: err.toString()
+            });
+          }
         }
         const { status, body } = res;
         return resolve({

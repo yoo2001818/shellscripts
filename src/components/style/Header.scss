@@ -1,8 +1,12 @@
+$break-small: 500pt;
+
+// TODO: invert desktop and mobile (not sure if this is necessary)
 header {
   width: 100%;
   //background-color: #ccc;
   background-color: #3284E3;
   box-shadow: 0 0 8px -2px #000;
+  padding: 1em 0;
   a {
     color: #fff;
     text-decoration: none;
@@ -16,7 +20,6 @@ header {
     width: 100%;
     max-width: 65em;
     margin: 0 auto;
-    padding: 1em 0;
     vertical-align: middle;
     & > * {
       vertical-align: middle;
@@ -24,6 +27,10 @@ header {
       // Stupid IE hack, heh.
       display: flex;
       align-items: center;
+    }
+    @media screen and (max-width: $break-small) {
+      display: block;
+      position: relative;
     }
   }
   .logo {
@@ -35,14 +42,30 @@ header {
     a:hover {
       text-decoration: none;
     }
+    @media screen and (max-width: $break-small) {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
   }
   .search {
-    flex: 1 1 30em;
+    flex: 1 1 auto;
     padding: 0 1.5em;
     width: 100%;
+    box-sizing: border-box;
+    @media screen and (max-width: $break-small) {
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      padding-top: 3.5em;
+    }
     .search-form {
       display: table;
       max-width: 30em;
+      @media screen and (max-width: $break-small) {
+        max-width: 100%;
+      }
       & > * {
         display: table-cell;
       }
@@ -88,6 +111,13 @@ header {
     a {
       padding: 0;
       margin: 0 0.5em;
+    }
+    @media screen and (max-width: $break-small) {
+      display: block;
+      position: absolute;
+      float: right;
+      top: 0;
+      right: 0;
     }
   }
 }
