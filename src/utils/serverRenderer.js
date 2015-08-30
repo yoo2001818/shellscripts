@@ -6,7 +6,7 @@ import configureStore from '../store/index.js';
 import routes from '../views/routes.js';
 
 import prefetch from '../utils/prefetch.js';
-import { dummyClient } from '../api/client.js';
+import { superagentClient } from '../api/client.js';
 
 function renderPage(html, initialState) {
   return `
@@ -27,7 +27,7 @@ function renderPage(html, initialState) {
 }
 
 export default function serverRenderer(req, res) {
-  const store = configureStore(undefined, dummyClient);
+  const store = configureStore(undefined, superagentClient(req));
   Router.run(routes, req.url, (Handler, routerState) => {
     prefetch(store, routerState)
     .then(() => {

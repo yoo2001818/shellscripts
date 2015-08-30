@@ -1,4 +1,4 @@
-import xhr from 'xhr';
+import superagent from 'superagent';
 
 // Just a dummy client. really.
 export function dummyClient(type, endpoint, options) {
@@ -9,20 +9,34 @@ export function dummyClient(type, endpoint, options) {
   });
 }
 
-// XMLRequest client
-export function xhrClient(type, endpoint, options) {
-  return new Promise((resolve, reject) => {
-    xhr({
-      json: options,
-      url: endpoint,
-      method: type
-    }, (err, resp, body) => {
-      if (err) return reject({err, body: err.toString()});
-      let { statusCode } = resp;
-      if (statusCode !== 200) {
-        return reject({statusCode, body});
+function wrapURL(url) {
+  if (__SERVER__) {
+    return 'http://localhost:8000' + url;
+  }
+  return url;
+}
+
+// superagent client
+export function superagentClient(req) {
+  return (type, endpoint, options) => {
+    return new Promise((resolve, reject) => {
+      const request = superagent(type, wrapURL(endpoint));
+      request.send(options);
+      if (__SERVER__) {
+        if (req.get('cookie')) request.set('cookie', req.get('cookie'));
       }
-      return resolve({statusCode, body});
+      request.end((err, res) => {
+        if (err) {
+          const { status, text } = res;
+          return reject({
+            status, body: text, err: err.toString()
+          });
+        }
+        const { status, body } = res;
+        return resolve({
+          status, body
+        });
+      });
     });
-  });
+  };
 }

@@ -8,12 +8,12 @@ import configureStore from './store/index.js';
 import routes from './views/routes.js';
 
 import prefetch from './utils/prefetch.js';
-import { xhrClient } from './api/client.js';
+import { superagentClient } from './api/client.js';
 
 let initialState;
 if (typeof window !== 'undefined') initialState = window.__INITIAL_STATE__;
 
-const store = configureStore(initialState, xhrClient);
+const store = configureStore(initialState, superagentClient());
 
 Router.run(routes, HistoryLocation, (Handler, routerState) => {
   prefetch(store, routerState);
