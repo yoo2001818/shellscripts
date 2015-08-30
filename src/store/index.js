@@ -19,7 +19,7 @@ const middlewares = applyMiddleware(
 
 let createStoreWithMiddleware = middlewares(createStore);
 
-if (_CLIENT_ && _DEVELOPMENT_) {
+if (__CLIENT__ && __DEVELOPMENT__) {
   const { devTools, persistState } = require('redux-devtools');
   createStoreWithMiddleware = compose(
     middlewares,

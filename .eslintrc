@@ -44,8 +44,8 @@
     "browser": true
   },
   "globals": {
-    "_SERVER_": true,
-    "_CLIENT_": true,
-    "_DEVELOPMENT_": true
+    "__SERVER__": true,
+    "__CLIENT__": true,
+    "__DEVELOPMENT__": true
   }
 }

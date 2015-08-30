@@ -12,7 +12,7 @@ const store = configureStore();
 
 Router.run(routes, HashLocation, (Handler, routerState) => {
   let devTools = null;
-  if (_DEVELOPMENT_) {
+  if (__CLIENT__ && __DEVELOPMENT__) {
     const { DevTools, DebugPanel, LogMonitor }
       = require('redux-devtools/lib/react');
     devTools = (
