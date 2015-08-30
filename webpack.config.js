@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
   devtool: 'eval',
@@ -11,7 +12,8 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/assets/',
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    chunkFilename: '[id].js'
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
@@ -21,7 +23,10 @@ module.exports = {
       __CLIENT__: true,
       __SERVER__: false,
       __DEVELOPMENT__: process.env.NODE_ENV !== 'production',
-      __DEVTOOLS__: true
+      __DEVTOOLS__: false
+    }),
+    new ExtractTextPlugin('bundle.css', {
+      disable: process.env.NODE_ENV !== 'production'
     })
   ],
   node: {
@@ -44,11 +49,11 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        loader: 'style!css'
+        loader: ExtractTextPlugin.extract('style', 'css')
       },
       {
         test: /\.s[ca]ss$/i,
-        loader: 'style!css!sass'
+        loader: ExtractTextPlugin.extract('style', 'css!sass')
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
