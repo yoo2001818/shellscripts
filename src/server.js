@@ -1,15 +1,11 @@
 // Server init point
-const PRODUCTION = process.env.NODE_ENV === 'production';
-GLOBAL.__SERVER__ = true;
-GLOBAL.__CLIENT__ = false;
-GLOBAL.__DEVELOPMENT__ = !PRODUCTION;
 
 import express from 'express';
 import ServeStatic from 'serve-static';
 
 let app = express();
 
-if (PRODUCTION) {
+if (!__DEVELOPMENT__) {
   // Currently server does nothing but serve static files.
   app.use(new ServeStatic('./dist'));
 } else {

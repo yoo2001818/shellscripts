@@ -8,7 +8,10 @@ import { Provider } from 'react-redux';
 import configureStore from './store/index.js';
 import routes from './views/routes.js';
 
-const store = configureStore();
+let initialData = null;
+if (typeof window !== 'undefined') initialData = window.__INITIAL_DATA__;
+
+const store = configureStore(initialData);
 
 Router.run(routes, HashLocation, (Handler, routerState) => {
   let devTools = null;

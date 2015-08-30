@@ -23,9 +23,9 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
-      _CLIENT_: true,
-      _SERVER_: false,
-      _DEVELOPMENT_: process.env.NODE_ENV !== 'production'
+      __CLIENT__: true,
+      __SERVER__: false,
+      __DEVELOPMENT__: process.env.NODE_ENV !== 'production'
     })
   ],
   node: {

@@ -30,14 +30,9 @@ export const apiMiddleware = client => store => next => action => {
       payload: new Error('Client did not return a Promise object')
     }));
   }
-  // Dispatch load action
-  store.dispatch(load(action));
   return store.dispatch(Object.assign({}, action, {
     payload: promise
-  })).then(result => {
-    store.dispatch(complete(result));
-    return result;
-  });
+  }));
 };
 
 export default apiMiddleware;
