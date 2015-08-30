@@ -51,6 +51,14 @@ export function superagentClient(req) {
           status, body
         });
       });
-    });
+    }) // Client lag simulation
+    .then(values => new Promise((resolve) => {
+      if (__SERVER__) return resolve(values);
+      setTimeout(() => resolve(values), 200);
+    }))
+    .catch(values => new Promise((resolve, reject) => {
+      if (__SERVER__) return reject(values);
+      setTimeout(() => reject(values), 200);
+    }));
   };
 }

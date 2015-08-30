@@ -2,33 +2,36 @@ var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
+var entries = ['./client.js'];
+var plugins = [
+  new webpack.optimize.OccurenceOrderPlugin(),
+  new webpack.NoErrorsPlugin(),
+  new webpack.DefinePlugin({
+    __CLIENT__: true,
+    __SERVER__: false,
+    __DEVELOPMENT__: process.env.NODE_ENV !== 'production',
+    __DEVTOOLS__: false
+  }),
+  new ExtractTextPlugin('bundle.css', {
+    disable: process.env.NODE_ENV !== 'production'
+  })
+];
+if (process.env.NODE_ENV !== 'production') {
+  entries.push('webpack-hot-middleware/client?overlay=true');
+  plugins.push(new webpack.HotModuleReplacementPlugin());
+}
+
 module.exports = {
   devtool: 'eval',
   context: path.resolve(__dirname, 'src'),
-  entry: [
-    'webpack-hot-middleware/client?overlay=true',
-    './client.js'
-  ],
+  entry: entries,
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/assets/',
     filename: 'bundle.js',
     chunkFilename: '[id].js'
   },
-  plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
-    new webpack.DefinePlugin({
-      __CLIENT__: true,
-      __SERVER__: false,
-      __DEVELOPMENT__: process.env.NODE_ENV !== 'production',
-      __DEVTOOLS__: false
-    }),
-    new ExtractTextPlugin('bundle.css', {
-      disable: process.env.NODE_ENV !== 'production'
-    })
-  ],
+  plugins: plugins,
   node: {
     fs: 'empty'
   },

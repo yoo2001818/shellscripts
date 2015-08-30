@@ -31,7 +31,7 @@ function renderPage(html, initialState) {
 
 export default function serverRenderer(req, res) {
   const store = configureStore(undefined, superagentClient(req));
-  Router.run(routes, req.url, (Handler, routerState) => {
+  Router.run(routes, req.originalUrl, (Handler, routerState) => {
     prefetch(store, routerState)
     .then(() => {
       let appHtml = React.renderToString(
