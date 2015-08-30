@@ -9,17 +9,24 @@ import dummyClient from '../api/client.js';
 
 import * as reducers from '../reducers';
 
+let logger;
+if (__SERVER__) {
+  logger = () => next => action => next(action);
+} else {
+  logger = createLogger();
+}
+
 const reducer = combineReducers(reducers);
 const middlewares = applyMiddleware(
   thunkMiddleware,
   apiMiddleware(dummyClient),
   promiseMiddleware,
-  createLogger()
+  logger
 );
 
 let createStoreWithMiddleware = middlewares(createStore);
 
-if (__CLIENT__ && __DEVELOPMENT__) {
+if (__CLIENT__ && __DEVELOPMENT__ && __DEVTOOLS__) {
   const { devTools, persistState } = require('redux-devtools');
   createStoreWithMiddleware = compose(
     middlewares,

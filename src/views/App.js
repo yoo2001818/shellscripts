@@ -10,11 +10,6 @@ export default class App extends Component {
   constructor(props) {
     super(props);
   }
-  componentWillMount() {
-    // Doing this because we want an isomorphic app.
-    // Well it's not an isomorphic app currently.
-    return this.constructor.fetchData(this.context.store);
-  }
   render() {
     return (
       <div id='app'>

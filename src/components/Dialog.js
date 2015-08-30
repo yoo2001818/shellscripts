@@ -33,5 +33,5 @@ export default class Dialog extends Component {
 Dialog.propTypes = {
   children: PropTypes.any,
   title: PropTypes.string,
-  loading: PropTypes.boolean
+  loading: PropTypes.bool
 };

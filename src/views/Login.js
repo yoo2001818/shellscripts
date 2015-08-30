@@ -19,7 +19,8 @@ class Login extends Component {
       [key]: event.target.value
     });
   }
-  handleLogin() {
+  handleLogin(e) {
+    e.preventDefault();
     let { load: { loading } } = this.props.session;
     if (loading) return;
     const { username, password } = this.state;

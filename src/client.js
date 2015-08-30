@@ -1,21 +1,23 @@
 // Client init point
 import 'babel/polyfill';
 import React from 'react';
-// Why we are using hash? Because HistoryLocation requires a server.
-import Router, { HashLocation } from 'react-router';
+import Router, { HistoryLocation } from 'react-router';
 import { Provider } from 'react-redux';
 
 import configureStore from './store/index.js';
 import routes from './views/routes.js';
 
-let initialData = null;
-if (typeof window !== 'undefined') initialData = window.__INITIAL_DATA__;
+import prefetch from './utils/prefetch.js';
 
-const store = configureStore(initialData);
+let initialState = null;
+if (typeof window !== 'undefined') initialState = window.__INITIAL_STATE__;
 
-Router.run(routes, HashLocation, (Handler, routerState) => {
+const store = configureStore(initialState);
+
+Router.run(routes, HistoryLocation, (Handler, routerState) => {
+  prefetch(store, routerState);
   let devTools = null;
-  if (__CLIENT__ && __DEVELOPMENT__) {
+  if (__CLIENT__ && __DEVELOPMENT__ && __DEVTOOLS__) {
     const { DevTools, DebugPanel, LogMonitor }
       = require('redux-devtools/lib/react');
     devTools = (
@@ -31,6 +33,6 @@ Router.run(routes, HashLocation, (Handler, routerState) => {
       </Provider>
       {devTools}
     </div>,
-    document.body
+    document.getElementById('wrapper')
   );
 });

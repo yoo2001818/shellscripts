@@ -1,5 +1,3 @@
-import { load, complete } from '../actions/load.js';
-
 export const GET = 'GET';
 export const POST = 'POST';
 export const DELETE = 'DELETE';

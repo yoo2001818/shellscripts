@@ -1,31 +1,27 @@
 var path = require('path');
 var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   devtool: 'eval',
   context: path.resolve(__dirname, 'src'),
   entry: [
-    'webpack-hot-middleware/client',
-    'webpack-dev-server/client?http://localhost:8080',
-    'webpack/hot/only-dev-server',
+    'webpack-hot-middleware/client?overlay=true',
     './client.js'
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),
+    publicPath: '/assets/',
     filename: 'bundle.js'
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      title: 'Shellscripts'
-    }),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       __CLIENT__: true,
       __SERVER__: false,
-      __DEVELOPMENT__: process.env.NODE_ENV !== 'production'
+      __DEVELOPMENT__: process.env.NODE_ENV !== 'production',
+      __DEVTOOLS__: true
     })
   ],
   node: {

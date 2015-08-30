@@ -46,6 +46,7 @@
   "globals": {
     "__SERVER__": true,
     "__CLIENT__": true,
-    "__DEVELOPMENT__": true
+    "__DEVELOPMENT__": true,
+    "__DEVTOOLS__": true
   }
 }

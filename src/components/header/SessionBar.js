@@ -5,11 +5,12 @@ import { Link } from 'react-router';
 import { logout } from '../../actions/session.js';
 
 class SessionBar extends Component {
-  handleLogout() {
+  handleLogout(e) {
+    e.preventDefault();
     const { session } = this.props;
-    if (session.load.loading) return false;
+    if (session.load.loading) return;
     this.props.logout();
-    return false;
+    return;
   }
   render() {
     const { session } = this.props;
