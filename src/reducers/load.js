@@ -23,7 +23,8 @@ export default function load(state = {
       const subAction = action.payload;
       if (handleErrors && subAction && subAction.error) {
         if (subAction.payload && subAction.payload.status &&
-          expectedErrors.indexOf(subAction.payload.status) === -1) {
+          expectedErrors.indexOf(subAction.payload.status) === -1
+        ) {
           // Mark the reducer as severe error
           error = {
             error: subAction.payload.error,
