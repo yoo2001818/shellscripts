@@ -5,8 +5,6 @@ import promiseMiddleware from '../middleware/promise.js';
 import createLogger from 'redux-logger';
 import apiMiddleware from '../middleware/api.js';
 
-import dummyClient from '../api/client.js';
-
 import * as reducers from '../reducers';
 
 let logger;
@@ -16,26 +14,26 @@ if (__SERVER__) {
   logger = createLogger();
 }
 
-const reducer = combineReducers(reducers);
-const middlewares = applyMiddleware(
-  thunkMiddleware,
-  apiMiddleware(dummyClient),
-  promiseMiddleware,
-  logger
-);
-
-let createStoreWithMiddleware = middlewares(createStore);
-
-if (__CLIENT__ && __DEVELOPMENT__ && __DEVTOOLS__) {
-  const { devTools, persistState } = require('redux-devtools');
-  createStoreWithMiddleware = compose(
-    middlewares,
-    devTools(),
-    persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/)),
-    createStore
+export default function configureStore(initialState, client) {
+  const reducer = combineReducers(reducers);
+  const middlewares = applyMiddleware(
+    thunkMiddleware,
+    apiMiddleware(client),
+    promiseMiddleware,
+    logger
   );
-}
 
-export default function configureStore(initialState) {
+  let createStoreWithMiddleware = middlewares(createStore);
+
+  if (__CLIENT__ && __DEVELOPMENT__ && __DEVTOOLS__) {
+    const { devTools, persistState } = require('redux-devtools');
+    createStoreWithMiddleware = compose(
+      middlewares,
+      devTools(),
+      persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/)),
+      createStore
+    );
+  }
+
   return createStoreWithMiddleware(reducer, initialState);
 }

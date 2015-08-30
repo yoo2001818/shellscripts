@@ -8,11 +8,12 @@ import configureStore from './store/index.js';
 import routes from './views/routes.js';
 
 import prefetch from './utils/prefetch.js';
+import { xhrClient } from './api/client.js';
 
-let initialState = null;
+let initialState;
 if (typeof window !== 'undefined') initialState = window.__INITIAL_STATE__;
 
-const store = configureStore(initialState);
+const store = configureStore(initialState, xhrClient);
 
 Router.run(routes, HistoryLocation, (Handler, routerState) => {
   prefetch(store, routerState);

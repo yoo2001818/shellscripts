@@ -27,7 +27,9 @@ class Login extends Component {
     this.setState({error: false});
     this.props.login({username, password}).then(result => {
       this.setState({username: '', password: ''});
-      this.setState({error: result.error});
+      if (result.error) {
+        this.setState({error: result.payload.body});
+      }
     });
   }
   handleLogout() {
@@ -56,7 +58,7 @@ class Login extends Component {
           {
             this.state.error ? (
               <Alert>
-                Invalid username or password
+                {this.state.error}
               </Alert>
             ) : null
           }

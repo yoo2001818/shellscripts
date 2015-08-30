@@ -7,11 +7,11 @@ export const LOGIN = 'SESSION_LOGIN';
 export const LOGOUT = 'SESSION_LOGOUT';
 
 export const fetch = createAction(FETCH,
-  () => api(GET, '/session', {}));
+  () => api(GET, '/api/session', {}));
 export const login = createAction(LOGIN,
-  credentials => api(POST, '/session', credentials));
+  credentials => api(POST, '/api/session', credentials));
 export const logout = createAction(LOGOUT,
-  () => api(DELETE, '/session', {}));
+  () => api(DELETE, '/api/session', {}));
 
 export function load() {
   return (dispatch, getState) => {

@@ -4,8 +4,11 @@ import ServeStatic from 'serve-static';
 import compression from 'compression';
 
 import serverRenderer from './utils/serverRenderer.js';
+import api from './api/index.js';
 
 let app = express();
+
+app.use('/api', api);
 
 if (!__DEVELOPMENT__) {
   // Currently server does nothing but serve static files.

@@ -3,11 +3,9 @@ export const POST = 'POST';
 export const DELETE = 'DELETE';
 export const PUT = 'PUT';
 
-const API_MARKER = 'API_MARKER';
-
 export function api(type, endpoint, options) {
   return {
-    API_MARKER,
+    apiRequest: true,
     type,
     endpoint,
     options
@@ -17,7 +15,7 @@ export function api(type, endpoint, options) {
 export const apiMiddleware = client => store => next => action => {
   if (action == null) return next(action);
   if (action.payload == null) return next(action);
-  if (action.payload.API_MARKER !== API_MARKER) return next(action);
+  if (!action.payload.apiRequest) return next(action);
   // Client function should return a Promise
   const { type, endpoint, options } = action.payload;
   let promise = client(type, endpoint, options);
