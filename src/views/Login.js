@@ -25,7 +25,9 @@ class Login extends Component {
     if (loading) return;
     const { username, password } = this.state;
     this.setState({error: false});
-    this.props.login({username, password}).then(result => {
+    this.props.login({username, password}, {
+      errors: [403]
+    }).then(result => {
       this.setState({username: '', password: ''});
       if (result.error) {
         this.setState({error: result.payload.body});

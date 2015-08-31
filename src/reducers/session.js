@@ -15,9 +15,8 @@ export default function session(state = {
     case SessionActions.FETCH:
       // If we have an error in this, we should consider this a fatal error
       if (error) return Object.assign({}, state, {error: true, loaded: true});
-      return Object.assign({}, state, payload, {
+      return Object.assign({}, state, payload.body, {
         loaded: true,
-        logged: false,
         load
       });
     case SessionActions.LOGIN:

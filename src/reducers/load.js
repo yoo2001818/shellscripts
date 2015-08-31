@@ -1,12 +1,6 @@
 import actionKeys from '../utils/actionKeys.js';
 import * as LoadActions from '../actions/load.js';
 
-// Error codes other than these are severe error
-const expectedErrors = [
-  200, 401, 403, 418, /* What? why?? */
-  422, 504
-];
-
 export default function load(state = {
   completed: 0, total: 0, loading: false
 }, action, handleErrors = true) {
@@ -23,7 +17,9 @@ export default function load(state = {
       const subAction = action.payload;
       if (handleErrors && subAction && subAction.error) {
         if (subAction.payload && subAction.payload.status &&
-          expectedErrors.indexOf(subAction.payload.status) === -1
+          (!subAction.meta || !subAction.meta.errors ||
+          !Array.isArray(subAction.meta.errors) ||
+          subAction.meta.errors.indexOf(subAction.payload.status) === -1)
         ) {
           // Mark the reducer as severe error
           error = {

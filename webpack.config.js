@@ -1,6 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var entries = ['./client.js'];
 var plugins = [
@@ -10,7 +10,7 @@ var plugins = [
     __CLIENT__: true,
     __SERVER__: false,
     __DEVELOPMENT__: process.env.NODE_ENV !== 'production',
-    __DEVTOOLS__: false
+    __DEVTOOLS__: true
   }),
   new ExtractTextPlugin('bundle.css', {
     disable: process.env.NODE_ENV !== 'production'
