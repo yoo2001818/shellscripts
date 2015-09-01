@@ -1,33 +1,31 @@
 import React, { Component, PropTypes } from 'react';
+import { setTempQuery, setQuery } from '../../actions/search.js';
+import { connect } from 'react-redux';
 
-export default class SearchBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      keyword: ''
-    };
-  }
+class SearchBar extends Component {
   handleChange(e) {
-    this.setState({
-      keyword: e.target.value
+    this.props.setTempQuery({
+      query: e.target.value
     });
   }
   handleSubmit(e) {
     e.preventDefault();
     const { router } = this.context;
-    const { keyword } = this.state;
-    router.transitionTo('/search', {}, {keyword});
+    this.props.setQuery({
+      query: this.props.search.tempQuery,
+      router
+    });
   }
   render() {
-    const { keyword } = this.state;
+    const query = this.props.search.tempQuery;
     return (
       <div className='search'>
         <div className='search-form'>
           <form action='/search' method='get'
             onSubmit={this.handleSubmit.bind(this)}>
             <div className='search-text'>
-              <input name='keyword' type='text' placeholder='Search'
-                value={keyword} onChange={this.handleChange.bind(this)} />
+              <input name='query' type='text' placeholder='Search'
+                value={query} onChange={this.handleChange.bind(this)} />
             </div>
             <div className='search-btn'>
               <button><i className='fa fa-search'></i></button>
@@ -42,3 +40,14 @@ export default class SearchBar extends Component {
 SearchBar.contextTypes = {
   router: PropTypes.func
 };
+
+SearchBar.propTypes = {
+  search: PropTypes.object,
+  setTempQuery: PropTypes.func.isRequired,
+  setQuery: PropTypes.func.isRequired
+};
+
+export default connect(
+  store => ({ search: store.search }),
+  { setTempQuery, setQuery }
+)(SearchBar);

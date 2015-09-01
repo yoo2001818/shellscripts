@@ -3,6 +3,6 @@ export default function prefetch(store, routerState) {
   let handlers = routes
     .map(route => route.handler)
     .filter(handler => handler.fetchData);
-  let promises = handlers.map(handler => handler.fetchData(store));
+  let promises = handlers.map(handler => handler.fetchData(store, routerState));
   return Promise.all(promises);
 }
