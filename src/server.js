@@ -9,6 +9,12 @@ import api from './api/index.js';
 let app = express();
 
 app.use('/api', api);
+app.get('/favicon.ico', (req, res) => {
+  res.sendStatus(404);
+});
+app.get('/assets/bundle.css', (req, res) => {
+  res.sendStatus(404);
+});
 
 if (!__DEVELOPMENT__) {
   // Currently server does nothing but serve static files.

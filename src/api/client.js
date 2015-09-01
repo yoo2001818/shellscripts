@@ -24,6 +24,7 @@ export function superagentClient(req) {
       request.send(options);
       if (__SERVER__) {
         if (req.get('cookie')) request.set('cookie', req.get('cookie'));
+        request.query({server: 'true'});
       }
       request.end((err, res) => {
         if (err) {

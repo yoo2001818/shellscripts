@@ -27,14 +27,14 @@ const ConnectSearch = connect(
 ConnectSearch.fetchData = function(store, routerState) {
   // Set store according to the query
   const { query } = routerState.query;
-  store.dispatch(setQuery({
+  return store.dispatch(setQuery({
     query
   }));
   // fetchData MUST return a Promise
-  return Promise.resolve();
 };
 
 ConnectSearch.willTransitionFrom = function(transition, component) {
+  if (transition.path.slice(0, 7) === '/search') return;
   component.dispatchProps.dispatch(setTempQuery({
     query: ''
   }));
