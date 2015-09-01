@@ -13,18 +13,31 @@ class Search extends Component {
     const domNode = searchBar.getDOMNode();
     domNode.focus();
     // Set cursor on the end
-    const value = domNode.value;
+    const { tempQuery } = this.props.search;
     domNode.value = '';
-    domNode.value = value;
+    domNode.value = tempQuery;
     this.handledFocus = true;
   }
   render() {
+    let innerContent;
+    const { load } = this.props.search;
+    if (load.loading) {
+      innerContent = (
+        <div className='loading'>
+          <i className="fa fa-refresh fa-spin"></i>
+        </div>
+      );
+    } else {
+      innerContent = (
+        <p>Results come here</p>
+      );
+    }
     return (
       <div id="search">
         <SearchBar refCallback={this.handleSearchBar.bind(this)} />
-        <p>
-          {`Results come here`}
-        </p>
+        <div className='content'>
+          { innerContent }
+        </div>
       </div>
     );
   }

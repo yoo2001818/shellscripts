@@ -33,6 +33,7 @@ export function setQuery(payload) {
         query: payload.query
       });
     }
+    if (payload.query === '' || payload.query == null) return Promise.resolve();
     return dispatch(fetch({
       query: payload.query
     }));
