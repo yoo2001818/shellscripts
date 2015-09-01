@@ -8,7 +8,6 @@
       background-color: #fff;
       color: #333;
       border: 1px solid #ccc;
-      border-right: none !important;
     }
     input:hover {
       border: 1px solid #999;
@@ -17,10 +16,10 @@
       border: 1px solid #83B1F2;
     }
     button {
-      color: #333;
-      background-color: #fff;
-      border: 1px solid #ccc;
-      border-left: none;
+      color: #666;
+      &:hover, &:focus {
+        color: #888;
+      }
     }
   }
 }
