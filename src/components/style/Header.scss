@@ -21,6 +21,7 @@ header {
     vertical-align: middle;
     display: block;
     position: relative;
+    min-height: 2.5em;
     & > * {
       vertical-align: middle;
     }
@@ -38,7 +39,7 @@ header {
       text-decoration: none;
     }
   }
-  .search {
+  .search-bar {
     padding: 0 1em;
     margin-left: 9.5em;
     margin-right: 16em;
@@ -50,51 +51,10 @@ header {
       clear: both;
     }
     .search-form {
-      position: relative;
       max-width: 30em;
-      padding: 0 1em;
       @media screen and (max-width: $break-small) {
         max-width: 100%;
       }
-      .search-text {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 4em;
-      }
-      .search-btn {
-        position: absolute;
-        top: 0;
-        width: 4em;
-        right: 0;
-      }
-    }
-    input {
-      width: 100%;
-      color: #085EC1;
-      background-color: #E8F3FF;
-      border: none;
-      padding: 0 0.5em;
-      font-size: 1em;
-      height: 2.5em;
-      border-top-left-radius: 0.2em;
-      border-bottom-left-radius: 0.2em;
-      box-sizing: border-box;
-      &:hover, &:focus {
-        background-color: #FAFCFF;
-      }
-    }
-    button {
-      width: 100%;
-      color: #085EC1;
-      background-color: #E8F3FF;
-      border: none;
-      padding: 0 1em;
-      font-size: 1em;
-      height: 2.5em;
-      border-top-right-radius: 0.2em;
-      border-bottom-right-radius: 0.2em;
-      box-sizing: border-box;
     }
   }
   .session {

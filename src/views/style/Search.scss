@@ -1,0 +1,26 @@
+#search {
+  .search-bar {
+    max-width: 30em;
+    margin: 0 auto;
+    margin-top: 1.5em;
+    border-radius: 0.3em;
+    input {
+      background-color: #fff;
+      color: #333;
+      border: 1px solid #ccc;
+      border-right: none !important;
+    }
+    input:hover {
+      border: 1px solid #999;
+    }
+    input:focus {
+      border: 1px solid #83B1F2;
+    }
+    button {
+      color: #333;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-left: none;
+    }
+  }
+}

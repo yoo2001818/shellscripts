@@ -25,6 +25,10 @@ router.delete('/session', (req, res) => {
   res.send({test: 'hello'});
 });
 
+router.get('/search', (req, res) => {
+  res.send({});
+});
+
 router.use((req, res) => {
   res.sendStatus(404);
 });

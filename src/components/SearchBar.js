@@ -1,5 +1,7 @@
+import './style/SearchBar.scss';
+
 import React, { Component, PropTypes } from 'react';
-import { setTempQuery, setQuery } from '../../actions/search.js';
+import { setTempQuery, setQuery } from '../actions/search.js';
 import { connect } from 'react-redux';
 
 class SearchBar extends Component {
@@ -19,12 +21,13 @@ class SearchBar extends Component {
   render() {
     const query = this.props.search.tempQuery;
     return (
-      <div className='search'>
+      <div className='search-bar'>
         <div className='search-form'>
           <form action='/search' method='get'
             onSubmit={this.handleSubmit.bind(this)}>
             <div className='search-text'>
               <input name='query' type='text' placeholder='Search'
+                ref={this.props.refCallback}
                 value={query} onChange={this.handleChange.bind(this)} />
             </div>
             <div className='search-btn'>
@@ -44,7 +47,8 @@ SearchBar.contextTypes = {
 SearchBar.propTypes = {
   search: PropTypes.object,
   setTempQuery: PropTypes.func.isRequired,
-  setQuery: PropTypes.func.isRequired
+  setQuery: PropTypes.func.isRequired,
+  refCallback: PropTypes.func
 };
 
 export default connect(

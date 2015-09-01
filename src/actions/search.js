@@ -17,7 +17,14 @@ export function setQuery(payload) {
     const { router } = payload;
     // Issue a transition if router is present
     // This looks bad. I should use redux-router
-    if (query === payload.query) return Promise.resolve();
+    if (query === payload.query) {
+      if (router) {
+        router.transitionTo('/search', {}, {
+          query: payload.query
+        });
+      }
+      return Promise.resolve();
+    }
     dispatch(forceSetQuery({
       query: payload.query
     }));
