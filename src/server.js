@@ -4,11 +4,12 @@ import ServeStatic from 'serve-static';
 import compression from 'compression';
 
 import serverRenderer from './utils/serverRenderer.js';
-import api from './api/index.js';
+import routerThunk from './utils/routerThunk.js';
+import createRouter from './api/index.js';
 
 let app = express();
 
-app.use('/api', api);
+app.use('/api', routerThunk(createRouter()));
 app.get('/favicon.ico', (req, res) => {
   res.sendStatus(404);
 });
@@ -31,7 +32,7 @@ if (!__DEVELOPMENT__) {
   let compiler = webpack(webpackConfig);
 
   app.use(webpackHotMiddleware(compiler, {
-     log: console.log, heartbeat: 10 * 1000
+     log: null, heartbeat: 10 * 1000
   }));
   app.use(compression());
   app.use(webpackDevMiddleware(compiler, {
