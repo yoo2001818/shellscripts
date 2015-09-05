@@ -17,6 +17,8 @@
     "font-awesome": "^4.4.0",
     "lodash": "^3.10.0",
     "morgan": "^1.6.1",
+    "passport": "^0.3.0",
+    "passport-local": "^1.0.0",
     "q": "^1.4.1",
     "react": "^0.13.3",
     "react-async": "^2.1.0",

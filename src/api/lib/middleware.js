@@ -1,6 +1,7 @@
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import session from 'express-session';
+import passport from './passport.js';
 
 export default function registerMiddlewares(app) {
   app.use(morgan('dev'));
@@ -10,4 +11,6 @@ export default function registerMiddlewares(app) {
     resave: false,
     saveUninitialized: true
   }));
+  app.use(passport.initialize());
+  app.use(passport.session());
 }

@@ -2,9 +2,11 @@ import config from '../../config/db.config.js';
 import * as preCollections from './collections/index.js';
 import Waterline from 'waterline';
 
-function loadCollections(waterline, collections) {
-  for (let key in collections) {
-    waterline.loadCollection(collections[key]);
+export const collections = {};
+
+function loadCollections(waterline, preCols) {
+  for (let key in preCols) {
+    waterline.loadCollection(preCols[key]);
   }
 }
 
@@ -20,6 +22,7 @@ export default function init() {
       }
       // Seriously though, we don't need anything but this
       resolve(ontology.collections);
+      Object.assign(collections, ontology.collections);
     });
   });
 }
