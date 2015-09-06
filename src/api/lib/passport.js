@@ -6,8 +6,8 @@ export default passport;
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    const { user } = collections;
-    console.log(user);
+    const { User } = collections;
+    console.log(User);
     return done('Not implemented yet');
   }
 ));

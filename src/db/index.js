@@ -20,9 +20,15 @@ export default function init() {
         reject(err);
         return;
       }
+      const collectionList = {};
+      for (const key in ontology.collections) {
+        const newKey = key.charAt(0).toUpperCase() +
+          key.slice(1);
+        collectionList[newKey] = ontology.collections[key];
+      }
       // Seriously though, we don't need anything but this
-      resolve(ontology.collections);
-      Object.assign(collections, ontology.collections);
+      resolve(collectionList);
+      Object.assign(collections, collectionList);
     });
   });
 }
