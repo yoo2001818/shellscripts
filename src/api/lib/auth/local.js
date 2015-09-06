@@ -1,8 +1,7 @@
-import { collections } from '../../db/index.js';
+import { collections } from '../../../db/index.js';
 import bcrypt from 'bcrypt';
-// Fallback to bcryptjs if not available
-if (bcrypt == null) {
-  bcrypt = require('bcryptjs');
+
+class PassportError extends Error {
 }
 
 export function generatePassword(password) {
@@ -33,18 +32,24 @@ export default function login(username, password, done) {
   })
   .then(gotPassport => {
     passport = gotPassport;
-    if (passport == null) throw new Error('Passport not found');
+    if (passport == null) throw new PassportError('Passport not found');
     // Validate password
     return validatePassword(passport, password);
   })
   .then(isValid => {
-    if (!isValid) throw new Error('Password incorrect');
+    if (!isValid) throw new PassportError('Password incorrect');
     return User.findOne(passport.id);
   })
   .then(user => {
-    if (user == null) throw new Error('User not found');
+    if (user == null) throw new PassportError('User not found');
     done(null, user);
   }, error => {
-    done(error);
+    if (error instanceof PassportError) {
+      done(null, false, {
+        message: error.message
+      });
+    } else {
+      done(error);
+    }
   });
 }

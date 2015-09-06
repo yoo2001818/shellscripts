@@ -1,2 +1,3 @@
 import User from './user.js';
-export { User };
+import Passport from './passport.js';
+export { User, Passport };
