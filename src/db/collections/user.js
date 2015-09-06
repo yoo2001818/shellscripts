@@ -6,7 +6,23 @@ export default Collection.extend({
   attributes: {
     username: {
       type: 'string',
-      unique: true
+      unique: true,
+      required: true
+    },
+    email: {
+      type: 'string',
+      unique: true,
+      email: true
+    },
+    passports: {
+      collection: 'passport',
+      via: 'user'
+    },
+    // Login via oAuth may prompt to the user
+    signedUp: {
+      type: 'boolean',
+      required: true,
+      defaultsTo: false
     }
   }
 });
