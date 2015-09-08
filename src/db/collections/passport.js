@@ -16,6 +16,12 @@ export default Collection.extend({
       type: 'string',
       required: true
     },
-    data: 'json'
+    data: 'json',
+    toJSON: function() {
+      const obj = this.toObject();
+      delete obj.data;
+      delete obj.identifier;
+      return obj;
+    }
   }
 });
