@@ -3,6 +3,7 @@ import registerMiddlewares from './lib/middleware.js';
 import dbInit from '../db/index.js';
 
 import passport from './lib/passport.js';
+import { register } from './lib/auth/local.js';
 
 export default function createRouter() {
   return dbInit()
@@ -11,25 +12,22 @@ export default function createRouter() {
     registerMiddlewares(router);
     router.get('/session', (req, res) => {
       // This kinda looks silly
-      res.send(req.session.session);
+      res.send(req.user || {});
     });
     router.post('/session', passport.authenticate('local'), (req, res) => {
       // If this function gets called, authentication was successful.
       // `req.user` contains the authenticated user.
-      res.redirect('/users/' + req.user.username);
+      res.send(req.user || {});
     });
-    /*router.post('/session', (req, res) => {
-      req.session.session = {
-        logged: true
-      };
-      res.send({test: 'hello'});
-      //res.status(403).send('Not implemented yet');
-    });*/
     router.delete('/session', (req, res) => {
-      req.session.session = {
-        logged: false
-      };
-      res.send({test: 'hello'});
+      req.logout();
+      res.send({});
+    });
+    router.all('/user/auth/local', (req, res) => {
+      register(req, req.query, (err) => {
+        if (err) return res.send(err);
+        res.send(req.user || {});
+      });
     });
     router.get('/search', (req, res) => {
       res.send({});

@@ -11,7 +11,6 @@ export default Collection.extend({
     },
     email: {
       type: 'string',
-      unique: true,
       email: true
     },
     passports: {

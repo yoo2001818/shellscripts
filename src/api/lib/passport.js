@@ -1,7 +1,7 @@
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import localLogin from './auth/local.js';
-import { collections } from '../../../db/index.js';
+import { collections } from '../../db/index.js';
 
 export default passport;
 
@@ -11,7 +11,9 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((id, done) => {
   const { User } = collections;
-  User.findOne(id, (err, user) => {
+  User.findOne(id)
+  .populate('passports')
+  .exec((err, user) => {
     done(err, user);
   });
 });
