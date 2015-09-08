@@ -21,16 +21,12 @@ export default function session(state = {
       });
     case SessionActions.LOGIN:
       if (error) return state;
-      return Object.assign({}, state, payload, {
-        logged: true,
+      return Object.assign({}, state, payload.body, {
         load
       });
     case SessionActions.LOGOUT:
       if (error) return state;
-      return Object.assign({}, state, payload, {
-        logged: false,
-        load
-      });
+      return { load, loaded: true };
   }
   return Object.assign({}, state, {
     load

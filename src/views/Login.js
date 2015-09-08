@@ -56,11 +56,11 @@ class Login extends Component {
     });
   }
   render() {
-    let { logged, load: { loading } } = this.props.session;
-    if (logged) {
+    let { username, id, load: { loading } } = this.props.session;
+    if (id != null) {
       return (
         <Dialog id='dialog-login' title='Sign in' loading={loading}>
-          Already signed in as USERNAME
+          Already signed in as { username }
           <div className='footer'>
             <button onClick={this.handleLogout.bind(this)}>Sign out</button>
           </div>

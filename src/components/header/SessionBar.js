@@ -21,10 +21,10 @@ class SessionBar extends Component {
         </div>
       );
     }
-    if (session.logged) {
+    if (session.id != null) {
       return (
         <div className='session'>
-          Welcome!
+          Welcome, { session.username }!
           <Link to='/logout' onClick={this.handleLogout.bind(this)}>
             Sign out
           </Link>
