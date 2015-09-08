@@ -25,7 +25,7 @@ export default function createRouter() {
     });
     router.all('/user/auth/local', (req, res) => {
       register(req, req.query, (err) => {
-        if (err) return res.send(err);
+        if (err) return res.status(500).send(err.message);
         res.send(req.user || {});
       });
     });

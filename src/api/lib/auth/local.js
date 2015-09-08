@@ -106,6 +106,10 @@ export function register(req, credentials, done) {
         }));
       }
     } else {
+      // Username MUST equal to user's username, or it'd do nothing.
+      if (username !== req.user.username) {
+        throw new Error('Username not matches');
+      }
       if (!passport) {
         // Create a passport and link it to the user.
         return generatePassword(password)
