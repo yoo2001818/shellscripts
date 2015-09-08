@@ -96,6 +96,10 @@ export function register(req, credentials, done) {
         });
       } else {
         // Sign in using the passport.
+        // Of course, in local strategy, nobody would sign in with register
+        // method. (And it's dangerous if we don't check password)
+        throw new Error('Username already exists');
+        /*
         return User.findOne(passport.user)
         .populate('passports')
         .then(user => new Promise((resolve, reject) => {
@@ -103,7 +107,7 @@ export function register(req, credentials, done) {
             if (err) return reject(err);
             resolve();
           });
-        }));
+        }));*/
       }
     } else {
       // Username MUST equal to user's username, or it'd do nothing.
@@ -133,6 +137,7 @@ export function register(req, credentials, done) {
         });
       } else {
         // Do nothing.
+        throw new Error('Already signed in');
       }
     }
   })
