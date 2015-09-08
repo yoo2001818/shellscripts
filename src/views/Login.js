@@ -24,6 +24,14 @@ class Login extends Component {
     let { load: { loading } } = this.props.session;
     if (loading) return;
     const { username, password } = this.state;
+    if (username === '') {
+      this.refs.username.getDOMNode().focus();
+      return;
+    }
+    if (password === '') {
+      this.refs.password.getDOMNode().focus();
+      return;
+    }
     this.setState({error: false});
     this.props.login({username, password}, {
       errors: [403]
@@ -64,10 +72,10 @@ class Login extends Component {
               </Alert>
             ) : null
           }
-          <input type='text' placeholder='Username'
+          <input type='text' placeholder='Username' ref='username'
             value={this.state.username}
             onChange={this.handleChange.bind(this, 'username')} />
-          <input type='password' placeholder='Password'
+          <input type='password' placeholder='Password' ref='password'
             value={this.state.password}
             onChange={this.handleChange.bind(this, 'password')} />
           <div className='footer'>

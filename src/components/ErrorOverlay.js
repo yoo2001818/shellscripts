@@ -11,6 +11,17 @@ class ErrorOverlay extends Component {
   handleDismiss() {
     this.props.errorDismiss();
   }
+  componentDidMount() {
+    this.handleFocus();
+  }
+  componentDidUpdate() {
+    this.handleFocus();
+  }
+  handleFocus() {
+    const { load: { error } } = this.props;
+    if (!error) return;
+    this.refs.dismiss.getDOMNode().focus();
+  }
   render() {
     const { load: { error } } = this.props;
     if (!error) return false;
@@ -23,7 +34,8 @@ class ErrorOverlay extends Component {
             us.`}</div>
             <Alert>{`${error.error} while processing ${error.type}`}</Alert>
             <div className='footer'>
-              <button onClick={this.handleDismiss.bind(this)}>Dismiss</button>
+              <button onClick={this.handleDismiss.bind(this)}
+              ref='dismiss'>Dismiss</button>
             </div>
           </Dialog>
         </div>
