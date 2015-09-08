@@ -34,11 +34,16 @@ class Login extends Component {
     }
     this.setState({error: false});
     this.props.login({username, password}, {
-      errors: [403]
+      errors: [401]
     }).then(result => {
       this.setState({username: '', password: ''});
       if (result.error) {
-        this.setState({error: result.payload.body});
+        if (result.payload.status === 401) {
+          this.setState({error: 'Invalid username or password'});
+          this.refs.username.getDOMNode().focus();
+        } else {
+          this.setState({error: result.payload.body});
+        }
       }
     });
   }
