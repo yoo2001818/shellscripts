@@ -1,6 +1,6 @@
 import { collections } from '../../../db/index.js';
 
-export default function login(accessToken, refreshToken, profile, done) {
+export default function login(type, accessToken, refreshToken, profile, done) {
   const { User, Passport } = collections;
   const { displayName } = profile;
   const profileId = profile.id; // Strangely, id is a string.
@@ -8,7 +8,7 @@ export default function login(accessToken, refreshToken, profile, done) {
   // Retrieve passport with the identifier
   Passport.findOne({
     identifier: profileId,
-    type: 'github'
+    type
   })
   .then(passport => {
     if (!passport) {
@@ -19,7 +19,7 @@ export default function login(accessToken, refreshToken, profile, done) {
       .then(user => {
         return Passport.create({
           user: user.id,
-          type: 'github',
+          type,
           identifier: profileId,
           data: { accessToken, refreshToken }
         })

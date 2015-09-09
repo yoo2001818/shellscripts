@@ -30,6 +30,13 @@ export default function createRouter() {
       // We redirect user to /login.
       res.redirect('/login');
     });
+    router.all('/user/auth/facebook', passport.authenticate('facebook'),
+      (req, res) =>
+    {
+      // Since we need to forward the user to this callback page,
+      // We redirect user to /login.
+      res.redirect('/login');
+    });
     router.all('/user/auth/local', (req, res) => {
       register(req, req.query, (err) => {
         if (err) return res.status(500).send(err.message);
