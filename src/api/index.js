@@ -23,6 +23,13 @@ export default function createRouter() {
       req.logout();
       res.send({});
     });
+    router.all('/user/auth/github', passport.authenticate('github'),
+      (req, res) =>
+    {
+      // Since we need to forward the user to this callback page,
+      // We redirect user to /login.
+      res.redirect('/login');
+    });
     router.all('/user/auth/local', (req, res) => {
       register(req, req.query, (err) => {
         if (err) return res.status(500).send(err.message);

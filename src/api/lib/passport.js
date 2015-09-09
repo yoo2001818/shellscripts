@@ -1,7 +1,10 @@
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
+import { Strategy as GitHubStrategy } from 'passport-github';
 import localLogin from './auth/local.js';
+import gitHubLogin from './auth/github.js';
 import { collections } from '../../db/index.js';
+import * as config from '../../../config/auth.config.js';
 
 export default passport;
 
@@ -19,3 +22,4 @@ passport.deserializeUser((id, done) => {
 });
 
 passport.use(new LocalStrategy(localLogin));
+passport.use(new GitHubStrategy(config.github, gitHubLogin));

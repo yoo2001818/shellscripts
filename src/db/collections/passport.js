@@ -21,6 +21,8 @@ export default Collection.extend({
       const obj = this.toObject();
       delete obj.data;
       delete obj.identifier;
+      // Nobody would require id of a passport. (For now)
+      delete obj.id;
       return obj;
     }
   }

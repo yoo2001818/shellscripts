@@ -55,6 +55,11 @@ class Login extends Component {
       this.setState({username: '', password: ''});
     });
   }
+  handleOAuth(provider, e) {
+    // This requires actual page forwarding...
+    window.location = '/api/user/auth/' + provider;
+    e.preventDefault();
+  }
   render() {
     let { username, id, load: { loading } } = this.props.session;
     if (id != null) {
@@ -85,6 +90,9 @@ class Login extends Component {
             onChange={this.handleChange.bind(this, 'password')} />
           <div className='footer'>
             <button>Sign in</button>
+            <button onClick={this.handleOAuth.bind(this, 'github')}>
+              <i className="fa fa-github"></i> Sign in using GitHub
+            </button>
           </div>
         </form>
       </Dialog>
