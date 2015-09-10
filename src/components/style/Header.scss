@@ -63,6 +63,8 @@ header {
     right: 0;
     width: 16em;
     text-align: right;
+    overflow: visible;
+    white-space: nowrap;
     color: #fff;
     padding-right: 1em;
     line-height: 2.5em;
