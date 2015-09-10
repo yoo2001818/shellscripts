@@ -4,7 +4,7 @@ import { Strategy as GitHubStrategy } from 'passport-github';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
 import localLogin from './auth/local.js';
 import oAuthLogin from './auth/oauth.js';
-import { collections } from '../../db/index.js';
+import { User } from '../../db/index.js';
 import * as config from '../../../config/auth.config.js';
 
 export default passport;
@@ -14,11 +14,9 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  const { User } = collections;
-  User.findOne(id)
-  .populate('passports')
-  .exec((err, user) => {
-    done(err, user);
+  User.findById(id)
+  .then(user => {
+    done(null, user);
   });
 });
 

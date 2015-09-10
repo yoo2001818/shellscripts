@@ -1,46 +1,47 @@
-import { collections } from '../../../db/index.js';
+import { User, Passport, sequelize } from '../../../db/index.js';
 
 export default function login(type, accessToken, refreshToken, profile, done) {
-  const { User, Passport } = collections;
   const { displayName } = profile;
   const profileId = profile.id; // Strangely, id is a string.
   console.log(profile);
-  // Retrieve passport with the identifier
-  Passport.findOne({
-    identifier: profileId,
-    type
-  })
-  .then(passport => {
-    if (!passport) {
-      // Register a new user and a passport.
-      return User.create({
-        username: displayName // TODO maybe not this?
-      })
-      .then(user => {
-        return Passport.create({
-          user: user.id,
-          type,
-          identifier: profileId,
-          data: { accessToken, refreshToken }
+  sequelize.transaction(transaction =>
+    // Retrieve passport with the identifier
+    Passport.findOne({
+      where: {
+        identifier: profileId,
+        type
+      }
+    })
+    .then(passport => {
+      if (!passport) {
+        // Register a new user and a passport.
+        return User.create({
+          username: displayName // TODO maybe not this?
+        }, {
+          transaction
         })
-        .then((newPassport) => new Promise((resolve) => {
-          // Inject passport list
-          user.passports = [newPassport];
-          const preToObject = user.toObject;
-          user.toObject = function() {
-            let self = preToObject.call(this);
-            self.passports = this.passports;
-            delete self.toObject;
-            return self;
-          };
-          resolve(user);
-        }));
-      });
-    } else {
-      // Sign in using the passport.
-      return User.findOne(passport.user)
-      .populate('passports');
-    }
-  })
+        .then(user => {
+          return Passport.create({
+            userId: user.id,
+            type,
+            identifier: profileId,
+            // refreshToken is useless.
+            data: accessToken
+          }, {
+            transaction
+          })
+          .then(() => new Promise((resolve) => {
+            resolve(user);
+          }));
+        });
+      } else {
+        // Update passport access token
+        passport.data = accessToken;
+        return passport.save()
+        // Sign in using the passport.
+        .then(() => User.findById(passport.userId));
+      }
+    })
+  )
   .then(user => done(null, user), err => done(err));
 }

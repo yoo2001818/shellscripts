@@ -1,29 +1,19 @@
-import { Collection } from 'waterline';
+import Sequelize from 'sequelize';
+import sequelize from '../init.js';
+// import User from './user.js';
 
-export default Collection.extend({
-  identity: 'passport',
-  connection: 'default',
-  attributes: {
-    user: {
-      model: 'user',
-      required: true
-    },
-    type: {
-      type: 'string',
-      required: true
-    },
-    identifier: {
-      type: 'string',
-      required: true
-    },
-    data: 'json',
-    toJSON: function() {
-      const obj = this.toObject();
-      delete obj.data;
-      delete obj.identifier;
-      // Nobody would require id of a passport. (For now)
-      delete obj.id;
-      return obj;
-    }
-  }
+const Passport = sequelize.define('passport', {
+  type: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: 'typeIdentifier'
+  },
+  identifier: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: 'typeIdentifier'
+  },
+  data: Sequelize.TEXT
 });
+
+export default Passport;

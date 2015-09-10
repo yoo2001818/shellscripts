@@ -1,27 +1,26 @@
-import { Collection } from 'waterline';
+import Sequelize from 'sequelize';
+import sequelize from '../init.js';
+import Passport from './passport.js';
 
-export default Collection.extend({
-  identity: 'user',
-  connection: 'default',
-  attributes: {
-    username: {
-      type: 'string',
-      unique: true,
-      required: true
-    },
-    email: {
-      type: 'string',
-      email: true
-    },
-    passports: {
-      collection: 'passport',
-      via: 'user'
-    },
-    // Login via oAuth may prompt to the user
-    signedUp: {
-      type: 'boolean',
-      required: true,
-      defaultsTo: false
+const User = sequelize.define('user', {
+  username: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true
+  },
+  email: {
+    type: Sequelize.STRING,
+    validate: {
+      isEmail: true
     }
+  },
+  signedUp: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
   }
 });
+
+User.hasMany(Passport, {as: 'Passports'});
+
+export default User;
