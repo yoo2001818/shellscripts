@@ -6,11 +6,13 @@ import NotFound from './NotFound.js';
 import Index from './Index.js';
 import Login from './Login.js';
 import Search from './Search.js';
+import SignUp from './SignUp.js';
 
 export const routes = (
   <Route path='/' handler={App}>
     <DefaultRoute handler={Index} />
     <Route path='login' handler={Login} />
+    <Route path='signup' handler={SignUp} />
     <Route path='search' handler={Search} />
     <NotFoundRoute handler={NotFound} />
   </Route>

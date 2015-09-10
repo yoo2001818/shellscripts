@@ -17,37 +17,35 @@
     margin-top: 2em;
   }
   &.loading {
-    .footer {
-      button {
-        background-color: #F1F1F1;
-        color: #333;
-        border: 1px solid #bbb;
-      }
+    button {
+      background-color: #F1F1F1;
+      color: #333;
+      border: 1px solid #bbb;
     }
   }
   .footer {
     margin-top: 1em;
     text-align: center;
-    button {
-      width: 100%;
-      font-size: 1em;
-      background-color: #F5FAFF;
-      color: #085EC1;
-      display: inline-block;
-      box-sizing: border-box;
-      padding: 0.6em 0.8em;
-      margin: 0.5em 0;
-      border-radius: 0.2em;
-      border: 1px solid #94BDEB;
-    }
-    button:hover {
-      border: 1px solid #AECBEB;
-      background-color: #FAFCFF;
-    }
-    button:active {
-      border: 1px solid #94BDEB;
-      background-color: #FFFFFF;
-    }
+  }
+  button {
+    width: 100%;
+    font-size: 1em;
+    background-color: #F5FAFF;
+    color: #085EC1;
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 0.6em 0.8em;
+    margin: 0.5em 0;
+    border-radius: 0.2em;
+    border: 1px solid #94BDEB;
+  }
+  button:hover {
+    border: 1px solid #AECBEB;
+    background-color: #FAFCFF;
+  }
+  button:active {
+    border: 1px solid #94BDEB;
+    background-color: #FFFFFF;
   }
   input {
     font-size: 1em;

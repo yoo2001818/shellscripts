@@ -1,0 +1,47 @@
+#signup {
+  text-align: center;
+  margin: 1em auto;
+  padding: 0.5em;
+  &>h1 {
+    text-align: left;
+    margin: 0.2em 0;
+    color: #333;
+    font-weight: normal;
+  }
+  &>.footer {
+    text-align: left;
+    color: #333;
+    font-size: 0.8em;
+  }
+  &>.dialog {
+    margin: 0.5em auto;
+  }
+  &>.oauthform {
+    margin: 0.5em auto;
+    &>h1 {
+      color: #666;
+      font-size: 1.2em;
+    }
+    button {
+      width: 100%;
+      max-width: 23em;
+      font-size: 1em;
+      background-color: grayscale(#F5FAFF);
+      color: grayscale(#085EC1);
+      display: inline-block;
+      box-sizing: border-box;
+      padding: 0.6em 0.8em;
+      margin: 0.5em 0;
+      border-radius: 0.2em;
+      border: 1px solid grayscale(#94BDEB);
+    }
+    button:hover {
+      border: 1px solid grayscale(#AECBEB);
+      background-color: grayscale(#FAFCFF);
+    }
+    button:active {
+      border: 1px solid grayscale(#94BDEB);
+      background-color: grayscale(#FFFFFF);
+    }
+  }
+}
