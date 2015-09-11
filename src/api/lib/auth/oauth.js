@@ -16,7 +16,6 @@ export default function login(type, accessToken, refreshToken, profile, done) {
       if (!passport) {
         // Register a new user and a passport.
         return User.create({
-          username: displayName // TODO maybe not this?
         }, {
           transaction
         })

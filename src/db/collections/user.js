@@ -5,7 +5,6 @@ import Passport from './passport.js';
 const User = sequelize.define('user', {
   username: {
     type: Sequelize.STRING,
-    allowNull: false,
     unique: true
   },
   email: {
