@@ -7,11 +7,20 @@ export default class Dialog extends Component {
   render() {
     const dialogClass = classNames('dialog', {
       loading: this.props.loading
+    }, this.props.className);
+    const contentClass = classNames('content', {
+      hidden: this.props.hidden
     });
-    return (
-      <div className={dialogClass} {...this.props}>
+    let titleBar = this.props.titleObj;
+    if (titleBar == null) {
+      titleBar = (
         <h1 className='title'>{this.props.title}</h1>
-        <div className='content'>
+      );
+    }
+    return (
+      <div className={dialogClass}>
+        {titleBar}
+        <div className={contentClass}>
           {this.props.children}
         </div>
         {
@@ -33,5 +42,8 @@ export default class Dialog extends Component {
 Dialog.propTypes = {
   children: PropTypes.any,
   title: PropTypes.string,
-  loading: PropTypes.bool
+  titleObj: PropTypes.obj,
+  loading: PropTypes.bool,
+  hidden: PropTypes.bool,
+  className: PropTypes.any
 };

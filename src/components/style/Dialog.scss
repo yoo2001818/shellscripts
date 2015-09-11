@@ -1,6 +1,7 @@
 .dialog {
   max-width: 25em;
   margin: 2em auto;
+  box-sizing: border-box;
   background-color: #f9f9f9;
   padding: 0.5em;
   border: 1px solid #ccc;
@@ -64,6 +65,10 @@
   }
   input:focus {
     border: 1px solid #83B1F2;
+  }
+  input:invalid {
+    box-shadow: none;
+    border: 1px solid #992222;
   }
   & > .loading {
     position: absolute;

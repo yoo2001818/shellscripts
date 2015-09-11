@@ -2,7 +2,7 @@ import './style/SignUp.scss';
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import Dialog from '../components/Dialog.js';
+import Accordion from '../components/Accordion.js';
 
 import { signUp } from '../actions/session.js';
 
@@ -32,21 +32,16 @@ class SignUp extends Component {
           You can create an account using GitHub, or alternatively, you can
           create an account by writing your username and password below.
         </p>
-        <Dialog id='dialog-signup' title='Create an account'
-          loading={loading}
-        >
-          <form>
+        <div className='signupSelect'>
+          <button>Create an account using GitHub</button>
+          <Accordion title='Create an account using E-mail address'>
             <input placeholder='Username' />
+            <input placeholder='E-mail address' type='email' />
             <input placeholder='Password' type='password' />
-            <input placeholder='Verify password' type='password' />
             <div className='footer'>
               <button>Create an account</button>
             </div>
-          </form>
-        </Dialog>
-        <div className='oauthform'>
-          <h1>Or alternatively...</h1>
-          <button>Sign in using GitHub</button>
+          </Accordion>
         </div>
         <p className='footer'>
           By creating an account, blah blah blah blah blah.

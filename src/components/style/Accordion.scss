@@ -1,0 +1,29 @@
+.dialog.accordion {
+  margin: 0.5em auto;
+  padding: 0;
+  &>button {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    background-color: grayscale(#F5FAFF);
+    color: grayscale(#085EC1);
+    padding: 0.6em 0.8em;
+    &:hover {
+      background-color: grayscale(#FAFCFF);
+    }
+    &:active {
+      background-color: grayscale(#FFFFFF);
+    }
+  }
+  &>.content {
+    overflow: hidden;
+    margin: 0.3em 1.5em 1.5em;
+    max-height: 20em;
+    transition: max-height 0.5s, margin 0.5s;
+    &.hidden {
+      margin: 0em 1.5em 0;
+      max-height: 0;
+    }
+  }
+}
