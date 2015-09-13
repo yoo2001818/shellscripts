@@ -42,7 +42,7 @@ export default class Dialog extends Component {
 Dialog.propTypes = {
   children: PropTypes.any,
   title: PropTypes.string,
-  titleObj: PropTypes.obj,
+  titleObj: PropTypes.any,
   loading: PropTypes.bool,
   hidden: PropTypes.bool,
   className: PropTypes.any

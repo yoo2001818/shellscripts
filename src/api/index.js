@@ -3,6 +3,7 @@ import registerMiddlewares from './lib/middleware.js';
 
 import passport from './lib/passport.js';
 import { register } from './lib/auth/local.js';
+import strategies from './lib/auth/strategy.js';
 
 export default function createRouter() {
   const router = new Express.Router();
@@ -11,34 +12,59 @@ export default function createRouter() {
     // This kinda looks silly
     res.send(req.user || {});
   });
-  router.post('/session', passport.authenticate('local'), (req, res) => {
-    // If this function gets called, authentication was successful.
-    // `req.user` contains the authenticated user.
-    res.send(req.user || {});
+  router.get('/session/method', (req, res) => {
+    let methodList = [];
+    for (let method in strategies) {
+      if (!strategies[method].enabled) continue;
+      methodList.push(Object.assign({}, strategies[method], {
+        strategy: undefined,
+        identifier: method
+      }));
+    }
+    res.send(methodList);
   });
-  router.delete('/session', (req, res) => {
-    req.logout();
-    res.send({});
+  router.all('/session/:method', (req, res, next) => {
+    // Check name validity
+    const strategy = strategies[req.params.method];
+    if (strategy == null || strategy.enabled === false) next();
+    passport.authenticate(req.params.method, (err, user, info) => {
+      if (err) {
+        res.status(401);
+        res.send(err);
+        console.log(err);
+        return;
+      }
+      if (!user) {
+        res.status(401);
+        res.send(info);
+        console.log(info);
+        return;
+      }
+      req.login(user, (error) => {
+        if (error) {
+          res.status(401);
+          res.send(error);
+          return;
+        }
+        if (strategy.redirect) {
+          res.redirect('/login');
+          return;
+        } else {
+          res.send(user);
+          return;
+        }
+      });
+    })(req, res, next);
   });
-  router.all('/user/auth/github', passport.authenticate('github'),
-    (req, res) =>
-  {
-    // Since we need to forward the user to this callback page,
-    // We redirect user to /login.
-    res.redirect('/login');
-  });
-  router.all('/user/auth/facebook', passport.authenticate('facebook'),
-    (req, res) =>
-  {
-    // Since we need to forward the user to this callback page,
-    // We redirect user to /login.
-    res.redirect('/login');
-  });
-  router.all('/user/auth/local', (req, res) => {
+  router.all('/session/local/register', (req, res) => {
     register(req, req.query, (err) => {
       if (err) return res.status(500).send(err.message);
       res.send(req.user || {});
     });
+  });
+  router.delete('/session', (req, res) => {
+    req.logout();
+    res.send({});
   });
   router.get('/search', (req, res) => {
     res.send({});

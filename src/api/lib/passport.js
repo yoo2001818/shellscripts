@@ -1,11 +1,6 @@
 import passport from 'passport';
-import { Strategy as LocalStrategy } from 'passport-local';
-import { Strategy as GitHubStrategy } from 'passport-github';
-import { Strategy as FacebookStrategy } from 'passport-facebook';
-import localLogin from './auth/local.js';
-import oAuthLogin from './auth/oauth.js';
 import { User } from '../../db/index.js';
-import * as config from '../../../config/auth.config.js';
+import strategy from './auth/strategy.js';
 
 export default passport;
 
@@ -20,10 +15,7 @@ passport.deserializeUser((id, done) => {
   });
 });
 
-passport.use(new LocalStrategy(localLogin));
-passport.use(
-  new GitHubStrategy(config.github, oAuthLogin.bind(null, 'github'))
-);
-passport.use(
-  new FacebookStrategy(config.facebook, oAuthLogin.bind(null, 'facebook'))
-);
+// Register all strategies
+for (let key in strategy) {
+  passport.use(strategy[key].strategy);
+}

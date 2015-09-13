@@ -1,7 +1,6 @@
 import { User, Passport, sequelize } from '../../../db/index.js';
 
 export default function login(type, accessToken, refreshToken, profile, done) {
-  const { displayName } = profile;
   const profileId = profile.id; // Strangely, id is a string.
   console.log(profile);
   sequelize.transaction(transaction =>

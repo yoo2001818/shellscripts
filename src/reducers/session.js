@@ -7,9 +7,11 @@ export default function session(state = {
   load: {
     completed: 0, total: 0, loading: false
   },
-  loaded: false
+  loaded: false,
+  method: null
 }, action) {
   const load = loadReducer(state.load, action);
+  let { method } = state;
   const { type, payload, error } = action;
   switch (type) {
     case SessionActions.FETCH:
@@ -26,7 +28,12 @@ export default function session(state = {
       });
     case SessionActions.LOGOUT:
       if (error) return state;
-      return { load, loaded: true };
+      return { load, loaded: true, method };
+    case SessionActions.METHOD_FETCH:
+      if (error) return state;
+      return Object.assign({}, state, {
+        load, method: payload.body
+      });
   }
   return Object.assign({}, state, {
     load

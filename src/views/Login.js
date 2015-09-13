@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { login, logout } from '../actions/session.js';
+import { login, logout, methodLoad } from '../actions/session.js';
 import Dialog from '../components/Dialog.js';
 import Alert from '../components/Alert.js';
 
@@ -57,11 +57,11 @@ class Login extends Component {
   }
   handleOAuth(provider, e) {
     // This requires actual page forwarding...
-    window.location = '/api/user/auth/' + provider;
+    window.location = '/api/session/' + provider;
     e.preventDefault();
   }
   render() {
-    let { username, id, load: { loading } } = this.props.session;
+    let { username, id, load: { loading }, method } = this.props.session;
     if (id != null) {
       return (
         <Dialog id='dialog-login' title='Sign in' loading={loading}>
@@ -71,6 +71,24 @@ class Login extends Component {
           </div>
         </Dialog>
       );
+    }
+    let methodTags, hasLocal = false;
+    if (method == null) {
+      methodTags = false;
+      hasLocal = true;
+    } else {
+      methodTags = method.map(provider => {
+        if (provider.identifier === 'local') {
+          hasLocal = true;
+          return false;
+        }
+        return (
+          <button onClick={this.handleOAuth.bind(this, provider.identifier)}
+            key={provider.identifier}>
+            Sign in using { provider.name }
+          </button>
+        );
+      });
     }
     return (
       <Dialog id='dialog-login' title='Sign in' loading={loading}>
@@ -82,17 +100,25 @@ class Login extends Component {
               </Alert>
             ) : null
           }
-          <input type='text' placeholder='Username' ref='username'
-            value={this.state.username}
-            onChange={this.handleChange.bind(this, 'username')} />
-          <input type='password' placeholder='Password' ref='password'
-            value={this.state.password}
-            onChange={this.handleChange.bind(this, 'password')} />
+          {
+            hasLocal ? (
+              <div>
+                <input type='text' placeholder='Username' ref='username'
+                  value={this.state.username}
+                  onChange={this.handleChange.bind(this, 'username')} />
+                <input type='password' placeholder='Password' ref='password'
+                  value={this.state.password}
+                  onChange={this.handleChange.bind(this, 'password')} />
+              </div>
+            ) : null
+          }
           <div className='footer'>
-            <button>Sign in</button>
-            <button onClick={this.handleOAuth.bind(this, 'github')}>
-              <i className="fa fa-github"></i> Sign in using GitHub
-            </button>
+            {
+              hasLocal ? (
+                <button>Sign in</button>
+              ) : null
+            }
+            { methodTags }
           </div>
         </form>
       </Dialog>
@@ -106,7 +132,13 @@ Login.propTypes = {
   logout: PropTypes.func.isRequired
 };
 
-export default connect(
+const ConnectLogin = connect(
   store => ({session: store.session}),
   { login, logout }
 )(Login);
+
+ConnectLogin.fetchData = function(store) {
+  return store.dispatch(methodLoad());
+};
+
+export default ConnectLogin;
