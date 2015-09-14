@@ -1,22 +1,14 @@
-import React, { Component, PropTypes } from 'react';
-import translate from '../lang/index.js';
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
+import Translated from '../components/Translated.js';
 
-class Index extends Component {
+export default class Index extends Component {
   render() {
-    const __ = translate(this.props.lang.lang);
     return (
       <div>
-        <h1>{__('hello', 'World')}</h1>
+        <h1>
+          <Translated name='hello'>{'World'}</Translated>
+        </h1>
       </div>
     );
   }
 }
-
-Index.propTypes = {
-  lang: PropTypes.object
-};
-
-export default connect(store => ({
-  lang: store.lang
-}))(Index);

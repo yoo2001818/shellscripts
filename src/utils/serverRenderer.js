@@ -43,6 +43,11 @@ export default function serverRenderer(req, res) {
       );
       let page = renderPage(appHtml, store.getState());
       res.send(page);
+    })
+    .catch(e => {
+      console.log(e.stack);
+      // TODO this should be removed from the production server
+      res.send(e.stack);
     });
   });
 }
