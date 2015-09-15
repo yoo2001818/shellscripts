@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import { errorDismiss } from '../actions/load.js';
 import Dialog from './Dialog.js';
 import Alert from './Alert.js';
+import Translated from './Translated.js';
+import translate from '../lang/index.js';
 
 class ErrorOverlay extends Component {
   handleDismiss() {
@@ -23,19 +25,22 @@ class ErrorOverlay extends Component {
     this.refs.dismiss.getDOMNode().focus();
   }
   render() {
+    const __ = translate(this.props.lang.lang);
     const { load: { error } } = this.props;
     if (!error) return false;
     return (
       <div id='errorCover'>
         <div className='middle'>
-          <Dialog title='Error'>
-            <div>{`An error occurred. This might be a network problem, or
-            the server's problem. If the problem persists, please contact
-            us.`}</div>
+          <Dialog title={__('error')}>
+            <div>
+              <Translated name='errorDesc' />
+            </div>
             <Alert>{`${error.error} while processing ${error.type}`}</Alert>
             <div className='footer'>
               <button onClick={this.handleDismiss.bind(this)}
-              ref='dismiss'>Dismiss</button>
+              ref='dismiss'>
+                <Translated name='dismiss' />
+              </button>
             </div>
           </Dialog>
         </div>
@@ -45,11 +50,12 @@ class ErrorOverlay extends Component {
 }
 
 ErrorOverlay.propTypes = {
+  lang: PropTypes.object,
   load: PropTypes.object.isRequired,
   errorDismiss: PropTypes.func.isRequired
 };
 
 export default connect(
-  (state) => ({load: state.load}),
+  (state) => ({load: state.load, lang: state.lang}),
   { errorDismiss }
 )(ErrorOverlay);

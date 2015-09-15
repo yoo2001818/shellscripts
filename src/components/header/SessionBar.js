@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
+import Translated from '../Translated.js';
 import { logout } from '../../actions/session.js';
 
 class SessionBar extends Component {
@@ -24,17 +25,23 @@ class SessionBar extends Component {
     if (session.id != null) {
       return (
         <div className='session'>
-          Welcome, { session.username }!
+          <Translated name='sessionWelcome'>
+            { session.username }
+          </Translated>
           <Link to='/logout' onClick={this.handleLogout.bind(this)}>
-            Sign out
+            <Translated name='signOut' />
           </Link>
         </div>
       );
     } else {
       return (
         <div className='session'>
-          <Link to='/login'>Sign in</Link>
-          <Link to='/signup'>Create an account</Link>
+          <Link to='/login'>
+            <Translated name='signIn' />
+          </Link>
+          <Link to='/signup'>
+            <Translated name='signUp' />
+          </Link>
           {
             session.error ? (
               <span><i className="fa fa-exclamation-triangle"></i></span>

@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 
 import SearchBar from './SearchBar.js';
 import SessionBar from './header/SessionBar.js';
+import Translated from './Translated.js';
 
 export default class Header extends Component {
   render() {
@@ -16,7 +17,9 @@ export default class Header extends Component {
       <header>
         <div className='container'>
           <div className='logo'>
-            <Link to='/'>Shellscripts</Link>
+            <Link to='/'>
+              <Translated name='sitename' />
+            </Link>
           </div>
           { searchBar }
           <SessionBar />

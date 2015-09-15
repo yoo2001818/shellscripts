@@ -9,7 +9,10 @@ function encodeText(text, param) {
 
 export const translate = (lang = 'en') => {
   const translations = languages[lang];
-  return (key, param) => encodeText(translations[key], param);
+  return (key, param = []) => {
+    const translation = translations[key] || 'ERR_' + key;
+    return encodeText(translation, param);
+  };
 };
 
 export default translate;
