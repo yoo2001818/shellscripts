@@ -1,5 +1,5 @@
 import { User, Passport, sequelize } from '../../../db/index.js';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 class PassportError extends Error {
 }
