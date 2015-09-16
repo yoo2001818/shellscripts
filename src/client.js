@@ -15,6 +15,8 @@ if (typeof window !== 'undefined') initialState = window.__INITIAL_STATE__;
 
 const store = configureStore(initialState, superagentClient());
 
+// TODO language set part
+
 Router.run(routes, HistoryLocation, (Handler, routerState) => {
   prefetch(store, routerState);
   let devTools = null;

@@ -8,6 +8,8 @@ import routes from '../views/routes.js';
 import prefetch from '../utils/prefetch.js';
 import { superagentClient } from '../api/client.js';
 
+import * as LangActions from '../actions/lang.js';
+
 function renderPage(html, initialState) {
   return `
     <!doctype html>
@@ -31,6 +33,8 @@ function renderPage(html, initialState) {
 
 export default function serverRenderer(req, res) {
   const store = configureStore(undefined, superagentClient(req));
+  // TODO should be moved to somewhere else...
+  store.dispatch(LangActions.set(req.acceptsLanguages('ko', 'en')));
   Router.run(routes, req.originalUrl, (Handler, routerState) => {
     prefetch(store, routerState)
     .then(() => {

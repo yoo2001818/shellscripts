@@ -1,0 +1,16 @@
+{
+  "hello": "안녕하세요, $1!",
+  "sitename": "Shellscripts",
+  "search": "검색",
+  "signIn": "로그인",
+  "signUp": "계정 만들기",
+  "username": "사용자 이름",
+  "password": "비밀번호",
+  "signInUsing": "$1으로 로그인",
+  "error": "오류",
+  "errorDesc": "오류가 발생했습니다. 시간이 지나도 문제가 계속 지속된다면 문의해 주세요.",
+  "dismiss": "닫기",
+  "signOut": "로그아웃",
+  "pageNotFound": "페이지 찾을 수 없음",
+  "pageNotFoundDesc": "요청하신 페이지를 찾을 수 없습니다."
+}

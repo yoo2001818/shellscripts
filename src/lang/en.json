@@ -1,3 +1,16 @@
 {
-  "hello": "Hello, $1!"
+  "hello": "Hello, $1!",
+  "sitename": "Shellscripts",
+  "search": "Search",
+  "signIn": "Sign in",
+  "signUp": "Create an account",
+  "username": "Username",
+  "password": "Password",
+  "signInUsing": "Sign in using $1",
+  "error": "Error",
+  "errorDesc": "An error occurred. This might be a network problem, or the server's problem. If the problem persists, please contact us.",
+  "dismiss": "Dismiss",
+  "signOut": "Sign out",
+  "pageNotFound": "Page not found",
+  "pageNotFoundDesc": "Sorry, we couldn't find the page you've requested."
 }
