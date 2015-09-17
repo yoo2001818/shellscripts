@@ -12,5 +12,7 @@
   "dismiss": "Dismiss",
   "signOut": "Sign out",
   "pageNotFound": "Page not found",
-  "pageNotFoundDesc": "Sorry, we couldn't find the page you've requested."
+  "pageNotFoundDesc": "Sorry, we couldn't find the page you've requested.",
+  "sessionWelcome": "Welcome, $1!",
+  "alreadySignedIn": "Already signed in as $1"
 }

@@ -47,7 +47,8 @@ export default function createRouter() {
           return;
         }
         if (strategy.redirect) {
-          res.redirect('/login');
+          if (user.signedUp) res.redirect('/login');
+          else res.redirect('/signup');
           return;
         } else {
           res.send(user);

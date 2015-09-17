@@ -62,6 +62,14 @@ class Login extends Component {
     window.location = '/api/session/' + provider;
     e.preventDefault();
   }
+  componentWillMount() {
+    let { id, signedUp } = this.props.session;
+    // let { router } = this.context;
+    // Redirect if user hasn't signed in.
+    if (id != null && !signedUp) {
+      // router.transitionTo('/signup');
+    }
+  }
   render() {
     const __ = translate(this.props.lang.lang);
     let { username, id, load: { loading }, method } = this.props.session;
@@ -135,9 +143,13 @@ class Login extends Component {
 
 Login.propTypes = {
   session: PropTypes.object,
-  lang: PropTypes.lang,
+  lang: PropTypes.object,
   login: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired
+};
+
+Login.contextTypes = {
+  router: PropTypes.any
 };
 
 const ConnectLogin = connect(

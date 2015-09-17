@@ -2,9 +2,12 @@ import './style/SignUp.scss';
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import Accordion from '../components/Accordion.js';
 
-import { signUp } from '../actions/session.js';
+import translate from '../lang/index.js';
+import Accordion from '../components/Accordion.js';
+import Translated from '../components/Translated.js';
+
+import { signUp, methodLoad } from '../actions/session.js';
 
 class SignUp extends Component {
   constructor(props) {
@@ -12,11 +15,12 @@ class SignUp extends Component {
   }
   handleOAuth(provider, e) {
     // This requires actual page forwarding...
-    window.location = '/api/user/auth/' + provider;
+    window.location = '/api/session/' + provider;
     e.preventDefault();
   }
   render() {
-    let { username, id, load: { loading } } = this.props.session;
+    const __ = translate(this.props.lang.lang);
+    let { id, method } = this.props.session;
     if (id != null) {
       return (
         <div id='signup'>
@@ -25,26 +29,51 @@ class SignUp extends Component {
         </div>
       );
     }
+    let methodTags, hasLocal = false;
+    if (method == null) {
+      methodTags = false;
+      hasLocal = false;
+    } else {
+      methodTags = method.map(provider => {
+        if (provider.identifier === 'local') {
+          hasLocal = true;
+          return false;
+        }
+        return (
+          <button onClick={this.handleOAuth.bind(this, provider.identifier)}
+            key={provider.identifier}>
+            <Translated name='signUpUsing'>
+              { provider.name }
+            </Translated>
+          </button>
+        );
+      });
+    }
     return (
       <div id='signup'>
-        <h1>Create an account</h1>
+        <h1>
+          <Translated name='signUp' />
+        </h1>
         <p>
-          You can create an account using GitHub, or alternatively, you can
-          create an account by writing your username and password below.
+          <Translated name='signUpDesc' />
         </p>
         <div className='signupSelect'>
-          <button>Create an account using GitHub</button>
-          <Accordion title='Create an account using E-mail address'>
-            <input placeholder='Username' />
-            <input placeholder='E-mail address' type='email' />
-            <input placeholder='Password' type='password' />
-            <div className='footer'>
-              <button>Create an account</button>
-            </div>
-          </Accordion>
+          { hasLocal ? (
+            <Accordion title={__('signUpEmail')}>
+              <input placeholder={__('username')} />
+              <input placeholder={__('email')} type='email' />
+              <input placeholder={__('password')} type='password' />
+              <div className='footer'>
+                <button>
+                  <Translated name='signUp' />
+                </button>
+              </div>
+            </Accordion>
+          ) : false }
+          { methodTags }
         </div>
         <p className='footer'>
-          By creating an account, blah blah blah blah blah.
+          <Translated name='signUpDisclaimer' />
         </p>
       </div>
     );
@@ -52,10 +81,17 @@ class SignUp extends Component {
 }
 
 SignUp.propTypes = {
-  session: PropTypes.object
+  session: PropTypes.object,
+  lang: PropTypes.object
 };
 
-export default connect(
-  store => ({session: store.session}),
+const ConnectSignUp = connect(
+  store => ({session: store.session, lang: store.lang}),
   { signUp }
 )(SignUp);
+
+ConnectSignUp.fetchData = function(store) {
+  return store.dispatch(methodLoad());
+};
+
+export default ConnectSignUp;
