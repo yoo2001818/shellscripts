@@ -5,6 +5,7 @@ import { api, GET, POST, DELETE } from '../middleware/api.js';
 export const FETCH = 'SESSION_FETCH';
 export const LOGIN = 'SESSION_LOGIN';
 export const LOGOUT = 'SESSION_LOGOUT';
+export const LOCAL_SIGNUP = 'SESSION_LOCAL_SIGNUP';
 export const METHOD_FETCH = 'SESSION_METHOD_FETCH';
 
 export const fetch = createAction(FETCH,
@@ -14,6 +15,9 @@ export const login = createAction(LOGIN,
   (_, meta) => meta);
 export const logout = createAction(LOGOUT,
   () => api(DELETE, '/api/session', {}),
+  (_, meta) => meta);
+export const localSignUp = createAction(LOCAL_SIGNUP,
+  credentials => api(POST, '/api/session/local/register', credentials),
   (_, meta) => meta);
 export const methodFetch = createAction(METHOD_FETCH,
   () => api(GET, '/api/session/method', {}));

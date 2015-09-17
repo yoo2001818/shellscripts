@@ -35,7 +35,7 @@ class ErrorOverlay extends Component {
             <div>
               <Translated name='errorDesc' />
             </div>
-            <Alert>{`${error.error} while processing ${error.type}`}</Alert>
+            <Alert>{`${error.body} while processing ${error.type}`}</Alert>
             <div className='footer'>
               <button onClick={this.handleDismiss.bind(this)}
               ref='dismiss'>

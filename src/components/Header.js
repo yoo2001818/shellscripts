@@ -7,6 +7,7 @@ import { Link } from 'react-router';
 import SearchBar from './SearchBar.js';
 import SessionBar from './header/SessionBar.js';
 import Translated from './Translated.js';
+import SignedUpRedirector from './SignedUpRedirector.js';
 
 export default class Header extends Component {
   render() {
@@ -24,6 +25,7 @@ export default class Header extends Component {
           </div>
           { searchBar }
           <SessionBar />
+          <SignedUpRedirector />
         </div>
       </header>
     );

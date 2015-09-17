@@ -25,7 +25,8 @@ export default function load(state = {
           error = {
             error: subAction.payload.error,
             status: subAction.payload.status,
-            type: subAction.type
+            type: subAction.type,
+            body: subAction.payload.body
           };
         }
       }

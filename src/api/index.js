@@ -58,7 +58,7 @@ export default function createRouter() {
     })(req, res, next);
   });
   router.all('/session/local/register', (req, res) => {
-    register(req, req.query, (err) => {
+    register(req, req.body, (err) => {
       if (err) return res.status(500).send(err.message);
       res.send(req.user || {});
     });

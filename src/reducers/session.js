@@ -26,6 +26,11 @@ export default function session(state = {
       return Object.assign({}, state, payload.body, {
         load
       });
+    case SessionActions.LOCAL_SIGNUP:
+      if (error) return state;
+      return Object.assign({}, state, payload.body, {
+        load
+      });
     case SessionActions.LOGOUT:
       if (error) return state;
       return { load, loaded: true, method };

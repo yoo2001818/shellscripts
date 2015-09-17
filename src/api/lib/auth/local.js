@@ -56,7 +56,11 @@ export default function login(username, password, done) {
 }
 
 export function register(req, credentials, done) {
-  const { username, password } = credentials;
+  const { username, password, email } = credentials;
+  if (username == null || password == null) {
+    done(new Error('Username or password not provided'));
+    return;
+  }
   sequelize.transaction(transaction =>
     // Retrieve passport with the username
     Passport.findOne({
@@ -68,9 +72,13 @@ export function register(req, credentials, done) {
     .then(passport => {
       if (!req.user) {
         if (!passport) {
+          if (email == null) {
+            throw new Error('Email not provided');
+          }
           // Register a new user and a passport.
           return User.create({
-            username
+            username,
+            email
           }, {
             transaction
           })

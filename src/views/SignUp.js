@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import translate from '../lang/index.js';
 import Accordion from '../components/Accordion.js';
 import Translated from '../components/Translated.js';
+import LocalSignUpForm from '../components/LocalSignUpForm.js';
 
 import { signUp, methodLoad } from '../actions/session.js';
 
@@ -60,14 +61,7 @@ class SignUp extends Component {
         <div className='signupSelect'>
           { hasLocal ? (
             <Accordion title={__('signUpEmail')}>
-              <input placeholder={__('username')} />
-              <input placeholder={__('email')} type='email' />
-              <input placeholder={__('password')} type='password' />
-              <div className='footer'>
-                <button>
-                  <Translated name='signUp' />
-                </button>
-              </div>
+              <LocalSignUpForm />
             </Accordion>
           ) : false }
           { methodTags }
