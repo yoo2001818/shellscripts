@@ -1,8 +1,9 @@
 // Client init point
 import 'babel/polyfill';
 import React from 'react';
-import Router, { HistoryLocation } from 'react-router';
+import { Router } from 'react-router';
 import { Provider } from 'react-redux';
+import { createHistory } from 'history';
 
 import configureStore from './store/index.js';
 import routes from './views/routes.js';
@@ -13,11 +14,28 @@ import { superagentClient } from './api/client.js';
 let initialState;
 if (typeof window !== 'undefined') initialState = window.__INITIAL_STATE__;
 
+let history = createHistory();
+
 const store = configureStore(initialState, superagentClient());
 
 // TODO language set part
+// TODO devTools
 
-Router.run(routes, HistoryLocation, (Handler, routerState) => {
+function handleUpdate() {
+  prefetch(store, this.state);
+}
+
+React.render(
+  <div id='root'>
+    <Provider store={store}>
+      {() => <Router routes={routes}
+        history={history} onUpdate={handleUpdate} />}
+    </Provider>
+  </div>,
+  document.getElementById('wrapper')
+);
+
+/*Router.run(routes, HistoryLocation, (Handler, routerState) => {
   prefetch(store, routerState);
   let devTools = null;
   if (__CLIENT__ && __DEVELOPMENT__ && __DEVTOOLS__) {
@@ -38,4 +56,4 @@ Router.run(routes, HistoryLocation, (Handler, routerState) => {
     </div>,
     document.getElementById('wrapper')
   );
-});
+});*/

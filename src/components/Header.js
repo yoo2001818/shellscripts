@@ -11,8 +11,9 @@ import Translated from './Translated.js';
 export default class Header extends Component {
   render() {
     let searchBar = (<SearchBar />);
-    const routes = this.context.router.getCurrentRoutes();
-    if (routes[1] && routes[1].path === '/search') searchBar = null;
+    let { history } = this.context;
+    // const routes = this.context.router.getCurrentRoutes();
+    if (history.isActive('/search')) searchBar = null;
     return (
       <header>
         <div className='container'>
@@ -30,5 +31,5 @@ export default class Header extends Component {
 }
 
 Header.contextTypes = {
-  router: PropTypes.func
+  history: PropTypes.any
 };

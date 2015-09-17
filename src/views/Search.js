@@ -2,10 +2,16 @@ import './style/Search.scss';
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import qs from 'qs';
 import { setQuery, setTempQuery } from '../actions/search.js';
 import SearchBar from '../components/SearchBar.js';
 
 class Search extends Component {
+  componentWillUnmount() {
+    this.props.setTempQuery({
+      query: ''
+    });
+  }
   handleSearchBar(searchBar) {
     if (searchBar == null) return;
     if (this.handledFocus) return;
@@ -44,27 +50,22 @@ class Search extends Component {
 }
 
 Search.propTypes = {
-  search: PropTypes.object
+  search: PropTypes.object,
+  setTempQuery: PropTypes.func
 };
 
 const ConnectSearch = connect(
-  store => ({search: store.search})
+  store => ({search: store.search}),
+  { setTempQuery }
 )(Search);
 
 ConnectSearch.fetchData = function(store, routerState) {
   // Set store according to the query
-  const { query } = routerState.query;
+  const { query } = qs.parse(routerState.location.search.slice(1));
   return store.dispatch(setQuery({
     query
   }));
   // fetchData MUST return a Promise
-};
-
-ConnectSearch.willTransitionFrom = function(transition, component) {
-  if (transition.path.slice(0, 7) === '/search') return;
-  component.dispatchProps.dispatch(setTempQuery({
-    query: ''
-  }));
 };
 
 export default ConnectSearch;

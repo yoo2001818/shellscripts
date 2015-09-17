@@ -14,12 +14,12 @@ export const setTempQuery = createAction(SET_TEMP_QUERY);
 export function setQuery(payload) {
   return (dispatch, getState) => {
     const { search: { query } } = getState();
-    const { router } = payload;
+    const { history } = payload;
     // Issue a transition if router is present
     // This looks bad. I should use redux-router
     if (query === payload.query) {
-      if (router) {
-        router.transitionTo('/search', {}, {
+      if (history) {
+        history.pushState({}, '/search', {
           query: payload.query
         });
       }
@@ -28,8 +28,8 @@ export function setQuery(payload) {
     dispatch(forceSetQuery({
       query: payload.query
     }));
-    if (router) {
-      router.transitionTo('/search', {}, {
+    if (history) {
+      history.pushState({}, '/search', {
         query: payload.query
       });
     }

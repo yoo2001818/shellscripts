@@ -1,5 +1,6 @@
 import React from 'react';
-import Router from 'react-router';
+import createLocation from 'history/lib/createLocation';
+import { RoutingContext, match } from 'react-router';
 import { Provider } from 'react-redux';
 
 import configureStore from '../store/index.js';
@@ -32,10 +33,36 @@ function renderPage(html, initialState) {
 }
 
 export default function serverRenderer(req, res) {
+  const location = createLocation(req.originalUrl);
   const store = configureStore(undefined, superagentClient(req));
   // TODO should be moved to somewhere else...
   store.dispatch(LangActions.set(req.acceptsLanguages('ko', 'en')));
-  Router.run(routes, req.originalUrl, (Handler, routerState) => {
+  match({ routes, location }, (error, redirectLocation, renderProps) => {
+    if (redirectLocation) {
+      res.redirect(redirectLocation.pathname + redirectLocation.search);
+    } else if (error) {
+      res.status(500).send(error.message);
+    } else if (renderProps == null) {
+      res.sendStatus(404);
+    } else {
+      prefetch(store, renderProps)
+      .then(() => {
+        let appHtml = React.renderToString(
+          <div id='root'>
+            <Provider store={store}>
+              {() => <RoutingContext {...renderProps} />}
+            </Provider>
+          </div>
+        );
+        let page = renderPage(appHtml, store.getState());
+        res.send(page);
+      })
+      .catch(err => {
+        res.status(500).send(err.stack);
+      });
+    }
+  });
+  /*Router.run(routes, req.originalUrl, (Handler, routerState) => {
     prefetch(store, routerState)
     .then(() => {
       let appHtml = React.renderToString(
@@ -53,5 +80,5 @@ export default function serverRenderer(req, res) {
       // TODO this should be removed from the production server
       res.send(e.stack);
     });
-  });
+  });*/
 }

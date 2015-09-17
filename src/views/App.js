@@ -1,6 +1,5 @@
 import './style/App.scss';
 import React, { Component, PropTypes } from 'react';
-import { RouteHandler } from 'react-router';
 import { load } from '../actions/session.js';
 import ProgressBar from '../components/ProgressBar.js';
 import ErrorOverlay from '../components/ErrorOverlay.js';
@@ -16,7 +15,7 @@ export default class App extends Component {
       <div id='app'>
         <Header />
         <div id='content'>
-          <RouteHandler />
+          {this.props.children}
         </div>
         <Footer />
         <ErrorOverlay />
@@ -28,6 +27,10 @@ export default class App extends Component {
     return store.dispatch(load());
   }
 }
+
+App.propTypes = {
+  children: PropTypes.any
+};
 
 App.contextTypes = {
   store: PropTypes.object.isRequired

@@ -13,10 +13,10 @@ class SearchBar extends Component {
   }
   handleSubmit(e) {
     e.preventDefault();
-    const { router } = this.context;
+    const { history } = this.context;
     this.props.setQuery({
       query: this.props.search.tempQuery,
-      router
+      history
     });
   }
   render() {
@@ -39,7 +39,7 @@ class SearchBar extends Component {
 }
 
 SearchBar.contextTypes = {
-  router: PropTypes.func
+  history: PropTypes.object
 };
 
 SearchBar.propTypes = {
