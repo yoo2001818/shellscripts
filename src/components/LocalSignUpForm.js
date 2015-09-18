@@ -62,9 +62,12 @@ function validateFrom(data) {
 function validateFormAsync(data, dispatch) {
   return dispatch(checkUsername(data.username))
   .then(action => {
-    const errors = {};
+    const errors = {
+      valid: true
+    };
     if (!action.payload.body) {
       errors.username = 'Please use other username.';
+      errors.valid = false;
     }
     return errors;
   });
