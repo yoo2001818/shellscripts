@@ -70,6 +70,10 @@ export default function createRouter() {
   router.get('/search', (req, res) => {
     res.send({});
   });
+  router.post('/user/username', (req, res) => {
+    // TODO Really implement it
+    res.send(Math.random() > 0.1);
+  });
   router.use((req, res) => {
     res.sendStatus(404);
   });

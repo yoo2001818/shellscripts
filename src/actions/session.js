@@ -7,6 +7,8 @@ export const LOGIN = 'SESSION_LOGIN';
 export const LOGOUT = 'SESSION_LOGOUT';
 export const LOCAL_SIGNUP = 'SESSION_LOCAL_SIGNUP';
 export const METHOD_FETCH = 'SESSION_METHOD_FETCH';
+export const CHECK_USERNAME = 'SESSION_CHECK_USERNAME';
+export const CHECK_EMAIL = 'SESSION_CHECK_EMAIL';
 
 export const fetch = createAction(FETCH,
   () => api(GET, '/api/session', {}));
@@ -21,6 +23,10 @@ export const localSignUp = createAction(LOCAL_SIGNUP,
   (_, meta) => meta);
 export const methodFetch = createAction(METHOD_FETCH,
   () => api(GET, '/api/session/method', {}));
+export const checkUsername = createAction(CHECK_USERNAME,
+  username => api(POST, '/api/user/username', { username }));
+export const checkEmail = createAction(CHECK_EMAIL,
+  email => api(POST, '/api/user/email', { email }));
 
 export function load() {
   return (dispatch, getState) => {
