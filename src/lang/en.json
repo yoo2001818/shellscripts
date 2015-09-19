@@ -6,7 +6,7 @@
   "signUp": "Create an account",
   "username": "Username",
   "password": "Password",
-  "signInUsing": "Sign in using $1",
+  "signInUsing": "Sign in with $1",
   "error": "Error",
   "errorDesc": "An error occurred. This might be a network problem, or the server's problem. If the problem persists, please contact us.",
   "dismiss": "Dismiss",
@@ -14,5 +14,10 @@
   "pageNotFound": "Page not found",
   "pageNotFoundDesc": "Sorry, we couldn't find the page you've requested.",
   "sessionWelcome": "Welcome, $1!",
-  "alreadySignedIn": "Already signed in as $1"
+  "alreadySignedIn": "Already signed in as $1",
+  "email": "Email address",
+  "signUpDesc": "You can create an account using one of these methods below.",
+  "signUpEmail": "Create an account with Email address",
+  "signUpUsing": "Create an account with $1",
+  "signUpDisclaimer": "By creating an account, you agree to null."
 }

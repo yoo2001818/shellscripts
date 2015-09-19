@@ -37,5 +37,5 @@ ErrorInput.propTypes = {
   className: PropTypes.string,
   error: PropTypes.any,
   touched: PropTypes.bool,
-  valid: PropTypes.valid
+  valid: PropTypes.bool
 };
