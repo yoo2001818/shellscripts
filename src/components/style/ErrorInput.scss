@@ -1,0 +1,18 @@
+.errorInput {
+  &>.input {
+    position: relative;
+    &>.indicator {
+      position: absolute;
+      top: 50%;
+	    transform: translateY(-50%);
+      right: 0.8em;
+      font-size: 0.9em;
+      &>.error {
+        color: #AE2020;
+      }
+      &>.valid {
+        color: #20AE20;
+      }
+    }
+  }
+}

@@ -8,6 +8,26 @@
   border-radius: 0.2em;
   overflow: hidden;
   position: relative;
+  &.small {
+    margin: 0.5em auto;
+    padding: 0;
+    & > h1 {
+      padding: 0.6em 0.8em;
+      margin: 0;
+      font-weight: normal;
+      font-size: 1em;
+      color: #666;
+    }
+    & > .content {
+      overflow: hidden;
+      margin: 0.3em 1.5em 1.5em;
+      height: auto;
+      &.hidden {
+        margin: 0em 1.5em 0;
+        height: 0;
+      }
+    }
+  }
   & > h1 {
     text-align: center;
     font-size: 1.2em;
@@ -47,6 +67,11 @@
   button:active {
     border: 1px solid #94BDEB;
     background-color: #FFFFFF;
+  }
+  button:disabled {
+    background-color: grayscale(#F5FAFF);
+    color: grayscale(#085EC1);
+    border: 1px solid grayscale(#94BDEB);
   }
   input {
     font-size: 1em;

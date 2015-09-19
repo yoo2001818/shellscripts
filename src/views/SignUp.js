@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import translate from '../lang/index.js';
-import Accordion from '../components/Accordion.js';
+import Dialog from '../components/Dialog.js';
 import Translated from '../components/Translated.js';
 import LocalSignUpForm from '../components/LocalSignUpForm.js';
 
@@ -60,9 +60,9 @@ class SignUp extends Component {
         </p>
         <div className='signupSelect'>
           { hasLocal ? (
-            <Accordion title={__('signUpEmail')}>
+            <Dialog title={__('signUpEmail')} className='small'>
               <LocalSignUpForm />
-            </Accordion>
+            </Dialog>
           ) : false }
           { methodTags }
         </div>

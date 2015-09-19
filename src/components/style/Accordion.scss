@@ -19,11 +19,10 @@
   &>.content {
     overflow: hidden;
     margin: 0.3em 1.5em 1.5em;
-    max-height: 20em;
-    transition: max-height 0.5s, margin 0.5s;
+    height: auto;
     &.hidden {
       margin: 0em 1.5em 0;
-      max-height: 0;
+      height: 0;
     }
   }
 }

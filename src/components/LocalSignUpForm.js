@@ -1,35 +1,31 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import reduxForm from 'redux-form';
+import { isEmail } from 'validator';
 
-import Alert from './Alert.js';
 import Translated from './Translated.js';
+import ErrorInput from './ErrorInput.js';
 import translate from '../lang/index.js';
 import { localSignUp, checkUsername, checkEmail } from '../actions/session.js';
 
 class LocalSignUpForm extends Component {
+  componentWillUnmount() {
+    this.props.resetForm();
+  }
   handleSubmit(data) {
     this.props.dispatch(localSignUp(data));
   }
   render() {
     const __ = translate(this.props.lang.lang);
-    const { fields: { username, email, password }, handleSubmit } = this.props;
+    const { fields: { username, email, password }, handleSubmit,
+      invalid } = this.props;
     return (
       <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
-        <input placeholder={__('username')} type='text' {...username}/>
-        {username.error && username.touched ? (
-          <Alert>{username.error}</Alert>
-        ) : null }
-        <input placeholder={__('email')} type='email' noValidate {...email}/>
-        {email.error && email.touched ? (
-          <Alert>{email.error}</Alert>
-        ) : null }
-        <input placeholder={__('password')} type='password' {...password}/>
-        {password.error && password.touched ? (
-          <Alert>{password.error}</Alert>
-        ) : null }
+        <ErrorInput placeholder={__('username')} type='text' {...username}/>
+        <ErrorInput placeholder={__('email')} type='email' {...email}/>
+        <ErrorInput placeholder={__('password')} type='password' {...password}/>
         <div className='footer'>
-          <button>
+          <button disabled={invalid}>
             <Translated name='signUp' />
           </button>
         </div>
@@ -42,16 +38,18 @@ LocalSignUpForm.propTypes = {
   fields: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   lang: PropTypes.object.isRequired,
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
+  resetForm: PropTypes.func.isRequired,
+  invalid: PropTypes.bool
 };
 
 function validateFrom(data) {
   const errors = {};
   if (!data.username) {
-    errors.username = 'Required';
+    errors.username = true;
   }
-  if (!data.email) {
-    errors.email = 'Required';
+  if (!isEmail(data.email)) {
+    errors.email = true;
   }
   if (!data.password || data.password.length < 6) {
     errors.password = 'Password can\'t be shorter than 6 characters';
@@ -62,12 +60,9 @@ function validateFrom(data) {
 function validateFormAsync(data, dispatch) {
   return dispatch(checkUsername(data.username))
   .then(action => {
-    const errors = {
-      valid: true
-    };
+    const errors = {};
     if (!action.payload.body) {
       errors.username = 'Please use other username.';
-      errors.valid = false;
     }
     return errors;
   });
