@@ -7,6 +7,7 @@ import translate from '../lang/index.js';
 import Dialog from '../components/Dialog.js';
 import Translated from '../components/Translated.js';
 import LocalSignUpForm from '../components/LocalSignUpForm.js';
+import PostSignUp from '../components/PostSignUp.js';
 
 import { signUp, methodLoad } from '../actions/session.js';
 
@@ -25,8 +26,10 @@ class SignUp extends Component {
     if (id != null) {
       return (
         <div id='signup'>
-          <h1>Create an account</h1>
-          <p>Already signed in.</p>
+          <h1>
+            <Translated name='signUp' />
+          </h1>
+          <PostSignUp />
         </div>
       );
     }
