@@ -4,6 +4,7 @@ import registerMiddlewares from './lib/middleware.js';
 import passport from './lib/passport.js';
 import { register } from './lib/auth/local.js';
 import strategies from './lib/auth/strategy.js';
+import { User } from '../db/index.js';
 
 export default function createRouter() {
   const router = new Express.Router();
@@ -71,8 +72,17 @@ export default function createRouter() {
     res.send({});
   });
   router.post('/user/username', (req, res) => {
-    // TODO Really implement it
-    res.send(Math.random() > 0.1);
+    const { username } = req.body;
+    if (username === '') {
+      res.send(false);
+      return;
+    }
+    User.findOne({
+      where: { username }
+    })
+    .then(result => {
+      res.send(result == null);
+    });
   });
   router.use((req, res) => {
     res.sendStatus(404);

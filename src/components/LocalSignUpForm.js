@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import reduxForm from 'redux-form';
-import { isEmail } from 'validator';
+import { isEmail, isAlphanumeric } from 'validator';
 
 import Translated from './Translated.js';
 import ErrorInput from './ErrorInput.js';
@@ -45,8 +45,8 @@ LocalSignUpForm.propTypes = {
 
 function validateFrom(data) {
   const errors = {};
-  if (!data.username) {
-    errors.username = true;
+  if (!isAlphanumeric(data.username)) {
+    errors.username = 'a-zA-Z0-9';
   }
   if (!isEmail(data.email)) {
     errors.email = true;
