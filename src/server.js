@@ -4,12 +4,11 @@ import ServeStatic from 'serve-static';
 import compression from 'compression';
 
 import serverRenderer from './utils/serverRenderer.js';
-import routerThunk from './utils/routerThunk.js';
-import createRouter from './api/index.js';
+import apiRouter from './api/index.js';
 
 let app = express();
 
-app.use('/api', routerThunk(createRouter()));
+app.use('/api', apiRouter);
 app.get('/favicon.ico', (req, res) => {
   res.sendStatus(404);
 });

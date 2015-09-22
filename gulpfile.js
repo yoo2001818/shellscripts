@@ -1,9 +1,9 @@
 var gulp = require('gulp');
+var apidoc = require('gulp-apidoc');
 var mocha = require('gulp-mocha');
 var gutil = require('gulp-util');
 var eslint = require('gulp-eslint');
 var webpack = require('webpack');
-var WebpackDevServer = require('webpack-dev-server');
 var webpackConfiguration = require('./webpack.config.js');
 var del = require('del');
 require('babel/register');
@@ -30,19 +30,10 @@ gulp.task('webpack', function(callback) {
   });
 });
 
-gulp.task('devserver', function() {
-  // Start a webpack-dev-server
-  var compiler = webpack(webpackConfiguration);
-
-  new WebpackDevServer(compiler, {
-    // server and middleware options
-    hot: true,
-    historyApiFallback: true
-  }).listen(8080, 'localhost', function(err) {
-    if (err) throw new gutil.PluginError('webpack-dev-server', err);
-    // Server listening
-    gutil.log('[webpack-dev-server]',
-      'http://localhost:8080/webpack-dev-server/index.html');
+gulp.task('apidoc', function() {
+  apidoc.exec({
+    src: 'src/',
+    dest: 'doc/'
   });
 });
 
@@ -56,10 +47,10 @@ gulp.task('clean', function(callback) {
   ], callback);
 });
 
-gulp.task('dev', ['devserver'], function() {
-  gulp.watch(['src/**', 'test/**'], ['mocha', 'lint']);
+gulp.task('dev', function() {
+  gulp.watch(['src/**', 'test/**'], ['mocha', 'lint', 'webpack']);
 });
 
 gulp.task('test', ['mocha', 'lint']);
 
-gulp.task('default', ['mocha', 'lint', 'webpack']);
+gulp.task('default', ['mocha', 'lint', 'apidoc', 'webpack']);

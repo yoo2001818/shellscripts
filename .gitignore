@@ -31,3 +31,4 @@ config/
 db.sqlite
 
 /DESIGN.md
+doc/
