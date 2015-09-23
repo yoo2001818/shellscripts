@@ -22,7 +22,7 @@ Represents single entity using the website.
 - admin - Boolean, default 'false'
 
 ### Username convention
-`^[a-zA-Z][a-zA-Z0-9_]+$`
+`^[a-zA-Z0-9][a-zA-Z0-9-_]*[a-zA-Z0-9]$`
 
 ## Passport
 Represents an authentication method to sign in as an User.
@@ -60,7 +60,7 @@ A tag type, such as 'distribution', 'language', 'arch'.
 - tags - Tag
 
 ### Tag name convention
-`^[a-zA-Z0-9_]+$`
+`^[a-zA-Z0-9_-.]+$`
 
 # API
 Shellscripts use REST API for data access. Even web frontend servers make API
@@ -68,25 +68,25 @@ calls due to the nature of universal app.
 
 ## Session
 
-### GET /
+### GET /session
 Returns current user.
 
-### GET /method
+### GET /session/method
 Returns available authentication methods.
 
-### /:method
+### /session/:method
 Sign in using specified authentication method.
 
-### POST /local/register
+### POST /session/local/register
 Create an account using local authentication method.
 
-### POST /local/password
+### POST /session/local/password
 Send a password-change verification mail.
 
-### PUT /local/password
+### PUT /session/local/password
 Change a password.
 
-### DELETE /
+### DELETE /session
 Delete current session. (= Sign out.)
 
 ### TODO
@@ -96,25 +96,22 @@ Delete current session. (= Sign out.)
 
 ## User
 
-### GET /
+### GET /users
 Returns users matching the query.
 
-### GET /:username
+### GET /users/:username
 Returns an user with the username.
 
-### GET /:id
-Returns an user with the ID.
-
-### GET /self
+### GET /user
 Returns current user.
 (This forbids the user 'self')
 
 **This is duplicate of GET /session**
 
-### PUT /self
+### PUT /user
 Sets the profile of the user.
 
-### PUT /self/:field (or /self/photo)
+### PUT /user/:field (or /user/photo)
 Sets specific field of the user's profile.
 
 #### photo
@@ -124,95 +121,112 @@ Sets specific field of the user's profile.
 - width - int
 - height - int
 
-### DELETE /self
+### DELETE /user
 Deactivate the user forever.
 
 ## Script
 
-### GET /
+### GET /scripts/
 Search a script.
 
-### GET /:id
+### GET /scripts/:id
 Returns a script with the ID.
 
-### PUT /:id
+### PUT /scripts/:id
 Edit the script.
 
-### DELETE /:id
+### DELETE /scripts/:id
 Remove the script.
 
-### POST /:id/vote
+### POST /scripts/:id/vote
 Vote the script.
 
-### DELETE /:id/vote
+### DELETE /scripts/:id/vote
 Cancel the vote.
 
-### GET /:id/comments
+### GET /scripts/:id/comments
 Returns comments in the script.
 
-### POST /:id/comments
+### POST /scripts/:id/comments
 Post a comment into the script.
 
-### POST /:id/report
+### POST /scripts/:id/report
 Report the script to admins.
 
-### POST /:id/tag
+### POST /scripts/:id/tag
 Post a tag into the script.
 
-### PUT /:id/tag
+### PUT /scripts/:id/tag
 Replace entire tag list of the script.
 
-### DELETE /:id/tag
+### DELETE /scripts/:id/tag
 Delete entire tag list.
 
-### GET /:id/tag
+### GET /scripts/:id/tag
 Return a tag list.
 
-### DELETE /:id/tag/:tag
+### DELETE /scripts/:id/tag/:tag
 Remove a tag from the tag list.
 
-### POST /
+### POST /scripts/
 Saves a new script to the database.
 
 ## Comment
 
-### GET /:comment
+### GET /comments/:comment
 Returns the comment.
 
-### PUT /:comment
+### PUT /comments/:comment
 Edit the comment.
 
-### DELETE /:comment
+### DELETE /comments/:comment
 Remove the comment.
 
-### POST /:comment
+### POST /comments/:comment
 Post a reply comment. (What?)
 
-### POST /:comment/vote
+### POST /comments/:comment/vote
 Vote the comment.
 
-### DELETE /:comment/vote
+### DELETE /comments/:comment/vote
 Cancel the vote.
 
-### POST /:comment/report
+### POST /comments/:comment/report
 Report the comment to admins.
 
 ## Tag
 
-### GET /
+### GET /tags
 Returns tags matching the criteria.
 
-### POST /
+### POST /tags
 Post a new tag.
 
-### GET /:name
+### GET /tags/:name
 Return the tag.
 
-### PUT /:name
+### PUT /tags/:name
 Edit the tag's data.
 
-### DELETE /:name
+### DELETE /tags/:name
 Remove the tag.
+
+## TagType
+
+### GET /tag-types
+Returns tag types matching the criteria.
+
+### POST /tag-types
+Post a new tag type. (Only for admins)
+
+### GET /tag-types/:name
+Return the tag type.
+
+### PUT /tag-types/:name
+Edit the tag type's data. (Admin only)
+
+### DELETE /tag-types/:name
+Remove the tag type. (Admin only)
 
 # TODO
 
