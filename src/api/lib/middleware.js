@@ -5,6 +5,7 @@ import passport from './passport.js';
 
 export default function registerMiddlewares(app) {
   app.use(morgan('dev'));
+  app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
   app.use(session({
     secret: 'secret jfawjidijawifjawidjwaieawdjanca',

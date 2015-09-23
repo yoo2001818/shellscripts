@@ -32,7 +32,7 @@ Users can have multiple auth methods.
 - user - User
 - type - String
 - identifier - String
-- data - String
+- data - Text
 
 ## Script
 Represents a script.
@@ -40,16 +40,24 @@ Represents a script.
 - name - String
 - author - User
 - tags - Tag
-- description - String
-- script - String (Preferably Text)
+- description - Text
+- script - Text
 
 ## Tag
 Represents a tag. Tag can be used as a 'distribution' marker, etc.
 
 - name - String, Unique
-- description - String
-- type - int
+- description - Text
+- type - TagType
+- author - User
 - scripts - Script
+
+## TagType
+A tag type, such as 'distribution', 'language', 'arch'.
+
+- name - String, Unique
+- description - Text
+- tags - Tag
 
 ### Tag name convention
 `^[a-zA-Z0-9_]+$`
@@ -71,6 +79,12 @@ Sign in using specified authentication method.
 
 ### POST /local/register
 Create an account using local authentication method.
+
+### POST /local/password
+Send a password-change verification mail.
+
+### PUT /local/password
+Change a password.
 
 ### DELETE /
 Delete current session. (= Sign out.)
