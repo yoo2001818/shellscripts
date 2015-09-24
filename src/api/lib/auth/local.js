@@ -1,9 +1,6 @@
 import { User, Passport, sequelize } from '../../../db/index.js';
 import bcrypt from 'bcryptjs';
 
-class PassportError extends Error {
-}
-
 export function generatePassword(password) {
   return new Promise((resolve, reject) => {
     bcrypt.hash(password, 10, (err, hash) => {
@@ -33,20 +30,39 @@ export default function login(username, password, done) {
   })
   .then(gotPassport => {
     passport = gotPassport;
-    if (passport == null) throw new PassportError('Passport not found');
+    if (passport == null) {
+      throw {
+        id: 'AUTH_INVALID_USERNAME',
+        message: 'Invalid username.',
+        invalid: true
+      };
+    }
     // Validate password
     return validatePassword(passport, password);
   })
   .then(isValid => {
-    if (!isValid) throw new PassportError('Password incorrect');
+    if (!isValid) {
+      throw {
+        id: 'AUTH_INVALID_PASSWORD',
+        message: 'Invalid password.',
+        invalid: true
+      };
+    }
     return User.findById(passport.userId);
   })
   .then(user => {
-    if (user == null) throw new PassportError('User not found');
+    if (user == null) {
+      throw {
+        id: 'AUTH_DISABLED_USER',
+        message: 'User has been disabled. Please contact the administrator.',
+        invalid: true
+      };
+    }
     done(null, user);
   }, error => {
-    if (error instanceof PassportError) {
+    if (error.invalid === true) {
       done(null, false, {
+        id: error.id,
         message: error.message
       });
     } else {

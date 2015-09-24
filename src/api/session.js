@@ -2,6 +2,7 @@ import Express from 'express';
 import passport from './lib/passport.js';
 import { register } from './lib/auth/local.js';
 import strategies from './lib/auth/strategy.js';
+import authRequired from './lib/authRequired.js';
 
 export const router = new Express.Router();
 export default router;
@@ -23,12 +24,12 @@ export default router;
  * @apiErrorExample {json} If user hasn't signed in:
  *   HTTP/1.1 401 Unauthorized
  *   {
- *     "errorId": "AUTH_NOT_SIGNED_IN",
- *     "error": "Not signed in"
+ *     "id": "AUTH_NOT_SIGNED_IN",
+ *     "message": "Not signed in"
  *   }
  */
-router.get('/session/', (req, res) => {
-  res.send(req.user || null);
+router.get('/session/', authRequired, (req, res) => {
+  res.json(req.user);
 });
 
 /**
@@ -76,15 +77,27 @@ router.get('/session/', (req, res) => {
  *   }
  */
 router.get('/session/methods/', (req, res) => {
-  let methodList = [];
+  let methodList = {};
   for (let method in strategies) {
     if (!strategies[method].enabled) continue;
-    methodList.push(Object.assign({}, strategies[method], {
+    methodList[method] = Object.assign({}, strategies[method], {
       strategy: undefined,
-      identifier: method
-    }));
+      identifier: method,
+      inUse: req.user ? false : undefined
+    });
   }
-  res.send(methodList);
+  if (req.user) {
+    // If user has signed in, inject 'inUse'
+    req.user.getPassports()
+    .then(passports => {
+      passports.forEach(passportObj => {
+        methodList[passportObj.type].inUse = true;
+      });
+      res.json(methodList);
+    });
+  } else {
+    res.json(methodList);
+  }
 });
 
 /**
@@ -96,6 +109,7 @@ router.get('/session/methods/', (req, res) => {
  *
  *   The auth method should use redirection in order to use, or it will return
  *   405 Method Not Allowed.
+ *   If the auth method is disabled, it will return 403 Forbidden.
  *   If the user has already signed in, this will register the auth method to
  *   the user. But if the user already has the auth method, this will return
  *   403 Forbidden.
@@ -112,49 +126,74 @@ router.get('/session/methods/', (req, res) => {
  * @apiErrorExample {json} If auth method doesn't use redirection:
  *   HTTP/1.1 405 Method Not Allowed
  *   {
- *     "errorId": "AUTH_REDIRECTION_USE_GET",
- *     "error": "This authentication method doesn't use redirection.
+ *     "id": "AUTH_REDIRECTION_USE_POST",
+ *     "message": "This authentication method doesn't use redirection.
  *               Please use POST request instead."
  *   }
  * @apiErrorExample {json} If user has signed in and has the auth method:
  *   HTTP/1.1 403 Forbidden
  *   {
- *     "errorId": "AUTH_METHOD_ALREADY_EXISTS",
- *     "error": "You already have this authentication method. You'll need to
+ *     "id": "AUTH_METHOD_ALREADY_EXISTS",
+ *     "message": "You already have this authentication method. You'll need to
  *               unregister current method in order to register new one."
  *   }
+ * @apiErrorExample {json} If auth method is disabled:
+ *   HTTP/1.1 403 Forbidden
+ *   {
+ *     "id": "AUTH_METHOD_DISABLED",
+ *     "message": "The authentication method is disabled."
+ *   }
  */
-router.all('/session/:method', (req, res, next) => {
+router.get('/session/:method', (req, res, next) => {
   // Check name validity
   const strategy = strategies[req.params.method];
-  if (strategy == null || strategy.enabled === false) next();
+  if (strategy == null) {
+    next();
+    return;
+  }
+  // TODO Handle AUTH_METHOD_ALREADY_EXISTS
+  if (strategy.enabled === false) {
+    res.status(403);
+    res.json({
+      id: 'AUTH_METHOD_DISABLED',
+      message: 'The authentication method is disabled.'
+    });
+    return;
+  }
+  if (strategy.redirect !== true) {
+    res.status(405);
+    res.json({
+      id: 'AUTH_REDIRECTION_USE_POST',
+      message: 'This authentication method uses redirection. ' +
+        'Please use GET request instead.'
+    });
+    return;
+  }
   passport.authenticate(req.params.method, (err, user, info) => {
     if (err) {
-      res.status(401);
-      res.send(err);
+      // Store error to cookie and redirect
+      res.status(500);
+      res.json(err);
       console.log(err);
       return;
     }
     if (!user) {
+      // Store error to cookie and redirect
       res.status(401);
-      res.send(info);
+      res.json(info);
       console.log(info);
       return;
     }
     req.login(user, (error) => {
       if (error) {
-        res.status(401);
-        res.send(error);
+        // Store error to cookie and redirect
+        res.status(500);
+        res.json(error);
         return;
       }
-      if (strategy.redirect) {
-        if (user.signedUp) res.redirect('/login');
-        else res.redirect('/signup');
-        return;
-      } else {
-        res.send(user);
-        return;
-      }
+      if (user.signedUp) res.redirect('/login');
+      else res.redirect('/signup');
+      return;
     });
   })(req, res, next);
 });
@@ -170,49 +209,103 @@ router.all('/session/:method', (req, res, next) => {
  *
  *   The auth method shouldn't use redirection in order to use, or it will
  *   return 405 Method Not Allowed.
+ *   If the auth method is disabled, it will return 403 Forbidden.
  *   If the user has already signed in, this will register the auth method to
  *   the user. But if the user already has the auth method, this will return
  *   403 Forbidden.
  *   Otherwise, this will try to sign in.
  *
  *   If signing in succeeds, this will return current user.
- *   If signing in fails, this will return 401 Unauthorized or 403 Forbidden.
+ *   If signing in fails, this will return 401 Unauthorized.
  *
  * @apiErrorExample {json} If auth method doesn't use redirection:
  *   HTTP/1.1 405 Method Not Allowed
  *   {
- *     "errorId": "AUTH_REDIRECTION_USE_GET",
- *     "error": "This authentication method uses redirection.
+ *     "id": "AUTH_REDIRECTION_USE_GET",
+ *     "message": "This authentication method uses redirection.
  *               Please use GET request instead."
  *   }
  * @apiErrorExample {json} If user has signed in and has the auth method:
  *   HTTP/1.1 403 Forbidden
  *   {
- *     "errorId": "AUTH_METHOD_ALREADY_EXISTS",
- *     "error": "You already have this authentication method. You'll need to
+ *     "id": "AUTH_METHOD_ALREADY_EXISTS",
+ *     "message": "You already have this authentication method. You'll need to
  *               unregister current method in order to register new one."
  *   }
  * @apiErrorExample {json} If signing in fails due to wrong username:
  *   HTTP/1.1 401 Unauthorized
  *   {
- *     "errorId": "AUTH_INVALID_USERNAME",
- *     "error": "Invalid username."
+ *     "id": "AUTH_INVALID_USERNAME",
+ *     "message": "Invalid username."
  *   }
  * @apiErrorExample {json} If signing in fails due to wrong password:
  *   HTTP/1.1 401 Unauthorized
  *   {
- *     "errorId": "AUTH_INVALID_PASSWORD",
- *     "error": "Invalid password."
+ *     "id": "AUTH_INVALID_PASSWORD",
+ *     "message": "Invalid password."
  *   }
- * @apiErrorExample {json} If signing in fails because user has disabled:
+ * @apiErrorExample {json} If signing in fails because user has been disabled:
+ *   HTTP/1.1 401 Forbidden
+ *   {
+ *     "id": "AUTH_DISABLED_USER",
+ *     "message": "User has been disabled. Please contact the administrator."
+ *   }
+ * @apiErrorExample {json} If auth method is disabled:
  *   HTTP/1.1 403 Forbidden
  *   {
- *     "errorId": "AUTH_DISABLED_USER",
- *     "error": "User has been disabled. Please contact the administrator."
+ *     "id": "AUTH_METHOD_DISABLED",
+ *     "message": "The authentication method is disabled."
  *   }
  */
-// TODO Dummy code to avoid error.
-export let a = 1;
+router.post('/session/:method', (req, res, next) => {
+  // Check name validity
+  const strategy = strategies[req.params.method];
+  if (strategy == null) {
+    next();
+    return;
+  }
+  // TODO Handle AUTH_METHOD_ALREADY_EXISTS
+  if (strategy.enabled === false) {
+    res.status(403);
+    res.json({
+      id: 'AUTH_METHOD_DISABLED',
+      message: 'The authentication method is disabled.'
+    });
+    return;
+  }
+  if (strategy.redirect !== false) {
+    res.status(405);
+    res.json({
+      id: 'AUTH_REDIRECTION_USE_GET',
+      message: 'This authentication method doesn\'t use redirection. ' +
+        'Please use GET request instead.'
+    });
+    return;
+  }
+  passport.authenticate(req.params.method, (err, user, info) => {
+    if (err) {
+      res.status(500);
+      res.json(err);
+      console.log(err);
+      return;
+    }
+    if (!user) {
+      res.status(401);
+      res.json(info);
+      console.log(info);
+      return;
+    }
+    req.login(user, (error) => {
+      if (error) {
+        res.status(500);
+        res.json(error);
+        return;
+      }
+      res.json(user);
+      return;
+    });
+  })(req, res, next);
+});
 
 /**
  * @api {post} /session/local/register Create an account using local method
@@ -235,31 +328,30 @@ export let a = 1;
  * @apiErrorExample {json} If user has signed in and has the auth method:
  *   HTTP/1.1 403 Forbidden
  *   {
- *     "errorId": "AUTH_METHOD_ALREADY_EXISTS",
- *     "error": "You already have this authentication method. You'll need to
+ *     "id": "AUTH_METHOD_ALREADY_EXISTS",
+ *     "message": "You already have this authentication method. You'll need to
  *               unregister current method in order to register new one."
  *   }
  * @apiErrorExample {json} If username conflicts:
  *   HTTP/1.1 409 Conflict
  *   {
- *     "errorId": "AUTH_USERNAME_EXISTS",
- *     "error": "Username is already in use."
+ *     "id": "AUTH_USERNAME_EXISTS",
+ *     "message": "Username is already in use."
  *   }
  * @apiErrorExample {json} If email conflicts:
  *   HTTP/1.1 409 Conflict
  *   {
- *     "errorId": "AUTH_EMAIL_EXISTS",
- *     "error": "Email address is already in use."
+ *     "id": "AUTH_EMAIL_EXISTS",
+ *     "message": "Email address is already in use."
  *   }
  * @apiErrorExample {json} If password doesn't match the policy:
  *   HTTP/1.1 400 Bad Request
  *   {
- *     "errorId": "AUTH_PASSWORD_POLICY",
- *     "error": "Password should be longer than 6 characters."
+ *     "id": "AUTH_PASSWORD_POLICY",
+ *     "message": "Password should be longer than 6 characters."
  *   }
  */
-
-router.all('/session/local/register', (req, res) => {
+router.post('/session/local/register', (req, res) => {
   register(req, req.body, (err) => {
     if (err) return res.status(500).send(err.message);
     res.send(req.user || {});
@@ -274,25 +366,27 @@ router.all('/session/local/register', (req, res) => {
  * @apiDescription Sends a password-change verification mail to the user.
  *
  *   This can't be called more than once in 10 minutes. If this is called
- *   before 10 minutes pass, this will return 403 Forbidden.
+ *   before 10 minutes pass, this will return 503 Service Unavailable.
  *
- *   If the email can't be found, this will return 400 Bad Request.
+ *   If the email can't be found, this will return 403 Forbidden.
  *   If sending mail succeeds, this will return 200 OK.
  *
  * @apiErrorExample {json} If the email can't be found:
- *   HTTP/1.1 400 Bad Request
- *   {
- *     "errorId": "AUTH_INVALID_EMAIL",
- *     "error": "Invalid email address."
- *   }
- * @apiErrorExample {json} If cool time hasn't passed yet:
  *   HTTP/1.1 403 Forbidden
  *   {
- *     "errorId": "AUTH_COOLDOWN",
- *     "error": "Please try again later."
+ *     "id": "AUTH_INVALID_EMAIL",
+ *     "message": "Invalid email address."
+ *   }
+ * @apiErrorExample {json} If cool time hasn't passed yet:
+ *   HTTP/1.1 503 Service Unavailable
+ *   {
+ *     "id": "AUTH_COOLDOWN",
+ *     "message": "Please try again later."
  *   }
  */
-a = 3;
+router.post('/session/local/password', (req, res) => {
+  res.sendStatus(501);
+});
 
 /**
  * @api {put} /session/local Change the password of the user
@@ -314,23 +408,25 @@ a = 3;
  * @apiErrorExample {json} If user hasn't signed in:
  *   HTTP/1.1 401 Unauthorized
  *   {
- *     "errorId": "AUTH_NOT_SIGNED_IN",
- *     "error": "Not signed in"
+ *     "id": "AUTH_NOT_SIGNED_IN",
+ *     "message": "Not signed in"
  *   }
  * @apiErrorExample {json} If oldPassword doesn't match:
  *   HTTP/1.1 401 Unauthorized
  *   {
- *     "errorId": "AUTH_INVALID_PASSWORD",
- *     "error": "Invalid password."
+ *     "id": "AUTH_INVALID_PASSWORD",
+ *     "message": "Invalid password."
  *   }
  * @apiErrorExample {json} If password doesn't match the policy:
  *   HTTP/1.1 400 Bad Request
  *   {
- *     "errorId": "AUTH_PASSWORD_POLICY",
- *     "error": "Password should be longer than 6 characters."
+ *     "id": "AUTH_PASSWORD_POLICY",
+ *     "message": "Password should be longer than 6 characters."
  *   }
  */
-a = 1;
+router.put('/session/local/', authRequired, (req, res) => {
+  res.sendStatus(501);
+});
 
 /**
  * @api {delete} /session/ Sign out from current user
@@ -348,11 +444,11 @@ a = 1;
  * @apiErrorExample {json} If user hasn't signed in:
  *   HTTP/1.1 401 Unauthorized
  *   {
- *     "errorId": "AUTH_NOT_SIGNED_IN",
- *     "error": "Not signed in"
+ *     "id": "AUTH_NOT_SIGNED_IN",
+ *     "message": "Not signed in"
  *   }
  */
-router.delete('/session/', (req, res) => {
+router.delete('/session/', authRequired, (req, res) => {
   req.logout();
   res.send({});
 });
