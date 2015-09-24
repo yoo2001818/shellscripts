@@ -12,7 +12,7 @@ export default router;
  * @apiName GetSession
  * @apiSuccess {User} user Current user object or {}.
  */
-router.get('/', (req, res) => {
+router.get('/session/', (req, res) => {
   // This kinda looks silly
   res.send(req.user || {});
 });
@@ -23,7 +23,7 @@ router.get('/', (req, res) => {
  * @apiName GetAuthMethod
  * @apiSuccess {Strategy[]} method List of methods
  */
-router.get('/method', (req, res) => {
+router.get('/session/method', (req, res) => {
   let methodList = [];
   for (let method in strategies) {
     if (!strategies[method].enabled) continue;
@@ -41,7 +41,7 @@ router.get('/method', (req, res) => {
  * @apiGroup Session
  * @apiName SignIn
  */
-router.all('/:method', (req, res, next) => {
+router.all('/session/:method', (req, res, next) => {
   // Check name validity
   const strategy = strategies[req.params.method];
   if (strategy == null || strategy.enabled === false) next();
@@ -76,7 +76,7 @@ router.all('/:method', (req, res, next) => {
   })(req, res, next);
 });
 
-router.all('/local/register', (req, res) => {
+router.all('/session/local/register', (req, res) => {
   register(req, req.body, (err) => {
     if (err) return res.status(500).send(err.message);
     res.send(req.user || {});
@@ -88,7 +88,7 @@ router.all('/local/register', (req, res) => {
  * @apiGroup Session
  * @apiName SignOut
  */
-router.delete('/', (req, res) => {
+router.delete('/session/', (req, res) => {
   req.logout();
   res.send({});
 });

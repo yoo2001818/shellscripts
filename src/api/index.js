@@ -6,15 +6,17 @@ import session from './session.js';
 import user from './user.js';
 import tag from './tag.js';
 import script from './script.js';
+import tagtype from './tagtype.js';
 
 export const router = new Express.Router();
 export default router;
 registerMiddlewares(router);
 
-router.use('/session', session);
-router.use('/user', user);
-router.use('/tag', tag);
-router.use('/script', script);
+router.use(session);
+router.use(user);
+router.use(tag);
+router.use(script);
+router.use(tagtype);
 
 router.get('/search', (req, res) => {
   res.send({});

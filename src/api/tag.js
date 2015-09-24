@@ -11,7 +11,7 @@ export default router;
  * @apiGroup Tag
  * @apiName GetTag
  */
-router.get('/', (req, res) => {
+router.get('/tags/', (req, res) => {
   Tag.findAll()
   .then(data => {
     res.send(data);
@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
  * @apiParam (Body) {String} description
  * @apiParam (Body) {Integer} type
  */
-router.post('/', authRequired, (req, res) => {
+router.post('/tags/', authRequired, (req, res) => {
   const {name, description, type} = req.body;
   if (!isInt(type)) {
     res.status(500).send('Type should be an integer');
