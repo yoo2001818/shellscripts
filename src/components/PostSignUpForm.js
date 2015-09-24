@@ -6,10 +6,10 @@ import { isEmail } from 'validator';
 import Translated from './Translated.js';
 import ErrorInput from './ErrorInput.js';
 import translate from '../lang/index.js';
-import { localSignUp, checkUsername, checkEmail } from '../actions/session.js';
+import { checkUsername } from '../actions/session.js';
 
 class PostSignUpForm extends Component {
-  handleSubmit(data) {
+  handleSubmit() {
     //this.props.dispatch(localSignUp(data));
   }
   render() {
@@ -21,8 +21,7 @@ class PostSignUpForm extends Component {
         <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
           <ErrorInput placeholder={__('username')} type='text' {...username}
           disabled={this.props.session.username} />
-          <ErrorInput placeholder={__('email')} type='email' {...email}
-          disabled={this.props.session.email} />
+          <ErrorInput placeholder={__('email')} type='email' {...email} />
           <div className='footer'>
             <button disabled={invalid}>
               <Translated name='done' />

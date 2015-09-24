@@ -2,6 +2,7 @@ import './style/SignUp.scss';
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 
 import translate from '../lang/index.js';
 import Dialog from '../components/Dialog.js';
@@ -38,7 +39,7 @@ class SignUp extends Component {
       methodTags = false;
       hasLocal = false;
     } else {
-      methodTags = method.map(provider => {
+      methodTags = _.values(method).map(provider => {
         if (provider.identifier === 'local') {
           hasLocal = true;
           return false;

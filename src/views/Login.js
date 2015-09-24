@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 
 import translate from '../lang/index.js';
 import Translated from '../components/Translated.js';
@@ -82,7 +83,7 @@ class Login extends Component {
       methodTags = false;
       hasLocal = true;
     } else {
-      methodTags = method.map(provider => {
+      methodTags = _.values(method).map(provider => {
         if (provider.identifier === 'local') {
           hasLocal = true;
           return false;

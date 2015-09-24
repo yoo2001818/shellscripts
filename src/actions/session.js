@@ -11,7 +11,10 @@ export const CHECK_USERNAME = 'SESSION_CHECK_USERNAME';
 export const CHECK_EMAIL = 'SESSION_CHECK_EMAIL';
 
 export const fetch = createAction(FETCH,
-  () => api(GET, '/api/session', {}));
+  () => api(GET, '/api/session', {}),
+  () => ({
+    errors: [401]
+  }));
 export const login = createAction(LOGIN,
   credentials => api(POST, '/api/session/local', credentials),
   (_, meta) => meta);
@@ -22,7 +25,7 @@ export const localSignUp = createAction(LOCAL_SIGNUP,
   credentials => api(POST, '/api/session/local/register', credentials),
   (_, meta) => meta);
 export const methodFetch = createAction(METHOD_FETCH,
-  () => api(GET, '/api/session/method', {}));
+  () => api(GET, '/api/session/methods', {}));
 export const checkUsername = createAction(CHECK_USERNAME,
   username => api(POST, '/api/user/username', { username }));
 export const checkEmail = createAction(CHECK_EMAIL,
