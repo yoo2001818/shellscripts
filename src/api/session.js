@@ -4,6 +4,68 @@ import { register } from './lib/auth/local.js';
 import strategies from './lib/auth/strategy.js';
 import authRequired from './lib/authRequired.js';
 
+function validateAuthRequest(req, res, next) {
+  const { method } = req.params;
+  const strategy = strategies[method];
+  if (strategy == null) {
+    res.status(404);
+    res.json({
+      id: 'AUTH_METHOD_NOT_FOUND',
+      message: 'Specified authentication method is not found.'
+    });
+    return;
+  }
+  if (strategy.enabled === false) {
+    res.status(403);
+    res.json({
+      id: 'AUTH_METHOD_DISABLED',
+      message: 'The authentication method is disabled.'
+    });
+    return;
+  }
+  if (strategy.redirect !== true && req.method === 'GET') {
+    res.status(405);
+    res.json({
+      id: 'AUTH_REDIRECTION_USE_POST',
+      message: 'This authentication method doesn\'t use redirection. ' +
+        'Please use POST request instead.'
+    });
+    return;
+  }
+  if (strategy.redirect !== false && req.method === 'POST') {
+    res.status(405);
+    res.json({
+      id: 'AUTH_REDIRECTION_USE_GET',
+      message: 'This authentication method uses redirection. ' +
+        'Please use GET request instead.'
+    });
+    return;
+  }
+  if (req.user) {
+    // While multiple passports of single type is possible to implement,
+    // nobody would use multiple passports of single type.
+    req.user.getPassports({
+      where: {
+        type: method
+      }
+    })
+    .then(passports => {
+      if (passports.length) {
+        res.status(403);
+        res.json({
+          id: 'AUTH_METHOD_ALREADY_EXISTS',
+          message: 'You already have this authentication method. You\'ll ' +
+            'need to unregister current method in order to register new one.'
+        });
+        return;
+      }
+      next();
+    });
+  } else {
+    next();
+  }
+}
+
 export const router = new Express.Router();
 export default router;
 
@@ -144,31 +206,7 @@ router.get('/session/methods/', (req, res) => {
  *     "message": "The authentication method is disabled."
  *   }
  */
-router.get('/session/:method', (req, res, next) => {
-  // Check name validity
-  const strategy = strategies[req.params.method];
-  if (strategy == null) {
-    next();
-    return;
-  }
-  // TODO Handle AUTH_METHOD_ALREADY_EXISTS
-  if (strategy.enabled === false) {
-    res.status(403);
-    res.json({
-      id: 'AUTH_METHOD_DISABLED',
-      message: 'The authentication method is disabled.'
-    });
-    return;
-  }
-  if (strategy.redirect !== true) {
-    res.status(405);
-    res.json({
-      id: 'AUTH_REDIRECTION_USE_POST',
-      message: 'This authentication method uses redirection. ' +
-        'Please use GET request instead.'
-    });
-    return;
-  }
+router.get('/session/:method', validateAuthRequest, (req, res, next) => {
   passport.authenticate(req.params.method, (err, user, info) => {
     if (err) {
       // Store error to cookie and redirect
@@ -257,31 +295,7 @@ router.get('/session/:method', (req, res, next) => {
  *     "message": "The authentication method is disabled."
  *   }
  */
-router.post('/session/:method', (req, res, next) => {
-  // Check name validity
-  const strategy = strategies[req.params.method];
-  if (strategy == null) {
-    next();
-    return;
-  }
-  // TODO Handle AUTH_METHOD_ALREADY_EXISTS
-  if (strategy.enabled === false) {
-    res.status(403);
-    res.json({
-      id: 'AUTH_METHOD_DISABLED',
-      message: 'The authentication method is disabled.'
-    });
-    return;
-  }
-  if (strategy.redirect !== false) {
-    res.status(405);
-    res.json({
-      id: 'AUTH_REDIRECTION_USE_GET',
-      message: 'This authentication method doesn\'t use redirection. ' +
-        'Please use GET request instead.'
-    });
-    return;
-  }
+router.post('/session/:method', validateAuthRequest, (req, res, next) => {
   passport.authenticate(req.params.method, (err, user, info) => {
     if (err) {
       res.status(500);
