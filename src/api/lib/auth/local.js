@@ -73,10 +73,15 @@ export default function login(username, password, done) {
 
 export function register(req, credentials, done) {
   const { username, password, email } = credentials;
-  if (username == null || password == null) {
-    done(new Error('Username or password not provided'));
+  if (username == null || password == null || email == null) {
+    done({
+      id: 'AUTH_MISSING_CREDENTIALS',
+      message: 'Missing credentials',
+      code: 400
+    });
     return;
   }
+  // TODO check if password / email matches
   sequelize.transaction(transaction =>
     // Retrieve passport with the username
     Passport.findOne({
@@ -88,10 +93,8 @@ export function register(req, credentials, done) {
     .then(passport => {
       if (!req.user) {
         if (!passport) {
-          if (email == null) {
-            throw new Error('Email not provided');
-          }
           // Register a new user and a passport.
+          // TODO Check if email conflicts
           return User.create({
             username,
             email
@@ -119,7 +122,11 @@ export function register(req, credentials, done) {
           // Sign in using the passport.
           // Of course, in local strategy, nobody would sign in with register
           // method. (And it's dangerous if we don't check password)
-          throw new Error('Username already exists');
+          throw {
+            id: 'AUTH_USERNAME_EXISTS',
+            message: 'Username is already in use.',
+            code: 409
+          };
           /*
           return User.findOne(passport.user)
           .populate('passports')
@@ -133,7 +140,11 @@ export function register(req, credentials, done) {
       } else {
         // Username MUST equal to user's username, or it'd do nothing.
         if (username !== req.user.username) {
-          throw new Error('Username not matches');
+          throw {
+            id: 'AUTH_USERNAME_DIFFERENT',
+            message: 'Username should be same as current user.',
+            code: 400
+          };
         }
         if (!passport) {
           // Create a passport and link it to the user.
@@ -152,7 +163,14 @@ export function register(req, credentials, done) {
           });
         } else {
           // Do nothing.
-          throw new Error('Already signed in');
+          // Since username should be equal to user's username, user only can
+          // create one passport.
+          throw {
+            id: 'AUTH_METHOD_ALREADY_EXISTS',
+            message: 'You already have this authentication method. You\'ll ' +
+              'need to unregister current method in order to register new one.',
+            code: 403
+          };
         }
       }
     })

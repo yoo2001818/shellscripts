@@ -212,14 +212,12 @@ router.get('/session/:method', validateAuthRequest, (req, res, next) => {
       // Store error to cookie and redirect
       res.status(500);
       res.json(err);
-      console.log(err);
       return;
     }
     if (!user) {
       // Store error to cookie and redirect
       res.status(401);
       res.json(info);
-      console.log(info);
       return;
     }
     req.login(user, (error) => {
@@ -300,13 +298,11 @@ router.post('/session/:method', validateAuthRequest, (req, res, next) => {
     if (err) {
       res.status(500);
       res.json(err);
-      console.log(err);
       return;
     }
     if (!user) {
       res.status(401);
       res.json(info);
-      console.log(info);
       return;
     }
     req.login(user, (error) => {
@@ -335,6 +331,9 @@ router.post('/session/:method', validateAuthRequest, (req, res, next) => {
  *   403 Forbidden.
  *   Otherwise, this will try to create an account.
  *
+ *   If already signed user tries to register, username SHOULD match user's
+ *   username. Otherwise, this will return 400 Bad Request.
+ *
  *   If username or email conflicts, this will return 409 Conflict.
  *   If password doesn't match the policy, this will return 400 Bad Request.
  *   If creating an account succeeds, this will return current user.
@@ -345,6 +344,12 @@ router.post('/session/:method', validateAuthRequest, (req, res, next) => {
  *     "id": "AUTH_METHOD_ALREADY_EXISTS",
  *     "message": "You already have this authentication method. You'll need to
  *               unregister current method in order to register new one."
+ *   }
+ * @apiErrorExample {json} If username is different than signed in one:
+ *   HTTP/1.1 400 Bad Request
+ *   {
+ *     "id": "AUTH_USERNAME_DIFFERENT",
+ *     "message": "Username should be same as current user."
  *   }
  * @apiErrorExample {json} If username conflicts:
  *   HTTP/1.1 409 Conflict
@@ -367,8 +372,17 @@ router.post('/session/:method', validateAuthRequest, (req, res, next) => {
  */
 router.post('/session/local/register', (req, res) => {
   register(req, req.body, (err) => {
-    if (err) return res.status(500).send(err.message);
-    res.send(req.user || {});
+    if (err.code) {
+      res.status(err.code);
+      res.send(err);
+      return;
+    }
+    if (err) {
+      res.status(500);
+      res.send(err.message);
+      return;
+    }
+    res.send(req.user);
   });
 });
 
