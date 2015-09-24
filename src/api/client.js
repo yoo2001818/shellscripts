@@ -30,8 +30,14 @@ export function superagentClient(req) {
         if (err) {
           if (res) {
             const { status, text } = res;
+            let body = text;
+            try {
+              body = JSON.parse(text);
+            } catch (e) {
+              // Do nothing
+            }
             return reject({
-              status, body: text, error: err.toString()
+              status, body, error: err.toString()
             });
           } else {
             if (err.message ===

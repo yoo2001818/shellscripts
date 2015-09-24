@@ -372,7 +372,7 @@ router.post('/session/:method', validateAuthRequest, (req, res, next) => {
  */
 router.post('/session/local/register', (req, res) => {
   register(req, req.body, (err) => {
-    if (err.code) {
+    if (err && err.code) {
       res.status(err.code);
       res.send(err);
       return;
