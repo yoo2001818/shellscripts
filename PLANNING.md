@@ -71,11 +71,18 @@ calls due to the nature of universal app.
 ### GET /session
 Returns current user.
 
-### GET /session/method
-Returns available authentication methods.
+### GET /session/methods
+Returns available authentication methods. (And current methods user have)
 
-### /session/:method
-Sign in using specified authentication method.
+### GET /session/:method
+Sign in using specified oAuth authentication method.
+
+### POST /session/:method
+Sign in using specified credentials.
+
+### DELETE /session/:method
+Unregister specified method. This can't be done if the method is last method
+user have.
 
 ### POST /session/local/register
 Create an account using local authentication method.
@@ -83,16 +90,11 @@ Create an account using local authentication method.
 ### POST /session/local/password
 Send a password-change verification mail.
 
-### PUT /session/local/password
-Change a password.
+### PUT /session/local
+Change the password.
 
 ### DELETE /session
 Delete current session. (= Sign out.)
-
-### TODO
-- Revoke / grant access to new authentication method
-- Change password (local)
-- Get current methods registered to the user
 
 ## User
 
