@@ -41,7 +41,7 @@ export default function login(type, accessToken, refreshToken, profile, done) {
         passport.data = accessToken;
         return passport.save()
         // Sign in using the passport.
-        .then(() => User.findById(passport.userId));
+        .then(() => passport.getUser());
       }
     })
   )

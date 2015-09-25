@@ -48,7 +48,7 @@ export default function login(username, password, done) {
         invalid: true
       };
     }
-    return User.findById(passport.userId);
+    return passport.getUser();
   })
   .then(user => {
     if (user == null) {
