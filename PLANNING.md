@@ -106,7 +106,6 @@ Returns an user with the username.
 
 ### GET /user
 Returns current user.
-(This forbids the user 'self')
 
 **This is duplicate of GET /session**
 
