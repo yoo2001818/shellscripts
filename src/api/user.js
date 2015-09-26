@@ -161,19 +161,20 @@ export default router;
  *   and this will send users starting from there.
  */
 router.get('/users/', (req, res) => {
-  const { username, email, lastIndex } = req.query;
+  let { username, email, lastIndex } = req.query;
   const where = {};
   if (username != null) {
     where.username = {
-      $like: username
+      $like: `%${username}%`
     };
   }
   if (email != null) {
     where.email = email;
   }
-  if (lastIndex != null) {
+  lastIndex = parseInt(lastIndex);
+  if (!isNaN(lastIndex)) {
     where.id = {
-      $lq: lastIndex
+      $lt: lastIndex
     };
   }
   User.findAll({
@@ -181,7 +182,7 @@ router.get('/users/', (req, res) => {
     // TODO currently it's hardcoded. should be changed
     limit: 20,
     order: [
-      ['username', 'DESC']
+      ['username', 'ASC']
     ]
   })
   .then(users => {
