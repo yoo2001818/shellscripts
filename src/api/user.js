@@ -144,8 +144,49 @@ userRouter.delete('/', checkModifiable, (req, res) => {
 export const router = new Express.Router();
 export default router;
 
+/**
+ * @api {get} /users/ List users matching the criteria
+ * @apiGroup User
+ * @apiName SearchUsers
+ * @apiParam (Query) {String} [username] The username to search.
+ * @apiParam (Query) {String} [email] The email address to search.
+ * @apiParam (Query) {String} [lastIndex] The last user id you've seen
+ * @apiDescription Searches users matching the criteria, or lists all
+ *   users if no criteria was given.
+ *
+ *   Username is searched using 'LIKE' query. If you need an exact match,
+ *   You should use /users/:username instead.
+ *
+ *   Pagination is done with 'lastIndex'. Send last user index you've seen
+ *   and this will send users starting from there.
+ */
 router.get('/users/', (req, res) => {
-  res.sendStatus(501);
+  const { username, email, lastIndex } = req.query;
+  const where = {};
+  if (username != null) {
+    where.username = {
+      $like: username
+    };
+  }
+  if (email != null) {
+    where.email = email;
+  }
+  if (lastIndex != null) {
+    where.id = {
+      $lq: lastIndex
+    };
+  }
+  User.findAll({
+    where,
+    // TODO currently it's hardcoded. should be changed
+    limit: 20,
+    order: [
+      ['username', 'DESC']
+    ]
+  })
+  .then(users => {
+    res.json(users);
+  });
 });
 
 /**
