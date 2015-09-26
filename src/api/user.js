@@ -24,7 +24,7 @@ userRouter.get('/', (req, res) => {
 });
 
 /**
- * @api {put} /user/ Update the profile
+ * @api {post} /user/ Update the profile
  * @apiGroup User
  * @apiName SetUserProfile
  * @apiParam (Body) {String} [email] The email address.
@@ -51,7 +51,7 @@ userRouter.get('/', (req, res) => {
  *     "message": "Email address is already in use."
  *   }
  */
-userRouter.put('/', checkModifiable, (req, res) => {
+userRouter.post('/', checkModifiable, (req, res) => {
   res.sendStatus(501);
 });
 

@@ -19,7 +19,9 @@ Represents single entity using the website.
   Although I don't think email address is vital here.
 - enabled - Boolean, default 'true'
 - signedUp - Boolean, default 'false'
-- admin - Boolean, default 'false'
+- isAdmin - Boolean, default 'false'
+- name - String
+- website - String
 
 ### Username convention
 `^[a-zA-Z0-9][a-zA-Z0-9-_]*[a-zA-Z0-9]$`
