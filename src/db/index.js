@@ -32,6 +32,18 @@ export const User = sequelize.define('user', {
     type: Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: false
+  },
+  isAdmin: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
+  },
+  name: Sequelize.STRING,
+  website: {
+    type: Sequelize.STRING,
+    validate: {
+      isURL: true
+    }
   }
 });
 

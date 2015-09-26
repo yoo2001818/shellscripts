@@ -27,7 +27,10 @@ export const localSignUp = createAction(LOCAL_SIGNUP,
 export const methodFetch = createAction(METHOD_FETCH,
   () => api(GET, '/api/session/methods', {}));
 export const checkUsername = createAction(CHECK_USERNAME,
-  username => api(POST, '/api/user/username', { username }));
+  username => api(GET, `/api/users/${username}`),
+  () => ({
+    errors: [404]
+  }));
 export const checkEmail = createAction(CHECK_EMAIL,
   email => api(POST, '/api/user/email', { email }));
 

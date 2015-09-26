@@ -61,8 +61,8 @@ function validateFormAsync(data, dispatch) {
   return dispatch(checkUsername(data.username))
   .then(action => {
     const errors = {};
-    if (!action.payload.body) {
-      errors.username = 'Please use other username.';
+    if (!action.error) {
+      errors.username = 'Username is already in use.';
     }
     return errors;
   });
