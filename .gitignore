@@ -27,7 +27,6 @@ build/Release
 node_modules
 
 dist/
-config/
 db.sqlite
 
 /DESIGN.md
