@@ -1,17 +1,14 @@
 import Express from 'express';
 import { User } from '../db/index.js';
 import authRequired from './lib/authRequired.js';
+import adminRequired from './lib/adminRequired.js';
 import upload from './lib/upload.js';
 import gm from 'gm';
 import fs from 'fs';
 
 function checkModifiable(req, res, next) {
   if (req.selUser !== req.user) {
-    res.status(403);
-    res.json({
-      id: 'AUTH_FORBIDDEN',
-      message: 'Requested action cannot be done due to insufficient permission.'
-    });
+    adminRequired(req, res, next);
     return;
   }
   next();
@@ -150,7 +147,7 @@ export default router;
  * @apiName SearchUsers
  * @apiParam (Query) {String} [username] The username to search.
  * @apiParam (Query) {String} [email] The email address to search.
- * @apiParam (Query) {String} [lastIndex] The last user id you've seen
+ * @apiParam (Query) {Integer} [lastIndex] The last user id you've seen
  * @apiDescription Searches users matching the criteria, or lists all
  *   users if no criteria was given.
  *
@@ -165,7 +162,7 @@ router.get('/users/', (req, res) => {
   const where = {};
   if (username != null) {
     where.username = {
-      $like: `%${username}%`
+      $like: username
     };
   }
   if (email != null) {

@@ -7,9 +7,19 @@ export const router = new Express.Router();
 export default router;
 
 /**
- * @api {get} /tag/ Get tag list
+ * @api {get} /tags/ Get tag list
  * @apiGroup Tag
- * @apiName GetTag
+ * @apiName SearchTags
+ * @apiParam (Query) {String} [name] The tag's name to search
+ * @apiParam (Query) {Integer} [lastIndex] The last tag's ID you've seen
+ * @apiDescription Returns tags matching the criteria, or lists all tags if
+ *   no criteria was given.
+ *
+ *   Tags are searched using 'LIKE' query. If you need an exact match,
+ *   You should use /tags/:name instead.
+ *
+ *   Pagination is done with 'lastIndex'. Send last tag index you've seen
+ *   and this will send tags starting from there.
  */
 router.get('/tags/', (req, res) => {
   Tag.findAll()
@@ -19,13 +29,12 @@ router.get('/tags/', (req, res) => {
 });
 
 /**
- * @api {post} /tag/ Post a new tag
+ * @api {post} /tags/ Post a new tag
  * @apiGroup Tag
  * @apiName PostTag
- *
  * @apiParam (Body) {String} name
- * @apiParam (Body) {String} description
- * @apiParam (Body) {Integer} type
+ * @apiParam (Body) {String} [description]
+ * @apiParam (Body) {Integer} [type]
  */
 router.post('/tags/', authRequired, (req, res) => {
   const {name, description, type} = req.body;
@@ -45,4 +54,36 @@ router.post('/tags/', authRequired, (req, res) => {
   }, err => {
     res.status(500).send(err);
   });
+});
+
+/**
+ * @api {get} /tags/:name Get the tag with the name
+ * @apiGroup Tag
+ * @apiName GetTag
+ * @apiParam (Parameter) {String} name
+ */
+router.get('/tags/:name', (req, res) => {
+  res.sendStatus(501);
+});
+
+/**
+ * @api {put} /tags/:name Modify the tag with the name
+ * @apiGroup Tag
+ * @apiName ModifyTag
+ * @apiParam (Parameter) {String} name
+ * @apiParam (Body) {String} [description]
+ * @apiParam (Body) {Integer} [type]
+ */
+router.put('/tags/:name', (req, res) => {
+  res.sendStatus(501);
+});
+
+/**
+ * @api {delete} /tags/:name Delete the tag with the name
+ * @apiGroup Tag
+ * @apiName DeleteTag
+ * @apiParam (Parameter) {String} name
+ */
+router.delete('/tags/:name', (req, res) => {
+  res.sendStatus(501);
 });
