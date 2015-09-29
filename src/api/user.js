@@ -20,6 +20,31 @@ userRouter.get('/', (req, res) => {
   res.json(req.selUser);
 });
 
+userRouter.get('/scripts', (req, res) => {
+  // Respond with dummy data
+  res.json([
+    {
+      id: 142857,
+      name: 'How to build a website for dummies',
+      votes: 314,
+      tags: [
+        {
+          id: 314159,
+          name: 'linux',
+          type: {
+            id: 1004,
+            name: 'os'
+          }
+        }
+      ]
+    }
+  ]);
+});
+
+userRouter.get('/collections', (req, res) => {
+  res.sendStatus(501);
+});
+
 /**
  * @api {post} /user/ Update the profile
  * @apiGroup User
@@ -97,7 +122,7 @@ userRouter.post('/photo', checkModifiable, upload.single('photo'),
   const { file } = req;
   new Promise((resolve, reject) => {
     console.log(req.file);
-    const finishedFile = `uploads/user_${req.selUser.id}.png`;
+    const finishedFile = `uploads/user_${req.selUser.id}_photo.png`;
     let { x, y, size } = req.body;
     // Convert x, y, size to integer.
     x = parseInt(x, 10);
@@ -122,8 +147,10 @@ userRouter.post('/photo', checkModifiable, upload.single('photo'),
   })
   .then((path) => {
     // Upload the file to static server, etc
-    // TODO Set the profile image
-    res.json(path);
+    // Set the profile image for now
+    req.selUser.photo = `/${path}`;
+    return req.selUser.save()
+    .then(() => res.json(req.selUser));
   }, (err) => {
     res.status(400);
     res.json(err);
@@ -131,6 +158,10 @@ userRouter.post('/photo', checkModifiable, upload.single('photo'),
   .then(() => {
     // Delete the uploaded file.
     if (file && file.path) fs.unlink(file.path);
+  })
+  .catch(err => {
+    res.status(500);
+    res.json(err);
   });
 });
 

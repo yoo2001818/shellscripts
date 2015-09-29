@@ -39,6 +39,8 @@ export const User = sequelize.define('user', {
     defaultValue: false
   },
   name: Sequelize.STRING,
+  bio: Sequelize.TEXT,
+  photo: Sequelize.STRING,
   website: {
     type: Sequelize.STRING,
     validate: {
@@ -77,6 +79,9 @@ export const Script = sequelize.define('script', {
 
 Passport.belongsTo(User);
 User.hasMany(Passport);
+User.hasMany(Script);
+// Uh... why do I need this?
+User.hasMany(Tag);
 
 TagType.hasMany(Tag);
 Tag.belongsTo(User, {as: 'author'});

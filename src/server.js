@@ -9,6 +9,7 @@ import apiRouter from './api/index.js';
 let app = express();
 
 app.use('/api', apiRouter);
+app.use('/uploads', new ServeStatic('./uploads'));
 app.get('/favicon.ico', (req, res) => {
   res.sendStatus(404);
 });
