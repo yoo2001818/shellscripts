@@ -10,7 +10,7 @@ import Translated from '../components/Translated.js';
 import LocalSignUpForm from '../components/LocalSignUpForm.js';
 import PostSignUp from '../components/PostSignUp.js';
 
-import { signUp, methodLoad } from '../actions/session.js';
+import { oAuthSignUp, methodLoad } from '../actions/session.js';
 
 class SignUp extends Component {
   constructor(props) {
@@ -19,11 +19,12 @@ class SignUp extends Component {
   handleOAuth(provider, e) {
     // This requires actual page forwarding...
     window.location = '/api/session/' + provider;
+    this.props.oAuthSignUp();
     e.preventDefault();
   }
   render() {
     const __ = translate(this.props.lang.lang);
-    let { id, method } = this.props.session;
+    let { id, method, load: { loading } } = this.props.session;
     if (id != null) {
       return (
         <div id='signup'>
@@ -62,14 +63,20 @@ class SignUp extends Component {
         <p>
           <Translated name='signUpDesc' />
         </p>
-        <div className='signupSelect'>
-          { hasLocal ? (
-            <Dialog title={__('signUpEmail')} className='small'>
-              <LocalSignUpForm />
-            </Dialog>
-          ) : false }
-          { methodTags }
-        </div>
+        { loading ? (
+          <div className='loading'>
+            <i className="fa fa-refresh fa-spin"></i>
+          </div>
+        ) : (
+          <div className='signupSelect'>
+            { hasLocal ? (
+              <Dialog title={__('signUpEmail')} className='small'>
+                <LocalSignUpForm />
+              </Dialog>
+            ) : false }
+            { methodTags }
+          </div>
+        )}
         <p className='footer'>
           <Translated name='signUpDisclaimer' />
         </p>
@@ -80,12 +87,13 @@ class SignUp extends Component {
 
 SignUp.propTypes = {
   session: PropTypes.object,
-  lang: PropTypes.object
+  lang: PropTypes.object,
+  oAuthSignUp: PropTypes.func
 };
 
 const ConnectSignUp = connect(
   store => ({session: store.session, lang: store.lang}),
-  { signUp }
+  { oAuthSignUp }
 )(SignUp);
 
 ConnectSignUp.fetchData = function(store) {

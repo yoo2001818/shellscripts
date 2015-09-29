@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import translate from '../lang/index.js';
 import Translated from '../components/Translated.js';
-import { login, logout, methodLoad } from '../actions/session.js';
+import { oAuthSignUp, login, logout, methodLoad } from '../actions/session.js';
 import Dialog from '../components/Dialog.js';
 import Alert from '../components/Alert.js';
 
@@ -61,6 +61,8 @@ class Login extends Component {
   handleOAuth(provider, e) {
     // This requires actual page forwarding...
     window.location = '/api/session/' + provider;
+    // oAuth only has one method..
+    this.props.oAuthSignUp();
     e.preventDefault();
   }
   render() {
@@ -137,13 +139,14 @@ class Login extends Component {
 Login.propTypes = {
   session: PropTypes.object,
   lang: PropTypes.object,
+  oAuthSignUp: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired
 };
 
 const ConnectLogin = connect(
   store => ({session: store.session, lang: store.lang}),
-  { login, logout }
+  { login, logout, oAuthSignUp }
 )(Login);
 
 ConnectLogin.fetchData = function(store) {
