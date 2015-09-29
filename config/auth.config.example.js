@@ -7,5 +7,7 @@ export const github = {
 export const facebook = {
   clientID: '###',
   clientSecret: '###',
-  callbackURL: 'http://localhost:8000/api/session/facebook'
+  callbackURL: 'http://localhost:8000/api/session/facebook',
+  scope: ['email'],
+  profileFields: ['id', 'emails', 'photos', 'displayName', 'name']
 };
