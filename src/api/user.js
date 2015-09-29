@@ -124,16 +124,16 @@ userRouter.post('/photo', checkModifiable, upload.single('photo'),
     });
   })
   .then((path) => {
-    // Delete the uploaded file.
-    if (file && file.path) fs.unlink(file.path);
     // Upload the file to static server, etc
     // TODO Set the profile image
     res.json(path);
   }, (err) => {
-    // Delete the uploaded file.
-    if (file && file.path) fs.unlink(file.path);
     res.status(400);
     res.json(err);
+  })
+  .then(() => {
+    // Delete the uploaded file.
+    if (file && file.path) fs.unlink(file.path);
   });
 });
 
