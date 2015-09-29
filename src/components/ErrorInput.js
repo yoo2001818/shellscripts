@@ -18,8 +18,12 @@ export default class ErrorInput extends Component {
             { this.props.error && this.props.touched ? (
               <i className="fa fa-times error"></i>
             ) : null }
-            { this.props.valid && this.props.touched ? (
+            { this.props.valid && this.props.touched &&
+              !this.props.asyncValidating ? (
               <i className="fa fa-check valid"></i>
+            ) : null }
+            { this.props.asyncValidating ? (
+              <i className="fa fa-refresh fa-spin"></i>
             ) : null }
           </div>
         </div>
@@ -37,5 +41,6 @@ ErrorInput.propTypes = {
   className: PropTypes.string,
   error: PropTypes.any,
   touched: PropTypes.bool,
-  valid: PropTypes.bool
+  valid: PropTypes.bool,
+  asyncValidating: PropTypes.bool
 };

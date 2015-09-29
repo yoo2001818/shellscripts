@@ -18,9 +18,11 @@ export default function promiseMiddleware(store) {
     }
     if (isPromise(action.payload)) {
       // Dispatch load action
-      dispatch(load(Object.assign({}, action, {
-        payload: null // TODO Think a way to dispatch with a payload?
-      })));
+      if (!action.meta || !action.meta.silent) {
+        dispatch(load(Object.assign({}, action, {
+          payload: null // TODO Think a way to dispatch with a payload?
+        })));
+      }
       return action.payload.then(
         result => dispatch(Object.assign({}, action, { payload: result })),
         error => dispatch(Object.assign({}, action, {
@@ -28,7 +30,9 @@ export default function promiseMiddleware(store) {
           error: true
         }))
       ).then(result => {
-        dispatch(complete(result));
+        if (!action.meta || !action.meta.silent) {
+          dispatch(complete(result));
+        }
         return result;
       });
     }

@@ -6,7 +6,7 @@ import { isEmail, isAlphanumeric } from 'validator';
 import Translated from './Translated.js';
 import ErrorInput from './ErrorInput.js';
 import translate from '../lang/index.js';
-import { localSignUp, checkUsername, checkEmail } from '../actions/session.js';
+import { localSignUp, checkUsername } from '../actions/session.js';
 
 class LocalSignUpForm extends Component {
   componentWillUnmount() {
@@ -21,7 +21,8 @@ class LocalSignUpForm extends Component {
       invalid } = this.props;
     return (
       <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
-        <ErrorInput placeholder={__('username')} type='text' {...username}/>
+        <ErrorInput placeholder={__('username')} type='text' {...username}
+          asyncValidating={this.props.asyncValidating}/>
         <ErrorInput placeholder={__('email')} type='email' {...email}/>
         <ErrorInput placeholder={__('password')} type='password' {...password}/>
         <div className='footer'>
@@ -40,7 +41,8 @@ LocalSignUpForm.propTypes = {
   lang: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   resetForm: PropTypes.func.isRequired,
-  invalid: PropTypes.bool
+  invalid: PropTypes.bool,
+  asyncValidating: PropTypes.bool
 };
 
 function validateFrom(data) {

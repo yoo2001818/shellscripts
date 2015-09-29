@@ -47,7 +47,8 @@ export const methodFetch = createAction(METHOD_FETCH,
 export const checkUsername = createAction(CHECK_USERNAME,
   username => api(GET, `/api/users/${username}`),
   () => ({
-    errors: [404]
+    errors: [404],
+    silent: true
   }));
 export const checkEmail = createAction(CHECK_EMAIL,
   email => api(POST, '/api/user/email', { email }));
