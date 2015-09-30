@@ -44,13 +44,17 @@ LocalSignUpForm.propTypes = {
 function validateFrom(data) {
   const errors = {};
   if (!isAlphanumeric(data.username)) {
-    errors.username = 'a-zA-Z0-9';
+    errors.username = {
+      id: 'AUTH_USERNAME_POLICY'
+    };
   }
   if (!isEmail(data.email)) {
     errors.email = true;
   }
   if (!data.password || data.password.length < 6) {
-    errors.password = 'Password can\'t be shorter than 6 characters';
+    errors.password = {
+      id: 'AUTH_PASSWORD_POLICY'
+    };
   }
   return errors;
 }
@@ -60,7 +64,9 @@ function validateFormAsync(data, dispatch) {
   .then(action => {
     const errors = {};
     if (!action.error) {
-      errors.username = 'Username is already in use.';
+      errors.username = {
+        id: 'AUTH_USERNAME_EXISTS'
+      };
     }
     return errors;
   });

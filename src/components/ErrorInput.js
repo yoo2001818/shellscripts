@@ -4,6 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
 
 import Alert from './Alert.js';
+import Translated from './Translated.js';
 
 export default class ErrorInput extends Component {
   render() {
@@ -34,6 +35,11 @@ export default class ErrorInput extends Component {
         </div>
         { typeof this.props.error === 'string' && this.props.touched ? (
           <Alert>{ this.props.error }</Alert>
+        ) : null }
+        { this.props.error && this.props.error.id && this.props.touched ? (
+          <Alert>
+            <Translated name={this.props.error.id}/>
+          </Alert>
         ) : null }
       </div>
     );

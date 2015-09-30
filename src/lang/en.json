@@ -21,5 +21,10 @@
   "signUpUsing": "Create an account with $1",
   "signUpDisclaimer": "By creating an account, you agree to null.",
   "done": "Done",
-  "signUpOr": "Or..."
+  "signUpOr": "Or...",
+  "AUTH_INVALID_USERNAME": "Invalid username",
+  "AUTH_INVALID_PASSWORD": "Invalid password",
+  "AUTH_USERNAME_POLICY": "Username should only contain alphanumberic characters.",
+  "AUTH_USERNAME_EXISTS": "Username already exists",
+  "AUTH_PASSWORD_POLICY": "Password should be longer than 6 characters"
 }

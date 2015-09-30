@@ -16,10 +16,10 @@ class LocalLoginForm extends Component {
       if (result.error) {
         const error = result.payload.body;
         if (error.id === 'AUTH_INVALID_USERNAME') {
-          throw {username: error.message};
+          throw {username: error};
         }
         if (error.id === 'AUTH_INVALID_PASSWORD') {
-          throw {password: error.message};
+          throw {password: error};
         }
         throw {_error: error.message};
       }

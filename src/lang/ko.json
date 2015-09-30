@@ -21,5 +21,10 @@
   "signUpUsing": "$1으로 계정 만들기",
   "signUpDisclaimer": "이 사이트에 가입하면 null을(를) 동의하게 됩니다.",
   "done": "완료",
-  "signUpOr": "또는..."
+  "signUpOr": "또는...",
+  "AUTH_INVALID_USERNAME": "올바른 사용자 이름이 아닙니다",
+  "AUTH_INVALID_PASSWORD": "비밀번호가 틀립니다",
+  "AUTH_USERNAME_POLICY": "사용자 이름은 알파벳과 숫자로만 구성되어야 합니다",
+  "AUTH_USERNAME_EXISTS": "해당 사용자 이름이 이미 존재합니다",
+  "AUTH_PASSWORD_POLICY": "비밀번호는 6글자 이상이어야 합니다"
 }
