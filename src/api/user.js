@@ -210,7 +210,7 @@ router.get('/users/', (req, res) => {
     // TODO currently it's hardcoded. should be changed
     limit: 20,
     order: [
-      ['username', 'ASC']
+      ['id', 'DESC']
     ]
   })
   .then(users => {
