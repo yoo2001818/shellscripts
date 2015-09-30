@@ -8,6 +8,8 @@ import apiRouter from './api/index.js';
 
 let app = express();
 
+if (__DEVELOPMENT__) app.set('json spaces', 2);
+
 app.use('/api', apiRouter);
 app.use('/uploads', new ServeStatic('./uploads'));
 app.get('/favicon.ico', (req, res) => {

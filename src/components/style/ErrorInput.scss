@@ -1,6 +1,12 @@
 .errorInput {
   &>.input {
     position: relative;
+    &>.label {
+      display: block;
+      &>.placeholder {
+        display: none;
+      }
+    }
     &>.indicator {
       position: absolute;
       top: 50%;

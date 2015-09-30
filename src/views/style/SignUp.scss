@@ -25,6 +25,9 @@
       font-size: 1.2em;
     }
     &>button {
+      max-width: 25em;
+    }
+    /*&>button {
       width: 100%;
       max-width: 25em;
       font-size: 1em;
@@ -44,6 +47,6 @@
     &>button:active {
       border: 1px solid grayscale(#94BDEB);
       background-color: grayscale(#FFFFFF);
-    }
+    }*/
   }
 }

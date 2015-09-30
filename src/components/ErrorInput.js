@@ -13,7 +13,12 @@ export default class ErrorInput extends Component {
     return (
       <div className='errorInput'>
         <div className='input'>
-          <input className={className} {...this.props}/>
+          <label className='label'>
+            <span className='placeholder'>
+              {this.props.placeholder}
+            </span>
+            <input className={className} {...this.props}/>
+          </label>
           <div className='indicator'>
             { this.props.error && this.props.touched ? (
               <i className="fa fa-times error"></i>
