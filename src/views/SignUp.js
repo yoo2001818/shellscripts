@@ -10,6 +10,7 @@ import Translated from '../components/Translated.js';
 import LocalSignUpForm from '../components/LocalSignUpForm.js';
 import PostSignUp from '../components/PostSignUp.js';
 import LoadingOverlay from '../components/LoadingOverlay.js';
+import SignOutForm from '../components/SignOutForm.js';
 
 import { oAuthSignUp, methodLoad } from '../actions/session.js';
 import { reset } from 'redux-form';
@@ -29,14 +30,23 @@ class SignUp extends Component {
   }
   render() {
     const __ = translate(this.props.lang.lang);
-    let { id, method, load: { loading } } = this.props.session;
+    let { id, signedUp, method, load: { loading } } = this.props.session;
     if (id != null) {
       return (
         <div id='signup'>
-          <h1>
-            <Translated name='signUp' />
-          </h1>
-          <PostSignUp />
+          { signedUp ? (
+            <Dialog title={__('signUp')}>
+              <SignOutForm />
+            </Dialog>
+          ) : (
+            <div>
+              <h1>
+                <Translated name='signUp' />
+              </h1>
+              <PostSignUp />
+            </div>
+          ) }
+          <LoadingOverlay loading={loading} />
         </div>
       );
     }

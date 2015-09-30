@@ -77,7 +77,6 @@ userRouter.post('/', checkModifiable, (req, res) => {
   res.sendStatus(501);
 });
 
-
 /**
  * @api {put} /user/photo Update the profile photo
  * @apiGroup User
@@ -160,6 +159,121 @@ userRouter.post('/photo', checkModifiable, upload.single('photo'),
     if (file && file.path) fs.unlink(file.path);
   })
   .catch(err => {
+    res.status(500);
+    res.json(err);
+  });
+});
+
+/**
+ * @api {post} /user/finalize Finalize creating an account
+ * @apiGroup User
+ * @apiName UserSignUpFinalize
+ * @apiParam (Body) {String} [username] The username to use.
+ * @apiParam (Body) {String} email The email address to use.
+ * @apiDescription Finalizes creating an account.
+ *
+ *   This will return 403 Forbidden if signing up is already done. If username
+ *   is sent but user already have an username or username is not sent and
+ *   user doesn't have one, this will return 400 Bad Request.
+ *
+ *   If username conflicts, this will return 409 Conflict.
+ *
+ *   If succeeds, this will return user's profile.
+ *
+ * @apiSuccessExample {json} If updating the profile was successful:
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "username": "Username",
+ *     "email": "Email"
+ *   }
+ * @apiErrorExample {json} If user hasn't signed in:
+ *   HTTP/1.1 401 Unauthorized
+ *   {
+ *     "id": "AUTH_NOT_SIGNED_IN",
+ *     "message": "Not signed in"
+ *   }
+ * @apiErrorExample {json} If signing up is already done:
+ *   HTTP/1.1 403 Forbidden
+ *   {
+ *     "id": "AUTH_ALREADY_DONE",
+ *     "message": "Finalizing sign up is already done."
+ *   }
+ * @apiErrorExample {json} If username is sent even though it's not required:
+ *   HTTP/1.1 400 Bad Request
+ *   {
+ *     "id": "AUTH_NO_USERNAME",
+ *     "message": "You shouldn't send username - it's already set."
+ *   }
+ * @apiErrorExample {json} If email address is not sent:
+ *   HTTP/1.1 403 Forbidden
+ *   {
+ *     "id": "AUTH_INVALID_EMAIL",
+ *     "message": "Invalid email address."
+ *   }
+ * @apiErrorExample {json} If username is not sent and it's required:
+ *   HTTP/1.1 400 Bad Request
+ *   {
+ *     "id": "AUTH_INVALID_USERNAME",
+ *     "message": "Invalid username."
+ *   }
+ * @apiErrorExample {json} If username conflicts:
+ *   HTTP/1.1 409 Conflict
+ *   {
+ *     "id": "AUTH_USERNAME_EXISTS",
+ *     "message": "Username is already in use."
+ *   }
+ */
+userRouter.post('/finalize', checkModifiable, (req, res) => {
+  // Check whether if user has already signed up
+  if (req.selUser.signedUp) {
+    res.status(403);
+    res.json({
+      id: 'AUTH_ALREADY_DONE',
+      message: 'Finalizing sign up is already done. You shouldn\'t call it ' +
+        'again.'
+    });
+    return;
+  }
+  const { username, email } = req.body;
+  // Check whether if username should be provided
+  if (req.selUser.username == null && username == null) {
+    res.status(400);
+    res.json({
+      id: 'AUTH_INVALID_USERNAME',
+      message: 'Invalid username.'
+    });
+    return;
+  }
+  if (req.selUser.username != null && username != null) {
+    res.status(400);
+    res.json({
+      id: 'AUTH_NO_USERNAME',
+      message: 'You shouldn\'t send username - it\'s already set.'
+    });
+    return;
+  }
+  // Server should check if email address is present too, but Sequelize will
+  // automatically check it, so I'll leave it like this.
+  // TODO Email address check routine?
+  if (req.selUser.email == null) {
+    res.status(400);
+    res.json({
+      id: 'AUTH_INVALID_EMAIL',
+      message: 'Invalid email address.'
+    });
+    return;
+  }
+  // Just try to write the data; Let's see how it goes.
+  req.selUser.update({
+    signedUp: true,
+    username, email
+  })
+  .then(() => {
+    res.json(req.selUser);
+  }, err => {
+    // TODO Check the error value? I'm pretty lazy to check if username
+    // conflicts above here. Sequelize would return an error if it conflicts.
+    console.log(err);
     res.status(500);
     res.json(err);
   });

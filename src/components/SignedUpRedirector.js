@@ -10,6 +10,14 @@ class SignedUpRedirector extends Component {
       history.replaceState(null, '/signup');
     }
   }
+  componentDidUpdate() {
+    let { id, signedUp } = this.props.session;
+    let { history } = this.context;
+    // Redirect if user hasn't signed in.
+    if (id != null && !signedUp && !history.isActive('/signup')) {
+      history.replaceState(null, '/signup');
+    }
+  }
   render() {
     return false;
   }

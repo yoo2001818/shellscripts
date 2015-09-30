@@ -5,6 +5,7 @@ import { api, GET, POST, DELETE } from '../middleware/api.js';
 export const FETCH = 'SESSION_FETCH';
 export const LOGIN = 'SESSION_LOGIN';
 export const LOGOUT = 'SESSION_LOGOUT';
+export const SIGNUP_FINALIZE = 'SESSION_SIGNUP_FINALIZE';
 export const LOCAL_SIGNUP = 'SESSION_LOCAL_SIGNUP';
 export const OAUTH_SIGNUP = 'SESSION_OAUTH_SIGNUP';
 export const METHOD_FETCH = 'SESSION_METHOD_FETCH';
@@ -21,6 +22,12 @@ export const login = createAction(LOGIN,
   (_, meta) => meta);
 export const logout = createAction(LOGOUT,
   () => api(DELETE, '/api/session', {}),
+  (_, meta) => meta);
+// Calling user in session actions? This may look weird, but current user is
+// stored in 'session' reducer now. Well I think I should put current user to
+// users table, and put user's ID in here.
+export const signUpFinalize = createAction(SIGNUP_FINALIZE,
+  data => api(POST, '/api/user/finalize', data),
   (_, meta) => meta);
 export const localSignUp = createAction(LOCAL_SIGNUP,
   credentials => api(POST, '/api/session/local/register', credentials),

@@ -28,6 +28,14 @@ class ErrorOverlay extends Component {
     const __ = translate(this.props.lang.lang);
     const { load: { error } } = this.props;
     if (!error) return false;
+    let errorMsg = error.body;
+    // Sometimes server returns JSON object as an error, so we'll have to
+    // do this to display an error message. Otherwise, it'll just return
+    // [Object object], which is pretty bad for debugging.
+    // Or, we could use JSON.stringify? I think that's pretty bad though.
+    if (error.body.message) {
+      errorMsg = error.body.message;
+    }
     return (
       <div id='errorCover'>
         <div className='middle'>
@@ -35,7 +43,7 @@ class ErrorOverlay extends Component {
             <div>
               <Translated name='errorDesc' />
             </div>
-            <Alert>{`${error.body} while processing ${error.type}`}</Alert>
+            <Alert>{`${errorMsg} @ ${error.type}`}</Alert>
             <div className='footer'>
               <button onClick={this.handleDismiss.bind(this)}
               ref='dismiss'>

@@ -53,9 +53,14 @@ export const User = sequelize.define('user', {
   }
 }, {
   hooks: {
-    beforeValidate: (user) => {
+    beforeValidate: (user, options) => {
       if (user.username) {
         user.login = user.username.toLowerCase();
+      }
+      // Sequelize requires to update 'fields' array if we want to update
+      // the value. TODO I should report an issue.
+      if (options.fields) {
+        options.fields.push('login');
       }
     }
   },
@@ -64,7 +69,6 @@ export const User = sequelize.define('user', {
       let obj = this.get({
         plain: true
       });
-      delete obj.login;
       delete obj.createdAt;
       delete obj.updatedAt;
       return obj;

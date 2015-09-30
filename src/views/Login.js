@@ -11,6 +11,7 @@ import { oAuthSignUp, login, logout, methodLoad } from '../actions/session.js';
 import { reset } from 'redux-form';
 import Dialog from '../components/Dialog.js';
 import LocalLoginForm from '../components/LocalLoginForm.js';
+import SignOutForm from '../components/SignOutForm.js';
 import LoadingOverlay from '../components/LoadingOverlay.js';
 
 class Login extends Component {
@@ -31,20 +32,15 @@ class Login extends Component {
   }
   render() {
     const __ = translate(this.props.lang.lang);
-    let { username, id, load: { loading }, method } = this.props.session;
+    let { id, load: { loading }, method } = this.props.session;
     if (id != null) {
       return (
         <div id='login'>
-          <h1>
+          {/*<h1>
             <Translated name='signIn'/>
-          </h1>
+          </h1>*/}
           <Dialog title={__('signIn')}>
-            <Translated name='alreadySignedIn'>{ username }</Translated>
-            <div className='footer'>
-              <button onClick={this.handleLogout.bind(this)}>
-                <Translated name='signOut' />
-              </button>
-            </div>
+            <SignOutForm />
           </Dialog>
           <LoadingOverlay loading={loading} />
         </div>
@@ -78,7 +74,7 @@ class Login extends Component {
         <div className='select'>
           <div className='section'>
             { hasLocal ? (
-              <Dialog title={__('signIn')}>
+              <Dialog title={__('signInEmail')}>
                 <LocalLoginForm />
               </Dialog>
             ) : false }

@@ -2,14 +2,20 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import PostSignUpForm from './PostSignUpForm.js';
+import Translated from './Translated.js';
+import Dialog from './Dialog.js';
 
 class PostSignUp extends Component {
   // TODO Logout when user leaves the page.
   render() {
     return (
       <div>
-        <p>123123123</p>
-        <PostSignUpForm initialValues={this.props.session}/>
+        <p>
+          <Translated name='signUpPostComplete'/>
+        </p>
+        <Dialog>
+          <PostSignUpForm initialValues={this.props.session}/>
+        </Dialog>
       </div>
     );
   }

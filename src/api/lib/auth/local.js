@@ -97,7 +97,10 @@ export function register(req, credentials, done) {
           // TODO Check if email conflicts
           return User.create({
             username,
-            email
+            email,
+            // Local users have all the information when they sign up,
+            // so we don't need additional stages
+            signedUp: true
           }, {
             transaction
           })
