@@ -20,5 +20,6 @@
   "signUpEmail": "Create an account with Email address",
   "signUpUsing": "Create an account with $1",
   "signUpDisclaimer": "By creating an account, you agree to null.",
-  "done": "Done"
+  "done": "Done",
+  "signUpOr": "Or..."
 }

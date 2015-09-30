@@ -9,16 +9,12 @@ import translate from '../lang/index.js';
 import { localSignUp, checkUsername } from '../actions/session.js';
 
 class LocalSignUpForm extends Component {
-  componentWillUnmount() {
-    this.props.resetForm();
-  }
   handleSubmit(data) {
     this.props.dispatch(localSignUp(data));
   }
   render() {
     const __ = translate(this.props.lang.lang);
-    const { fields: { username, email, password }, handleSubmit,
-      invalid } = this.props;
+    const { fields: { username, email, password }, handleSubmit } = this.props;
     return (
       <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
         <ErrorInput placeholder={__('username')} type='text' {...username}
@@ -26,7 +22,7 @@ class LocalSignUpForm extends Component {
         <ErrorInput placeholder={__('email')} type='email' {...email}/>
         <ErrorInput placeholder={__('password')} type='password' {...password}/>
         <div className='footer'>
-          <button disabled={invalid}>
+          <button>
             <Translated name='signUp' />
           </button>
         </div>

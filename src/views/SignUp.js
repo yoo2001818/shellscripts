@@ -9,12 +9,17 @@ import Dialog from '../components/Dialog.js';
 import Translated from '../components/Translated.js';
 import LocalSignUpForm from '../components/LocalSignUpForm.js';
 import PostSignUp from '../components/PostSignUp.js';
+import LoadingOverlay from '../components/LoadingOverlay.js';
 
 import { oAuthSignUp, methodLoad } from '../actions/session.js';
+import { reset } from 'redux-form';
 
 class SignUp extends Component {
   constructor(props) {
     super(props);
+  }
+  componentWillUnmount() {
+    this.props.reset('localSignUp');
   }
   handleOAuth(provider, e) {
     // This requires actual page forwarding...
@@ -63,23 +68,25 @@ class SignUp extends Component {
         <p>
           <Translated name='signUpDesc' />
         </p>
-        { loading ? (
-          <div className='loading'>
-            <i className="fa fa-refresh fa-spin"></i>
-          </div>
-        ) : (
-          <div className='signupSelect'>
+        <div className='select'>
+          <div className='section'>
             { hasLocal ? (
-              <Dialog title={__('signUpEmail')} className='small'>
+              <Dialog title={__('signUpEmail')}>
                 <LocalSignUpForm />
               </Dialog>
             ) : false }
+          </div>
+          <div className='section others'>
+            <h1>
+              <Translated name='signUpOr' />
+            </h1>
             { methodTags }
           </div>
-        )}
+        </div>
         <p className='footer'>
           <Translated name='signUpDisclaimer' />
         </p>
+        <LoadingOverlay loading={loading} />
       </div>
     );
   }
@@ -88,12 +95,13 @@ class SignUp extends Component {
 SignUp.propTypes = {
   session: PropTypes.object,
   lang: PropTypes.object,
-  oAuthSignUp: PropTypes.func
+  oAuthSignUp: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired
 };
 
 const ConnectSignUp = connect(
   store => ({session: store.session, lang: store.lang}),
-  { oAuthSignUp }
+  { oAuthSignUp, reset }
 )(SignUp);
 
 ConnectSignUp.fetchData = function(store) {

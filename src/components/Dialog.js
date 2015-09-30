@@ -2,6 +2,7 @@ import './style/Dialog.scss';
 
 import classNames from 'classnames';
 import React, { Component, PropTypes } from 'react';
+import LoadingOverlay from './LoadingOverlay.js';
 
 export default class Dialog extends Component {
   render() {
@@ -23,17 +24,7 @@ export default class Dialog extends Component {
         <div className={contentClass}>
           {this.props.children}
         </div>
-        {
-          this.props.loading ? (
-            <div className='loading'>
-              <div className='container'>
-                <div className='message'>
-                  <i className="fa fa-refresh fa-spin"></i>
-                </div>
-              </div>
-            </div>
-          ) : null
-        }
+        <LoadingOverlay loading={this.props.loading} />
       </div>
     );
   }

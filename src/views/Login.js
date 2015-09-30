@@ -1,3 +1,6 @@
+// Kinda weird :/
+import './style/SignUp.scss';
+
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -5,58 +8,19 @@ import _ from 'lodash';
 import translate from '../lang/index.js';
 import Translated from '../components/Translated.js';
 import { oAuthSignUp, login, logout, methodLoad } from '../actions/session.js';
+import { reset } from 'redux-form';
 import Dialog from '../components/Dialog.js';
-import Alert from '../components/Alert.js';
+import LocalLoginForm from '../components/LocalLoginForm.js';
+import LoadingOverlay from '../components/LoadingOverlay.js';
 
 class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: false,
-      username: '',
-      password: ''
-    };
-  }
-  handleChange(key, event) {
-    this.setState({
-      [key]: event.target.value
-    });
-  }
-  handleLogin(e) {
-    e.preventDefault();
-    let { load: { loading } } = this.props.session;
-    if (loading) return;
-    const { username, password } = this.state;
-    if (username === '') {
-      this.refs.username.getDOMNode().focus();
-      return;
-    }
-    if (password === '') {
-      this.refs.password.getDOMNode().focus();
-      return;
-    }
-    this.setState({error: false});
-    this.props.login({username, password}, {
-      errors: [401]
-    }).then(result => {
-      this.setState({username: '', password: ''});
-      if (result.error) {
-        if (result.payload.status === 401) {
-          this.setState({error: result.payload.body.message});
-          this.refs.username.getDOMNode().focus();
-        } else {
-          this.setState({error: result.payload.body});
-        }
-      }
-    });
+  componentWillUnmount() {
+    this.props.reset('localLogin');
   }
   handleLogout() {
     let { load: { loading } } = this.props.session;
     if (loading) return;
-    this.props.logout().then(result => {
-      console.log(result);
-      this.setState({username: '', password: ''});
-    });
+    this.props.logout();
   }
   handleOAuth(provider, e) {
     // This requires actual page forwarding...
@@ -70,14 +34,20 @@ class Login extends Component {
     let { username, id, load: { loading }, method } = this.props.session;
     if (id != null) {
       return (
-        <Dialog id='dialog-login' title={__('signIn')} loading={loading}>
-          <Translated name='alreadySignedIn'>{ username }</Translated>
-          <div className='footer'>
-            <button onClick={this.handleLogout.bind(this)}>
-              <Translated name='signOut' />
-            </button>
-          </div>
-        </Dialog>
+        <div id='login'>
+          <h1>
+            <Translated name='signIn'/>
+          </h1>
+          <Dialog title={__('signIn')}>
+            <Translated name='alreadySignedIn'>{ username }</Translated>
+            <div className='footer'>
+              <button onClick={this.handleLogout.bind(this)}>
+                <Translated name='signOut' />
+              </button>
+            </div>
+          </Dialog>
+          <LoadingOverlay loading={loading} />
+        </div>
       );
     }
     let methodTags, hasLocal = false;
@@ -101,37 +71,27 @@ class Login extends Component {
       });
     }
     return (
-      <Dialog id='dialog-login' title={__('signIn')} loading={loading}>
-        <form onSubmit={this.handleLogin.bind(this)}>
-          {
-            this.state.error ? (
-              <Alert>
-                {this.state.error}
-              </Alert>
-            ) : null
-          }
-          {
-            hasLocal ? (
-              <div>
-                <input type='text' placeholder={__('username')} ref='username'
-                  value={this.state.username}
-                  onChange={this.handleChange.bind(this, 'username')} />
-                <input type='password' placeholder={__('password')}
-                  ref='password' value={this.state.password}
-                  onChange={this.handleChange.bind(this, 'password')} />
-              </div>
-            ) : null
-          }
-          <div className='footer'>
-            {
-              hasLocal ? (
-                <button><Translated name='signIn' /></button>
-              ) : null
-            }
+      <div id='login'>
+        <h1>
+          <Translated name='signIn'/>
+        </h1>
+        <div className='select'>
+          <div className='section'>
+            { hasLocal ? (
+              <Dialog title={__('signIn')}>
+                <LocalLoginForm />
+              </Dialog>
+            ) : false }
+          </div>
+          <div className='section others'>
+            <h1>
+              <Translated name='signUpOr' />
+            </h1>
             { methodTags }
           </div>
-        </form>
-      </Dialog>
+        </div>
+        <LoadingOverlay loading={loading} />
+      </div>
     );
   }
 }
@@ -140,13 +100,13 @@ Login.propTypes = {
   session: PropTypes.object,
   lang: PropTypes.object,
   oAuthSignUp: PropTypes.func.isRequired,
-  login: PropTypes.func.isRequired,
-  logout: PropTypes.func.isRequired
+  logout: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired
 };
 
 const ConnectLogin = connect(
   store => ({session: store.session, lang: store.lang}),
-  { login, logout, oAuthSignUp }
+  { login, logout, oAuthSignUp, reset }
 )(Login);
 
 ConnectLogin.fetchData = function(store) {
