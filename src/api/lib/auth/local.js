@@ -24,7 +24,7 @@ export default function login(username, password, done) {
   // Retrieve passport with the username
   Passport.findOne({
     where: {
-      identifier: username,
+      identifier: username.toLowerCase(),
       type: 'local'
     }
   })
@@ -86,7 +86,7 @@ export function register(req, credentials, done) {
     // Retrieve passport with the username
     Passport.findOne({
       where: {
-        identifier: username,
+        identifier: username.toLowerCase(),
         type: 'local'
       }
     })
@@ -106,7 +106,7 @@ export function register(req, credentials, done) {
             .then(hash => Passport.create({
               userId: user.id,
               type: 'local',
-              identifier: username,
+              identifier: username.toLowerCase(),
               data: hash
             }, {
               transaction
@@ -152,7 +152,7 @@ export function register(req, credentials, done) {
           .then(hash => Passport.create({
             userId: req.user.id,
             type: 'local',
-            identifier: username,
+            identifier: username.toLowerCase(),
             data: hash
           }, {
             transaction

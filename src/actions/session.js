@@ -32,10 +32,12 @@ export const oAuthSignUp = createAction(OAUTH_SIGNUP,
     // the user is logged in by the server after some time I suppose
     // By disabling login form, we can force the user to refresh their page
     // (Thus keeping the server and client in sync)
+    // But if the user has slow Internet, 10s may not be enough, so we'll just
+    // 'lockdown' the page forever
     if (__CLIENT__) {
-      setTimeout(() => {
+      /*setTimeout(() => {
         location.reload();
-      }, 10000);
+      }, 10000);*/
     } else {
       // If it's a server, resolve the promise immediately to avoid memory leak
       // Although I don't think this will ever be issued by server

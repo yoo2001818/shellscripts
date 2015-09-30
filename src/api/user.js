@@ -192,8 +192,8 @@ router.get('/users/', (req, res) => {
   let { username, email, lastIndex } = req.query;
   const where = {};
   if (username != null) {
-    where.username = {
-      $like: username
+    where.login = {
+      $like: username.toLowerCase()
     };
   }
   if (email != null) {
@@ -243,8 +243,13 @@ router.get('/users/', (req, res) => {
 router.use('/users/:username', (req, res, next) => {
   // Retrieve the user
   const { username } = req.params;
+  if (username == null) {
+    // This can't happen
+    res.sendStatus(500);
+    return;
+  }
   User.findOne({
-    where: { username }
+    where: { login: username.toLowerCase() }
   })
   .then(user => {
     if (user == null) {

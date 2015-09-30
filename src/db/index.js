@@ -18,6 +18,10 @@ export const Passport = sequelize.define('passport', {
 });
 
 export const User = sequelize.define('user', {
+  login: {
+    type: Sequelize.STRING,
+    unique: true
+  },
   username: {
     type: Sequelize.STRING,
     unique: true
@@ -45,6 +49,25 @@ export const User = sequelize.define('user', {
     type: Sequelize.STRING,
     validate: {
       isURL: true
+    }
+  }
+}, {
+  hooks: {
+    beforeValidate: (user) => {
+      if (user.username) {
+        user.login = user.username.toLowerCase();
+      }
+    }
+  },
+  instanceMethods: {
+    toJSON: function() {
+      let obj = this.get({
+        plain: true
+      });
+      delete obj.login;
+      delete obj.createdAt;
+      delete obj.updatedAt;
+      return obj;
     }
   }
 });
