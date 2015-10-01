@@ -66,7 +66,7 @@ module.exports = {
       },
       {
         test: webpackIsomorphicTools.regular_expression('images'),
-        loader: 'url-loader?limit=10240'
+        loader: 'url-loader?limit=1024'
       },
       {
         test: /\.(otf|eot|svg|ttf|woff|woff2)(\?.+)?$/,

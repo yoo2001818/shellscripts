@@ -15,7 +15,6 @@ function getUserByUsername(user, username) {
 class User extends Component {
   render() {
     const user = getUserByUsername(this.props.user, this.props.params.username);
-    console.log(user);
     if (user) {
       // Inject user, that's it.
       return cloneElement(this.props.children, { user });

@@ -22,7 +22,6 @@ export default function user(state = {
       }
       return state;
     }
-    console.log(body);
     return Object.assign({}, state, {
       entities: Object.assign({}, entities, {
         [body.id]: body
