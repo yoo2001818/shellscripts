@@ -1,8 +1,13 @@
 var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var WebpackIsomorphicTools = require('webpack-isomorphic-tools/plugin');
 
-var entries = ['./client.js'];
+var webpackIsomorphicTools =
+  new WebpackIsomorphicTools(require('./webpack-isomorphic-tools.config.js'))
+  .development();
+
+var entries = ['./src/client.js'];
 var plugins = [
   new webpack.optimize.OccurenceOrderPlugin(),
   new webpack.NoErrorsPlugin(),
@@ -14,7 +19,8 @@ var plugins = [
   }),
   new ExtractTextPlugin('bundle.css', {
     disable: process.env.NODE_ENV !== 'production'
-  })
+  }),
+  webpackIsomorphicTools
 ];
 if (process.env.NODE_ENV !== 'production') {
   entries.push('webpack-hot-middleware/client?overlay=true');
@@ -23,7 +29,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = {
   devtool: 'eval',
-  context: path.resolve(__dirname, 'src'),
+  context: __dirname,
   entry: entries,
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -59,12 +65,12 @@ module.exports = {
         loader: ExtractTextPlugin.extract('style', 'css!sass')
       },
       {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        loader: 'file'
+        test: webpackIsomorphicTools.regular_expression('images'),
+        loader: 'url-loader?limit=10240'
       },
       {
         test: /\.(otf|eot|svg|ttf|woff|woff2)(\?.+)?$/,
-        loader: 'file'
+        loader: 'url-loader?limit=10240'
       }
     ]
   }

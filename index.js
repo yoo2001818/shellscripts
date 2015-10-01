@@ -8,11 +8,13 @@ GLOBAL.__CLIENT__ = false;
 GLOBAL.__DEVELOPMENT__ = !PRODUCTION;
 GLOBAL.__DEVTOOLS__ = false;
 
-// Ignore CSS files
-require.extensions['.scss'] = function() {
-};
-require.extensions['.css'] = function() {
-};
+var WebpackIsomorphicTools = require('webpack-isomorphic-tools');
+var projectPath = __dirname;
 
-// Just simply link to src/server.js
-require('./src/server.js');
+global.__WEBPACK_ISOMORPHIC_TOOLS__ = new WebpackIsomorphicTools(
+  require('./webpack-isomorphic-tools.config.js')
+)
+.development(__DEVELOPMENT__)
+.server(projectPath, function() {
+  require('./src/server.js');
+});

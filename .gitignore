@@ -32,3 +32,5 @@ db.sqlite
 /DESIGN.md
 doc/
 uploads/
+
+webpack-assets.json

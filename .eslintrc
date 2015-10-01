@@ -47,6 +47,7 @@
     "__SERVER__": true,
     "__CLIENT__": true,
     "__DEVELOPMENT__": true,
-    "__DEVTOOLS__": true
+    "__DEVTOOLS__": true,
+    "__WEBPACK_ISOMORPHIC_TOOLS__": true
   }
 }

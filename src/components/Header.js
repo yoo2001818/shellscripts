@@ -1,4 +1,3 @@
-import 'font-awesome/css/font-awesome.css';
 import './style/Header.scss';
 
 import React, { Component, PropTypes } from 'react';

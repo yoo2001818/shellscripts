@@ -1,3 +1,4 @@
+import 'font-awesome/css/font-awesome.css';
 import './style/App.scss';
 import React, { Component, PropTypes } from 'react';
 import { load } from '../actions/session.js';
