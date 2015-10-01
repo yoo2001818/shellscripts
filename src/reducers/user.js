@@ -16,7 +16,7 @@ export default function user(state = {
           // null and undefined is handled differently;
           // null is 'not found', undefined is 'pending'.
           usernames: Object.assign({}, usernames, {
-            [meta.username]: null
+            [meta.username.toLowerCase()]: null
           })
         });
       }
