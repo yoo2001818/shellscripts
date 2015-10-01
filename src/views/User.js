@@ -6,7 +6,7 @@ import NotFound from './NotFound.js';
 function getUserByUsername(user, username) {
   if (username == null) return null;
   const { entities, usernames } = user;
-  const userId = usernames[username];
+  const userId = usernames[username.toLowerCase()];
   if (userId === null) return null;
   return entities[userId];
 }
