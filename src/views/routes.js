@@ -7,6 +7,7 @@ import Index from './Index.js';
 import Login from './Login.js';
 import Search from './Search.js';
 import SignUp from './SignUp.js';
+import User from './User.js';
 
 export const routes = (
   <Route path='/' component={App}>
@@ -14,6 +15,7 @@ export const routes = (
     <Route path='login' component={Login} />
     <Route path='signup' component={SignUp} />
     <Route path='search' component={Search} />
+    <Route path=':username' component={User} />
     <Route path='*' component={NotFound} />
   </Route>
 );

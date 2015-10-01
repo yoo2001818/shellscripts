@@ -25,10 +25,12 @@ class SessionBar extends Component {
     if (session.id != null) {
       return (
         <div className='session'>
-          { session.signedIn ? (
-            <Translated name='sessionWelcome'>
-              { session.username }
-            </Translated>
+          { session.signedUp ? (
+            <Link to={`/${session.username}`}>
+              <Translated name='sessionWelcome'>
+                { session.username }
+              </Translated>
+            </Link>
           ) : false }
           <Link to='/logout' onClick={this.handleLogout.bind(this)}>
             <Translated name='signOut' />
