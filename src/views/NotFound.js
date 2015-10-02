@@ -1,5 +1,5 @@
 import './style/NotFound.scss';
-import notFoundImage from './assets/notFound.png';
+import notFoundImage from '../assets/notFound.png';
 
 import React, { Component } from 'react';
 import Translated from '../components/Translated.js';

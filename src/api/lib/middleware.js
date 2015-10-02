@@ -1,4 +1,3 @@
-import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import session from 'express-session';
 import passport from './passport.js';
@@ -12,7 +11,6 @@ const sessionStore = new SequelizeStore({
 sessionStore.sync();
 
 export default function registerMiddlewares(app) {
-  app.use(morgan('dev'));
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
   app.use(session({

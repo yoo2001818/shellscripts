@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-import userPlaceholder from './assets/userPlaceholder.png';
+import userPlaceholder from '../assets/userPlaceholder.png';
 
 export default class UserProfile extends Component {
   render() {

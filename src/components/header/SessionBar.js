@@ -2,8 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
+import DropDownMenu from '../DropDownMenu.js';
 import Translated from '../Translated.js';
 import { logout } from '../../actions/session.js';
+import userPlaceholder from '../../assets/userPlaceholder.png';
 
 class SessionBar extends Component {
   handleLogout(e) {
@@ -25,16 +27,29 @@ class SessionBar extends Component {
     if (session.id != null) {
       return (
         <div className='session'>
-          { session.signedUp ? (
+          {/* session.signedUp ? (
             <Link to={`/${session.username}`}>
               <Translated name='sessionWelcome'>
                 { session.username }
               </Translated>
             </Link>
-          ) : false }
-          <Link to='/logout' onClick={this.handleLogout.bind(this)}>
-            <Translated name='signOut' />
-          </Link>
+          ) : false */}
+          <DropDownMenu title={(
+            <img className='profile' src={session.photo || userPlaceholder}/>
+          )}>
+            <ul>
+              <li>
+                <Link to={`/${session.username}`}>
+                  { session.username }
+                </Link>
+              </li>
+              <li>
+                <Link to='/logout' onClick={this.handleLogout.bind(this)}>
+                  <Translated name='signOut' />
+                </Link>
+              </li>
+            </ul>
+          </DropDownMenu>
         </div>
       );
     } else {

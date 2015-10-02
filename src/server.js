@@ -2,6 +2,7 @@
 import express from 'express';
 import ServeStatic from 'serve-static';
 import compression from 'compression';
+import morgan from 'morgan';
 
 import serverRenderer from './utils/serverRenderer.js';
 import apiRouter from './api/index.js';
@@ -10,20 +11,22 @@ let app = express();
 
 if (__DEVELOPMENT__) app.set('json spaces', 2);
 
+app.use(morgan('dev'));
+
 app.use('/api', apiRouter);
 app.use('/uploads', new ServeStatic('./uploads'));
 app.get('/favicon.ico', (req, res) => {
-  res.sendStatus(404);
-});
-app.get('/assets/bundle.css', (req, res) => {
   res.sendStatus(404);
 });
 
 if (!__DEVELOPMENT__) {
   // Currently server does nothing but serve static files.
   app.use(compression());
-  app.use('/assets', new ServeStatic('./dist'));
+  app.use('/assets/', new ServeStatic('./dist'));
 } else {
+  app.get('/assets/bundle.css', (req, res) => {
+    res.sendStatus(404);
+  });
   // Webpack dev server :P
   // Importing in here because this is only used in webpack,
   // And we don't want to waste resources in production mode
