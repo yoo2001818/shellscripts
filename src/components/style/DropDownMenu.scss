@@ -37,8 +37,8 @@
       min-width: 1em;
       display: inline-block;
     }
-    &>.icon {
-      opacity: 0.6;
+    & .icon {
+      opacity: 1;
     }
     & .title {
       text-decoration: underline;
@@ -108,15 +108,15 @@
   }
   &.hidden {
     &>.button {
-      &>.icon {
-        opacity: 1;
+      & .icon {
+        opacity: 0.6;
       }
       & .title {
         text-decoration: none;
       }
       &:hover {
-        &>.icon {
-          opacity: 0.6;
+        & .icon {
+          opacity: 1;
         }
         & .title {
           text-decoration: underline;
