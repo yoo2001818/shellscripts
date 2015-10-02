@@ -25,22 +25,23 @@ class SessionBar extends Component {
       );
     }
     if (session.id != null) {
+      if (!session.signedUp) {
+        return (
+          <div className='session' />
+        );
+      }
       return (
         <div className='session'>
-          {/* session.signedUp ? (
-            <Link to={`/${session.username}`}>
-              <Translated name='sessionWelcome'>
-                { session.username }
-              </Translated>
-            </Link>
-          ) : false */}
           <DropDownMenu title={(
             <img className='profile' src={session.photo || userPlaceholder}/>
           )}>
             <ul>
               <li>
                 <Link to={`/${session.username}`}>
-                  { session.username }
+                  <p className='bold'>{ session.username }</p>
+                  <p className='small right'>
+                    <Translated name='viewProfile' />
+                  </p>
                 </Link>
               </li>
               <li>

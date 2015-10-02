@@ -24,6 +24,7 @@
   "signUpPostComplete": "아래의 정보를 입력하고 계정 만들기를 끝내주세요.",
   "done": "완료",
   "signUpOr": "또는...",
+  "viewProfile": "프로필 보기",
   "AUTH_INVALID_USERNAME": "올바른 사용자 이름이 아닙니다",
   "AUTH_INVALID_PASSWORD": "비밀번호가 틀립니다",
   "AUTH_USERNAME_POLICY": "사용자 이름은 알파벳과 숫자로만 구성되어야 합니다",

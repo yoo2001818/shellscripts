@@ -135,6 +135,7 @@ userRouter.post('/photo', checkModifiable, upload.single('photo'),
     if (x < 0 || y < 0 || size <= 0) return reject('size invalid');
     // Crop / resize the image.
     gm(file.path)
+    .flatten()
     .autoOrient()
     .crop(size, size, x, y)
     .resize(256, 256, '!')

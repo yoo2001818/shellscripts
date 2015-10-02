@@ -9,16 +9,24 @@ export default class Dialog extends Component {
     this.state = {
       hidden: true
     };
+    this.handleClickEvent = this.handleClick.bind(this);
   }
   handleClick() {
+    const { hidden } = this.state;
+    if (hidden) {
+      document.addEventListener('click', this.handleClickEvent);
+    } else {
+      document.removeEventListener('click', this.handleClickEvent);
+    }
     this.setState({
-      hidden: !this.state.hidden
+      hidden: !hidden
     });
   }
   render() {
     const { hidden } = this.state;
     return (
       <div className={classNames('dropdown', { hidden })}>
+        <div className='cover'></div>
         <div className='button' onClick={this.handleClick.bind(this)}>
           <span className='title'>{this.props.title}</span>
           <i className='icon fa fa-caret-down'></i>
