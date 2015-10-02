@@ -1,5 +1,6 @@
 import './style/DropDownMenu.scss';
 
+import ToolTip from './ToolTip.js';
 import classNames from 'classnames';
 import React, { Component, PropTypes } from 'react';
 
@@ -24,12 +25,21 @@ export default class Dialog extends Component {
   }
   render() {
     const { hidden } = this.state;
+    const buttonContent = (
+      <span>
+        <span className='title'>{this.props.title}</span>
+        <i className='icon fa fa-caret-down'></i>
+      </span>
+    );
     return (
       <div className={classNames('dropdown', { hidden })}>
         <div className='cover'></div>
         <div className='button' onClick={this.handleClick.bind(this)}>
-          <span className='title'>{this.props.title}</span>
-          <i className='icon fa fa-caret-down'></i>
+          {this.props.caption ? (
+            <ToolTip caption={this.props.caption} className='right'>
+              {buttonContent}
+            </ToolTip>
+          ) : buttonContent}
         </div>
         <div className='arrow'>
         </div>
@@ -42,6 +52,7 @@ export default class Dialog extends Component {
 }
 
 Dialog.propTypes = {
+  caption: PropTypes.string,
   children: PropTypes.any,
   title: PropTypes.any
 };

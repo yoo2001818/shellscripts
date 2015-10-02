@@ -1,0 +1,40 @@
+.tooltip {
+  position: relative;
+  display: inline-block;
+  &>.content {
+    // What?
+  }
+  &>.caption {
+    position: absolute;
+    top: 100%;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.7);
+    margin-top: 0.3em;
+    line-height: 1em;
+    padding: 0.6em;
+    right: 50%;
+    // TODO get rid of CSS hack
+    transform: translateX(50%);
+    border-radius: 3pt;
+    display: none;
+    font-size: 0.9em;
+  }
+  &.right {
+    &>.caption {
+      transform: none;
+      right: 0;
+    }
+  }
+  &.left {
+    &>.caption {
+      transform: none;
+      left: 0;
+      right: auto;
+    }
+  }
+  &:hover {
+    &>.caption {
+      display: block;
+    }
+  }
+}

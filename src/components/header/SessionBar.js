@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import DropDownMenu from '../DropDownMenu.js';
 import Translated from '../Translated.js';
 import { logout } from '../../actions/session.js';
+import translate from '../../lang/index.js';
 import userPlaceholder from '../../assets/userPlaceholder.png';
 
 class SessionBar extends Component {
@@ -16,6 +17,7 @@ class SessionBar extends Component {
     return;
   }
   render() {
+    const __ = translate(this.props.lang.lang);
     const { session } = this.props;
     if (session.load.loading) {
       return (
@@ -34,7 +36,7 @@ class SessionBar extends Component {
         <div className='session'>
           <DropDownMenu title={(
             <img className='profile' src={session.photo || userPlaceholder}/>
-          )}>
+          )} caption={__('profileAndSettings')}>
             <ul>
               <li>
                 <Link to={`/${session.username}`}>
@@ -75,10 +77,11 @@ class SessionBar extends Component {
 
 SessionBar.propTypes = {
   session: PropTypes.object,
+  lang: PropTypes.object,
   logout: PropTypes.func.isRequired
 };
 
 export default connect(
-  state => ({session: state.session}),
+  state => ({session: state.session, lang: state.lang}),
   { logout }
 )(SessionBar);

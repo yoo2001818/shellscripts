@@ -29,15 +29,15 @@
   &>.button {
     display: block;
     cursor: pointer;
-    &>.title {
-      padding-right: 0.2em;
+    & .title {
+      padding-right: 0.3em;
       min-width: 1em;
       display: inline-block;
     }
     &>.icon {
       opacity: 0.6;
     }
-    &>.title {
+    & .title {
       text-decoration: underline;
     }
   }
@@ -108,14 +108,14 @@
       &>.icon {
         opacity: 1;
       }
-      &>.title {
+      & .title {
         text-decoration: none;
       }
       &:hover {
         &>.icon {
           opacity: 0.6;
         }
-        &>.title {
+        & .title {
           text-decoration: underline;
         }
       }

@@ -25,6 +25,7 @@
   "done": "Done",
   "signUpOr": "Or...",
   "viewProfile": "View profile",
+  "profileAndSettings": "Profile and settings",
   "AUTH_INVALID_USERNAME": "Invalid username",
   "AUTH_INVALID_PASSWORD": "Invalid password",
   "AUTH_USERNAME_POLICY": "Username should only contain alphanumberic characters.",

@@ -25,6 +25,7 @@
   "done": "완료",
   "signUpOr": "또는...",
   "viewProfile": "프로필 보기",
+  "profileAndSettings": "프로필 및 설정",
   "AUTH_INVALID_USERNAME": "올바른 사용자 이름이 아닙니다",
   "AUTH_INVALID_PASSWORD": "비밀번호가 틀립니다",
   "AUTH_USERNAME_POLICY": "사용자 이름은 알파벳과 숫자로만 구성되어야 합니다",
