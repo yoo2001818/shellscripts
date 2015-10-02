@@ -12,7 +12,7 @@ export default class Dialog extends Component {
     };
     this.handleClickEvent = this.handleClick.bind(this);
   }
-  handleClick() {
+  handleClick(e) {
     const { hidden } = this.state;
     if (hidden) {
       document.addEventListener('click', this.handleClickEvent);
@@ -22,14 +22,15 @@ export default class Dialog extends Component {
     this.setState({
       hidden: !hidden
     });
+    e.preventDefault();
   }
   render() {
     const { hidden } = this.state;
     const buttonContent = (
-      <span>
+      <a href={this.props.href || '#'}>
         <span className='title'>{this.props.title}</span>
         <i className='icon fa fa-caret-down'></i>
-      </span>
+      </a>
     );
     return (
       <div className={classNames('dropdown', { hidden })}>
@@ -52,6 +53,7 @@ export default class Dialog extends Component {
 }
 
 Dialog.propTypes = {
+  href: PropTypes.string,
   caption: PropTypes.string,
   children: PropTypes.any,
   title: PropTypes.any

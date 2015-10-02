@@ -36,7 +36,7 @@ class SessionBar extends Component {
         <div className='session'>
           <DropDownMenu title={(
             <img className='profile' src={session.photo || userPlaceholder}/>
-          )} caption={__('profileAndSettings')}>
+          )} caption={__('profileAndSettings')} href={`/${session.username}`}>
             <ul>
               <li>
                 <Link to={`/${session.username}`}>

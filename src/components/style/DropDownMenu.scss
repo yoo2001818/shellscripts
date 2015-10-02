@@ -29,6 +29,9 @@
   &>.button {
     display: block;
     cursor: pointer;
+    & a {
+      outline: 0;
+    }
     & .title {
       padding-right: 0.3em;
       min-width: 1em;
