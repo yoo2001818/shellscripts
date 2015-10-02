@@ -1,15 +1,27 @@
+@mixin arrowTop($size, $color) {
+  // 'Triangle' pointing top
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
+  content: '';
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 $size $size $size;
+  border-color: transparent transparent $color transparent;
+}
+
 .tooltip {
   position: relative;
   display: inline-block;
-  &>.content {
-    // What?
-  }
   &>.caption {
     position: absolute;
     top: 100%;
     z-index: 10;
     background-color: rgba(0, 0, 0, 0.7);
-    margin-top: 0.3em;
+    margin-top: 0.6em;
     line-height: 1em;
     padding: 0.6em;
     right: 50%;
@@ -33,6 +45,12 @@
     }
   }
   &:hover {
+    &>.content {
+      &:after {
+        @include arrowTop(0.3em, rgba(0, 0, 0, 0.7));
+        margin-top: 0.3em;
+      }
+    }
     &>.caption {
       display: block;
     }
