@@ -20,16 +20,27 @@
     position: absolute;
     top: 100%;
     z-index: 10;
-    background-color: rgba(0, 0, 0, 0.7);
-    margin-top: 0.6em;
+    background-color: #333;
+    margin-top: 0.3em;
     line-height: 1em;
     padding: 0.6em;
     right: 50%;
     // TODO get rid of CSS hack
     transform: translateX(50%);
     border-radius: 3pt;
-    display: none;
+    visibility: hidden;
+    opacity: 0;
     font-size: 0.9em;
+    transition: margin-top 0.3s, opacity 0.2s;
+  }
+  &>.content {
+    &:after {
+      @include arrowTop(0.5em, #333);
+      visibility: hidden;
+      margin-top: 0.3em;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
   }
   &.right {
     &>.caption {
@@ -47,12 +58,14 @@
   &:hover {
     &>.content {
       &:after {
-        @include arrowTop(0.3em, rgba(0, 0, 0, 0.7));
-        margin-top: 0.3em;
+        visibility: visible;
+        opacity: 1;
       }
     }
     &>.caption {
-      display: block;
+      visibility: visible;
+      margin-top: 0.8em;
+      opacity: 1;
     }
   }
 }

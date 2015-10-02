@@ -44,6 +44,12 @@
       text-decoration: underline;
     }
   }
+  &>.arrow {
+    opacity: 1;
+    position: relative;
+    top: 1pt;
+    transition: opacity 0.1s, top 0.2s;
+  }
   &>.arrow:before {
     // subtle arrow border :P
     @include arrowTop($TRIANGLE_SIZE, #999);
@@ -71,6 +77,9 @@
     box-shadow: 0 2px 4px -2px #000;
     min-width: 100%;
     line-height: 1em;
+    opacity: 1;
+    transition: opacity 0.2s, margin-top 0.3s,
+      border-top 0.1s linear 0.2s;
     ul {
       list-style-type: none;
       margin: 0;
@@ -123,7 +132,19 @@
         }
       }
     }
-    &>.arrow,&>.content,&>.cover {
+    &>.content {
+      visibility: hidden;
+      opacity: 0;
+      margin-top: 0;
+      // Avoid border overlay bug when animating
+      border-top: 1px solid transparent;
+    }
+    &>.arrow {
+      visibility: hidden;
+      opacity: 0;
+      top: -$TRIANGLE_SIZE;
+    }
+    &>.cover {
       display: none;
     }
   }
