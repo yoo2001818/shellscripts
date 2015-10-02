@@ -39,7 +39,7 @@ export default function serverRenderer(req, res) {
   const location = createLocation(req.originalUrl);
   const store = configureStore(undefined, superagentClient(req));
   // TODO should be moved to somewhere else...
-  store.dispatch(LangActions.set(req.acceptsLanguages('ko', 'en')));
+  store.dispatch(LangActions.set(req.acceptsLanguages('ko', 'en') || 'en'));
   match({ routes, location }, (error, redirectLocation, renderProps) => {
     if (redirectLocation) {
       res.redirect(redirectLocation.pathname + redirectLocation.search);

@@ -74,13 +74,14 @@ header {
       margin: 0 0.5em;
     }
     .profile {
-      width: 2.5em;
-      height: 2.5em;
+      width: 2.2em;
+      height: 2.2em;
       vertical-align: middle;
       border: none;
-      padding: 0.1em;
-      border-radius: 100%;
+      margin: 0.1em;
+      border-radius: 3pt;
       box-sizing: border-box;
+      box-shadow: 0 1px 3px -1px #000;
     }
   }
 }

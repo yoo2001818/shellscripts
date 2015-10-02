@@ -18,7 +18,7 @@
     "flux-standard-action": "^0.6.0",
     "font-awesome": "^4.4.0",
     "gm": "^1.20.0",
-    "history": "^1.9.1",
+    "history": "^1.11.1",
     "lodash": "^3.10.0",
     "morgan": "^1.6.1",
     "multer": "^1.0.5",
