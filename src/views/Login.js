@@ -74,7 +74,7 @@ class Login extends Component {
         <div className='select'>
           <div className='section'>
             { hasLocal ? (
-              <Dialog title={__('signInEmail')}>
+              <Dialog title={__('signIn')}>
                 <LocalLoginForm />
               </Dialog>
             ) : false }

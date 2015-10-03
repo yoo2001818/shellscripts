@@ -13,12 +13,34 @@ $break-small: 500pt;
     .photo {
       img {
         width: 100%;
-        max-width: 12em;
-        max-height: 12em;
-        padding: 0.3em;
+        max-width: 12rem;
+        max-height: 12rem;
+        padding: 0.3rem;
         background-color: #fff;
         border: 1px solid #999;
         border-radius: 4pt;
+      }
+      .dropzone {
+        cursor: pointer;
+        position: relative;
+        font-size: 0;
+        .loadingOverlay {
+          position: absolute;
+          font-size: 1.5rem;
+          border-radius: 4pt;
+          color: #fff;
+          background-color: rgba(0, 0, 0, 0.2);
+        }
+        &.active {
+          .loadingOverlay {
+            background-color: rgba(0, 0, 0, 0.4);
+          }
+        }
+        &:hover {
+          .loadingOverlay {
+            background-color: rgba(0, 0, 0, 0.4);
+          }
+        }
       }
       margin: 0 0.5em;
     }

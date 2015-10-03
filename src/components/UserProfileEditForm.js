@@ -2,15 +2,22 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import reduxForm from 'redux-form';
 import { isEmail, isURL } from 'validator';
+import Dropzone from 'react-dropzone';
 
 import Translated from './Translated.js';
 import ErrorInput from './ErrorInput.js';
 import translate from '../lang/index.js';
+import Overlay from './Overlay.js';
 import userPlaceholder from '../assets/userPlaceholder.png';
 
-import { setProfile } from '../actions/user.js';
+import { setProfile, uploadPhoto } from '../actions/user.js';
 
 class UserProfileEditForm extends Component {
+  handleDrop(files) {
+    const file = files[0];
+    if (file == null) return;
+    this.props.dispatch(uploadPhoto(file));
+  }
   handleSubmit(data) {
     this.props.dispatch(setProfile(this.props.user.username, data))
     .then(() => {
@@ -29,7 +36,14 @@ class UserProfileEditForm extends Component {
       <div className='card'>
         <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
           <div className='photo'>
-            <img src={user.photo || userPlaceholder} />
+            <Dropzone ref='dropzone' onDrop={this.handleDrop.bind(this)}
+              accept='image/*' className='dropzone' multiple={false}
+              activeClassName='' rejectClassname=''>
+              <img src={user.photo || userPlaceholder} />
+              <Overlay>
+                <i className='fa fa-plus'></i>
+              </Overlay>
+            </Dropzone>
           </div>
           <div className='content'>
             <div className='identity'>

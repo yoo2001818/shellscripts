@@ -127,19 +127,27 @@ userRouter.post('/photo', checkModifiable, upload.single('photo'),
 (req, res) => {
   const { file } = req;
   new Promise((resolve, reject) => {
-    console.log(req.file);
-    const finishedFile = `uploads/user_${req.selUser.id}_photo.png`;
+    const finishedFile =
+      `uploads/user_${req.selUser.id}_photo.png`;
     let { x, y, size } = req.body;
     // Convert x, y, size to integer.
     x = parseInt(x, 10);
     y = parseInt(y, 10);
     size = parseInt(size, 10);
     // First, we check if the file is an image.
-    if (file == null) return reject('no image');
-    if (!file.mimetype.startsWith('image/')) return reject('not image');
+    if (file == null || !file.mimetype.startsWith('image/')) {
+      return reject({
+        id: 'PROFILE_IMAGE_INVALID',
+        message: 'This is not a valid image file.'
+      });
+    }
     // Check the dimensions...
-    if (isNaN(x) || isNaN(y) || isNaN(size)) return reject('size invalid');
-    if (x < 0 || y < 0 || size <= 0) return reject('size invalid');
+    if (isNaN(x) || isNaN(y) || isNaN(size) || x < 0 || y < 0 || size <= 0) {
+      return reject({
+        id: 'PROFILE_IMAGE_DIMENSION_INVALID',
+        message: 'Please provide valid image dimensions.'
+      });
+    }
     // Crop / resize the image.
     gm(file.path)
     .flatten()
@@ -148,14 +156,19 @@ userRouter.post('/photo', checkModifiable, upload.single('photo'),
     .resize(256, 256, '!')
     .noProfile()
     .write(finishedFile, (err) => {
-      if (err) return reject(err);
+      if (err) {
+        return reject({
+          id: 'PROFILE_IMAGE_INVALID',
+          message: 'This is not a valid image file.'
+        });
+      }
       resolve(finishedFile);
     });
   })
   .then((path) => {
     // Upload the file to static server, etc
     // Set the profile image for now
-    req.selUser.photo = `/${path}`;
+    req.selUser.photo = `/${path}?version=${+new Date()}`;
     return req.selUser.save()
     .then(() => res.json(req.selUser));
   }, (err) => {

@@ -3,6 +3,7 @@ import { api, GET, POST } from '../middleware/api.js';
 
 export const FETCH = 'USER_FETCH';
 export const SET_PROFILE = 'USER_SET_PROFILE';
+export const UPLOAD_PHOTO = 'USER_UPLOAD_PHOTO';
 
 export const fetch = createAction(FETCH,
   username => api(GET, `/api/users/${username}`),
@@ -19,6 +20,20 @@ export const setProfile = createAction(SET_PROFILE,
   (username) => ({
     username,
     errors: [404]
+  })
+);
+
+export const uploadPhoto = createAction(UPLOAD_PHOTO,
+  file => api(POST, '/api/user/photo', {
+    $multipart: true,
+    $fields: {
+      x: 0,
+      y: 0,
+      size: 1000
+    },
+    $files: {
+      photo: file
+    }
   })
 );
 

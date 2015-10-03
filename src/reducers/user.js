@@ -31,6 +31,7 @@ export default function user(state = {
       })
     });
   case UserActions.SET_PROFILE:
+  case UserActions.UPLOAD_PHOTO:
     return Object.assign({}, state, {
       entities: Object.assign({}, entities, {
         [body.id]: body
