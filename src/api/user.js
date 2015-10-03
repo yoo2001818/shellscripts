@@ -77,11 +77,14 @@ userRouter.get('/collections', (req, res) => {
  */
 userRouter.post('/', checkModifiable, (req, res) => {
   const { name, website, bio } = req.body;
-  req.selUser.name = name;
-  req.selUser.website = website;
-  req.selUser.bio = bio;
-  return req.selUser.save()
-  .then(() => res.json(req.selUser));
+  req.selUser.update({
+    name, website, bio
+  })
+  .then(() => res.json(req.selUser),
+    (err) => {
+      res.status(500);
+      res.json(err);
+    });
 });
 
 /**
