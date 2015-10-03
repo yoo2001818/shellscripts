@@ -2,9 +2,11 @@ import './style/Search.scss';
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import Helmet from 'react-helmet';
 import qs from 'qs';
 import { setQuery, setTempQuery } from '../actions/search.js';
 import SearchBar from '../components/SearchBar.js';
+import translate from '../lang/index.js';
 
 class Search extends Component {
   componentWillUnmount() {
@@ -25,8 +27,9 @@ class Search extends Component {
     this.handledFocus = true;
   }
   render() {
+    const __ = translate(this.props.lang.lang);
     let innerContent;
-    const { load } = this.props.search;
+    const { load, query } = this.props.search;
     if (load.loading) {
       innerContent = (
         <div className='loading'>
@@ -40,6 +43,7 @@ class Search extends Component {
     }
     return (
       <div id="search">
+        <Helmet title={__('searchTitle', [query])} />
         <SearchBar refCallback={this.handleSearchBar.bind(this)} />
         <div className='content'>
           { innerContent }
@@ -51,11 +55,12 @@ class Search extends Component {
 
 Search.propTypes = {
   search: PropTypes.object,
+  lang: PropTypes.lang,
   setTempQuery: PropTypes.func
 };
 
 const ConnectSearch = connect(
-  store => ({search: store.search}),
+  store => ({search: store.search, lang: store.lang}),
   { setTempQuery }
 )(Search);
 

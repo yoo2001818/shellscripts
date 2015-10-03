@@ -2,7 +2,7 @@ import './style/UserProfile.scss';
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import translate from '../lang/index.js';
+import Helmet from 'react-helmet';
 import Translated from '../components/Translated.js';
 import UserProfileEditForm from '../components/UserProfileEditForm.js';
 import userPlaceholder from '../assets/userPlaceholder.png';
@@ -27,7 +27,6 @@ class UserProfile extends Component {
   render() {
     let { editing } = this.state;
     const { user, session } = this.props;
-    const __ = translate(this.props.lang.lang);
     // Editing should be immediately stopped if user signs out
     if (session.id !== user.id) editing = false;
     // TODO This is a mess. We should seperate editing page / viewing page -_-
@@ -72,8 +71,11 @@ class UserProfile extends Component {
         ) : false }
       </div>
     );
+    let docTitle = user.username;
+    if (user.name) docTitle = `${user.name} (${user.username})`;
     return (
       <div id='user-profile'>
+        <Helmet title={docTitle} />
         { card }
       </div>
     );
@@ -82,10 +84,9 @@ class UserProfile extends Component {
 
 UserProfile.propTypes = {
   user: PropTypes.object,
-  session: PropTypes.object,
-  lang: PropTypes.object
+  session: PropTypes.object
 };
 
 export default connect(
-  store => ({session: store.session, lang: store.lang})
+  store => ({session: store.session})
 )(UserProfile);

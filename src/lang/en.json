@@ -2,6 +2,7 @@
   "hello": "Hello, $1!",
   "sitename": "Shellscripts",
   "search": "Search",
+  "searchTitle": "Search - $1",
   "signIn": "Sign in",
   "signUp": "Create an account",
   "username": "Username",

@@ -2,6 +2,7 @@ import React from 'react';
 import createLocation from 'history/lib/createLocation';
 import { RoutingContext, match } from 'react-router';
 import { Provider } from 'react-redux';
+import Helmet from 'react-helmet';
 
 import configureStore from '../store/index.js';
 import routes from '../views/routes.js';
@@ -11,14 +12,13 @@ import { superagentClient } from '../api/client.js';
 
 import * as LangActions from '../actions/lang.js';
 
-function renderPage(html, initialState) {
+function renderPage(html, head, initialState) {
   return `
     <!doctype html>
     <html>
       <head>
-        <title>Shellscripts</title>
-        <meta name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>${head.title}</title>
+        ${head.meta.toString()}
         <link rel="stylesheet" type="text/css" href="/assets/bundle.css">
       </head>
       <body>
@@ -57,7 +57,7 @@ export default function serverRenderer(req, res) {
             </Provider>
           </div>
         );
-        let page = renderPage(appHtml, store.getState());
+        let page = renderPage(appHtml, Helmet.rewind(), store.getState());
         res.send(page);
       })
       .catch(err => {

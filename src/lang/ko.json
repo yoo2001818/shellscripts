@@ -2,6 +2,7 @@
   "hello": "안녕하세요, $1!",
   "sitename": "Shellscripts",
   "search": "검색",
+  "searchTitle": "검색 - $1",
   "signIn": "로그인",
   "signUp": "계정 만들기",
   "username": "사용자 이름",

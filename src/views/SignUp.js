@@ -3,6 +3,7 @@ import './style/SignUp.scss';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import Helmet from 'react-helmet';
 
 import translate from '../lang/index.js';
 import Dialog from '../components/Dialog.js';
@@ -34,6 +35,7 @@ class SignUp extends Component {
     if (id != null) {
       return (
         <div id='signup'>
+          <Helmet title={__('signUp')} />
           { signedUp ? (
             <Dialog title={__('signUp')}>
               <SignOutForm />
@@ -72,6 +74,7 @@ class SignUp extends Component {
     }
     return (
       <div id='signup'>
+        <Helmet title={__('signUp')} />
         <h1>
           <Translated name='signUp' />
         </h1>
