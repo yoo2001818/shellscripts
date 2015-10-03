@@ -30,6 +30,15 @@ export default function user(state = {
         [body.username && body.username.toLowerCase()]: body.id
       })
     });
+  case UserActions.SET_PROFILE:
+    return Object.assign({}, state, {
+      entities: Object.assign({}, entities, {
+        [body.id]: body
+      }),
+      usernames: Object.assign({}, usernames, {
+        [body.username && body.username.toLowerCase()]: body.id
+      })
+    });
   }
   return state;
 }
