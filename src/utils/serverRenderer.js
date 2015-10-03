@@ -8,7 +8,7 @@ import configureStore from '../store/index.js';
 import routes from '../views/routes.js';
 
 import prefetch from '../utils/prefetch.js';
-import { superagentClient } from '../api/client.js';
+import { superagentClient } from './apiClient.js';
 
 import * as LangActions from '../actions/lang.js';
 
