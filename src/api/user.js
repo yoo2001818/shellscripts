@@ -49,7 +49,9 @@ userRouter.get('/collections', (req, res) => {
  * @api {post} /user/ Update the profile
  * @apiGroup User
  * @apiName SetUserProfile
- * @apiParam (Body) {String} [email] The email address.
+ * @apiParam (Body) {String} name The name of the user.
+ * @apiParam (Body) {String} website The website address.
+ * @apiParam (Body) {String} bio The biography of the user.
  * @apiDescription Updates and returns the user profile.
  *
  *   This will fail if user hasn't signed in.
@@ -74,7 +76,12 @@ userRouter.get('/collections', (req, res) => {
  *   }
  */
 userRouter.post('/', checkModifiable, (req, res) => {
-  res.sendStatus(501);
+  const { name, website, bio } = req.body;
+  req.selUser.name = name;
+  req.selUser.website = website;
+  req.selUser.bio = bio;
+  return req.selUser.save()
+  .then(() => res.json(req.selUser));
 });
 
 /**
