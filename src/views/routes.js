@@ -9,6 +9,8 @@ import Search from './Search.js';
 import SignUp from './SignUp.js';
 import User from './User.js';
 import UserProfile from './UserProfile.js';
+import Settings from './Settings.js';
+import AccountSettings from './AccountSettings.js';
 
 export const routes = (
   <Route path='/' component={App}>
@@ -16,6 +18,10 @@ export const routes = (
     <Route path='login' component={Login} />
     <Route path='signup' component={SignUp} />
     <Route path='search' component={Search} />
+    <Route path='settings' component={Settings}>
+      <IndexRoute component={AccountSettings} />
+      <Route path='*' component={NotFound} />
+    </Route>
     <Route path=':username' component={User}>
       <IndexRoute component={UserProfile} />
     </Route>

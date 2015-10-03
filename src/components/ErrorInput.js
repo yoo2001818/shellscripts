@@ -12,26 +12,32 @@ export default class ErrorInput extends Component {
       error: this.props.error && this.props.touched
     });
     return (
-      <div className='errorInput'>
+      <div className={classNames('errorInput', {
+        showPlaceholder: this.props.showPlaceholder
+      })}>
         <div className='input'>
           <label className='label'>
             <span className='placeholder'>
               {this.props.placeholder}
             </span>
-            <input className={className} {...this.props}/>
+            <span className='field'>
+              <input className={className} {...this.props} placeholder={
+                this.props.showPlaceholder ? '' : this.props.placeholder
+              }/>
+              <div className='indicator'>
+                { this.props.error && this.props.touched ? (
+                  <i className="fa fa-times error"></i>
+                ) : null }
+                { !this.props.noSuccess & this.props.valid && this.props.touched
+                  && !this.props.asyncValidating ? (
+                  <i className="fa fa-check valid"></i>
+                ) : null }
+                { this.props.asyncValidating ? (
+                  <i className="fa fa-refresh fa-spin"></i>
+                ) : null }
+              </div>
+            </span>
           </label>
-          <div className='indicator'>
-            { this.props.error && this.props.touched ? (
-              <i className="fa fa-times error"></i>
-            ) : null }
-            { !this.props.noSuccess & this.props.valid && this.props.touched &&
-              !this.props.asyncValidating ? (
-              <i className="fa fa-check valid"></i>
-            ) : null }
-            { this.props.asyncValidating ? (
-              <i className="fa fa-refresh fa-spin"></i>
-            ) : null }
-          </div>
         </div>
         { typeof this.props.error === 'string' && this.props.touched ? (
           <Alert>{ this.props.error }</Alert>
@@ -48,6 +54,7 @@ export default class ErrorInput extends Component {
 
 ErrorInput.propTypes = {
   placeholder: PropTypes.string,
+  showPlaceholder: PropTypes.boolean,
   type: PropTypes.string,
   className: PropTypes.string,
   error: PropTypes.any,

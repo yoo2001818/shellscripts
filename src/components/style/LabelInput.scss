@@ -1,0 +1,14 @@
+.labelInput {
+  &>label {
+    &>.label {
+      display: block;
+      font-weight: bold;
+      font-size: 0.95em;
+      text-align: left;
+      color: #444;
+    }
+    &>.field {
+      display: block;
+    }
+  }
+}

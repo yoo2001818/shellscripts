@@ -1,0 +1,89 @@
+$break-small: 500pt;
+
+#settings {
+  position: relative;
+  &>.sidebar {
+    width: 17rem;
+    margin-right: 1rem;
+    float: left;
+    &>.box {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 0.2rem;
+      margin: 1.5em 0.5em;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 1em;
+      font-weight: bold;
+      margin: 0;
+      padding: 0.6em 1em;
+      background-color: #f9f9f9;
+      color: #333;
+      border-bottom: 1px solid #ccc;
+    }
+    ul, ol {
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      list-style-type: none;
+    }
+    a {
+      display: block;
+      background-color: #fff;
+      padding: 0.6em 1em;
+      color: #333;
+      text-decoration: none;
+      border-bottom: 1px solid #d9d9d9;
+      &:hover {
+        background-color: #eee;
+      }
+    }
+    li:last-child a {
+      border-bottom: none;
+    }
+    @media screen and (max-width: $break-small) {
+      float: none;
+      margin: 0 auto;
+      max-width: 20rem;
+      width: 100%;
+    }
+  }
+  &>.content {
+    margin-left: 18rem;
+    padding-top: 1em;
+    @media screen and (max-width: $break-small) {
+      margin-left: 0;
+    }
+  }
+  &:after {
+    clear: both;
+    content: '';
+    display: block;
+    font-size: 0;
+  }
+  section {
+    margin: 0 1em;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0.2rem;
+    margin: 0.5em 0.5em;
+    overflow: hidden;
+    &>h1 {
+      font-size: 1em;
+      font-weight: bold;
+      margin: 0;
+      padding: 0.6em 1em;
+      background-color: #f9f9f9;
+      color: #333;
+      border-bottom: 1px solid #ccc;
+    }
+    &>.content {
+      padding: 1em;
+      .field {
+        width: 20em;
+      }
+    }
+  }
+}

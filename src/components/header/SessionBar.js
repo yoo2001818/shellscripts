@@ -47,6 +47,11 @@ class SessionBar extends Component {
                 </Link>
               </li>
               <li>
+                <Link to='/settings'>
+                  <Translated name='settings' />
+                </Link>
+              </li>
+              <li>
                 <Link to='/logout' onClick={this.handleLogout.bind(this)}>
                   <Translated name='signOut' />
                 </Link>

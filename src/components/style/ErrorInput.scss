@@ -1,23 +1,36 @@
 .errorInput {
+  &.showPlaceholder {
+    &>.input>.label>.placeholder {
+      display: block;
+    }
+  }
   &>.input {
     position: relative;
     &>.label {
       display: block;
       &>.placeholder {
         display: none;
+        font-weight: bold;
+        font-size: 0.82em;
+        text-align: left;
+        color: #444;
       }
-    }
-    &>.indicator {
-      position: absolute;
-      top: 50%;
-	    transform: translateY(-50%);
-      right: 0.8em;
-      font-size: 0.9em;
-      &>.error {
-        color: #AE2020;
-      }
-      &>.valid {
-        color: #20AE20;
+      &>.field {
+        display: block;
+        position: relative;
+          &>.indicator {
+          position: absolute;
+          top: 50%;
+    	    transform: translateY(-50%);
+          right: 0.8em;
+          font-size: 0.9em;
+          &>.error {
+            color: #AE2020;
+          }
+          &>.valid {
+            color: #20AE20;
+          }
+        }
       }
     }
   }
