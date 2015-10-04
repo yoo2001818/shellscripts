@@ -34,7 +34,7 @@ class Login extends Component {
   render() {
     const __ = translate(this.props.lang.lang);
     let { id, load: { loading }, method } = this.props.session;
-    if (id != null) {
+    if (id !== false) {
       return (
         <div id='login'>
           <Helmet title={__('signIn')} />

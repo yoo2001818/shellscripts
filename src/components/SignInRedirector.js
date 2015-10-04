@@ -6,7 +6,7 @@ class SignInRedirector extends Component {
     let { id } = this.props.session;
     let { history } = this.context;
     // Redirect if user hasn't signed in.
-    if (id == null) {
+    if (id === false) {
       history.replaceState(null, '/login');
     }
   }
@@ -14,7 +14,7 @@ class SignInRedirector extends Component {
     let { id } = this.props.session;
     let { history } = this.context;
     // Redirect if user hasn't signed in.
-    if (id == null) {
+    if (id === false) {
       history.replaceState(null, '/login');
     }
   }

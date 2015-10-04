@@ -1,3 +1,4 @@
+import * as SessionActions from '../actions/session.js';
 import * as UserActions from '../actions/user.js';
 
 export default function user(state = {
@@ -10,6 +11,10 @@ export default function user(state = {
   const body = payload && payload.body;
   switch (type) {
   case UserActions.FETCH:
+  case SessionActions.FETCH:
+  case SessionActions.LOGIN:
+  case SessionActions.SIGNUP_FINALIZE:
+  case SessionActions.LOCAL_SIGNUP:
     if (error) {
       if (payload.status === 404) {
         return Object.assign({}, state, {

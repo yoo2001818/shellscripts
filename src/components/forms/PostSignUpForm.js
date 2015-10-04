@@ -15,11 +15,14 @@ class PostSignUpForm extends Component {
   render() {
     const __ = translate(this.props.lang.lang);
     const { fields: { username, email }, handleSubmit, session } = this.props;
+    const { id } = session;
+    if (id === false) return false;
+    const user = this.props.user.entities[id];
     return (
       <div className='form'>
         <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
           <ErrorInput placeholder={__('username')} type='text' {...username}
-            disabled={session.username}/>
+            disabled={user.username}/>
           <ErrorInput placeholder={__('email')} type='email' {...email} />
           <div className='footer'>
             <button>
@@ -37,6 +40,7 @@ PostSignUpForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   lang: PropTypes.object.isRequired,
   session: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   resetForm: PropTypes.func.isRequired,
   invalid: PropTypes.bool
@@ -77,7 +81,12 @@ function validateFormAsync(data, dispatch) {
 }
 
 export default connect(
-  store => ({form: store.form, lang: store.lang, session: store.session})
+  store => ({
+    form: store.form,
+    lang: store.lang,
+    session: store.session,
+    user: store.user
+  })
 )(reduxForm({
   form: 'postSignUp',
   fields: ['username', 'email'],

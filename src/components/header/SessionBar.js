@@ -26,8 +26,9 @@ class SessionBar extends Component {
         </div>
       );
     }
-    if (session.id != null) {
-      if (!session.signedUp) {
+    if (session.id !== false) {
+      const user = this.props.user.entities[session.id];
+      if (!user.signedUp) {
         return (
           <div className='session' />
         );
@@ -35,12 +36,12 @@ class SessionBar extends Component {
       return (
         <div className='session'>
           <DropDownMenu title={(
-            <img className='profile' src={session.photo || userPlaceholder}/>
-          )} caption={__('profileAndSettings')} href={`/${session.username}`}>
+            <img className='profile' src={user.photo || userPlaceholder}/>
+          )} caption={__('profileAndSettings')} href={`/${user.username}`}>
             <ul>
               <li>
-                <Link to={`/${session.username}`}>
-                  <p className='bold'>{ session.username }</p>
+                <Link to={`/${user.username}`}>
+                  <p className='bold'>{ user.username }</p>
                   <p className='small right'>
                     <Translated name='viewProfile' />
                   </p>
@@ -82,11 +83,16 @@ class SessionBar extends Component {
 
 SessionBar.propTypes = {
   session: PropTypes.object,
+  user: PropTypes.object,
   lang: PropTypes.object,
   logout: PropTypes.func.isRequired
 };
 
 export default connect(
-  state => ({session: state.session, lang: state.lang}),
+  state => ({
+    session: state.session,
+    user: state.user,
+    lang: state.lang
+  }),
   { logout }
 )(SessionBar);
