@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import Translated from '../components/Translated.js';
-import UserProfileEditForm from '../components/UserProfileEditForm.js';
+import UserProfileEditForm from '../components/forms/UserProfileEditForm.js';
 import userPlaceholder from '../assets/userPlaceholder.png';
 
 class UserProfile extends Component {

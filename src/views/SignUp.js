@@ -8,10 +8,10 @@ import Helmet from 'react-helmet';
 import translate from '../lang/index.js';
 import Dialog from '../components/Dialog.js';
 import Translated from '../components/Translated.js';
-import LocalSignUpForm from '../components/LocalSignUpForm.js';
+import LocalSignUpForm from '../components/forms/LocalSignUpForm.js';
 import PostSignUp from '../components/PostSignUp.js';
 import LoadingOverlay from '../components/LoadingOverlay.js';
-import SignOutForm from '../components/SignOutForm.js';
+import SignOutForm from '../components/forms/SignOutForm.js';
 
 import { oAuthSignUp, methodLoad } from '../actions/session.js';
 import { reset } from 'redux-form';

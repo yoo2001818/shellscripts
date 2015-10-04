@@ -40,6 +40,7 @@
   "authMethods": "Authentication methods",
   "notifications": "Notifications",
   "account": "Account",
+  "language": "Language",
   "AUTH_INVALID_USERNAME": "Invalid username",
   "AUTH_INVALID_PASSWORD": "Invalid password",
   "AUTH_USERNAME_POLICY": "Username should only contain alphanumberic characters.",

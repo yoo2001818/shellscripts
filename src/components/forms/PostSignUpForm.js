@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import reduxForm from 'redux-form';
 import { isEmail, isAlphanumeric } from 'validator';
 
-import Translated from './Translated.js';
-import ErrorInput from './ErrorInput.js';
-import translate from '../lang/index.js';
-import { checkUsername, signUpFinalize } from '../actions/session.js';
+import Translated from '../Translated.js';
+import ErrorInput from '../ErrorInput.js';
+import translate from '../../lang/index.js';
+import { checkUsername, signUpFinalize } from '../../actions/session.js';
 
 class PostSignUpForm extends Component {
   handleSubmit(data) {

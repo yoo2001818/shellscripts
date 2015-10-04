@@ -4,13 +4,13 @@ import reduxForm from 'redux-form';
 import { isEmail, isURL } from 'validator';
 import Dropzone from 'react-dropzone';
 
-import Translated from './Translated.js';
-import ErrorInput from './ErrorInput.js';
-import translate from '../lang/index.js';
-import Overlay from './Overlay.js';
-import userPlaceholder from '../assets/userPlaceholder.png';
+import Translated from '../Translated.js';
+import ErrorInput from '../ErrorInput.js';
+import translate from '../../lang/index.js';
+import Overlay from '../Overlay.js';
+import userPlaceholder from '../../assets/userPlaceholder.png';
 
-import { setProfile, uploadPhoto } from '../actions/user.js';
+import { setProfile, uploadPhoto } from '../../actions/user.js';
 
 class UserProfileEditForm extends Component {
   handleDrop(files) {

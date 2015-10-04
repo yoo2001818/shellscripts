@@ -5,7 +5,7 @@ import React, { Component, PropTypes } from 'react';
 export default class LabelInput extends Component {
   render() {
     return (
-      <div className='labelInput'>
+      <div className='labelInput input'>
         <label>
           <span className='label'>
             {this.props.label}

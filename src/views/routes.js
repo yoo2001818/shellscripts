@@ -10,7 +10,8 @@ import SignUp from './SignUp.js';
 import User from './User.js';
 import UserProfile from './UserProfile.js';
 import Settings from './Settings.js';
-import AccountSettings from './AccountSettings.js';
+import AccountSettings from './settings/AccountSettings.js';
+import AuthMethodSettings from './settings/AuthMethodSettings.js';
 
 export const routes = (
   <Route path='/' component={App}>
@@ -20,6 +21,7 @@ export const routes = (
     <Route path='search' component={Search} />
     <Route path='settings' component={Settings}>
       <IndexRoute component={AccountSettings} />
+      <Route path='authMethods' component={AuthMethodSettings} />
       <Route path='*' component={NotFound} />
     </Route>
     <Route path=':username' component={User}>

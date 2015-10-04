@@ -56,6 +56,13 @@ $break-small: 500pt;
     @media screen and (max-width: $break-small) {
       margin-left: 0;
     }
+    &>div {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 0.2rem;
+      margin: 0.5em 0.5em;
+      overflow: hidden;
+    }
   }
   &:after {
     clear: both;
@@ -64,26 +71,32 @@ $break-small: 500pt;
     font-size: 0;
   }
   section {
-    margin: 0 1em;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 0.2rem;
-    margin: 0.5em 0.5em;
-    overflow: hidden;
     &>h1 {
-      font-size: 1em;
+      font-size: 1.2em;
       font-weight: bold;
       margin: 0;
-      padding: 0.6em 1em;
-      background-color: #f9f9f9;
+      padding: 0.8em 1em;
       color: #333;
-      border-bottom: 1px solid #ccc;
+      //background-color: #f9f9f9;
+      //border-bottom: 1px solid #ccc;
     }
     &>.content {
       padding: 1em;
-      .field {
-        width: 20em;
+      .input {
+        max-width: 20em;
       }
+      .footer {
+        text-align: left;
+        button {
+          width: auto;
+          padding-left: 1.5em;
+          padding-right: 1.5em;
+        }
+      }
+    }
+    border-bottom: 1px solid #ccc;
+    &:last-child {
+      border-bottom: none;
     }
   }
 }

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import PostSignUpForm from './PostSignUpForm.js';
+import PostSignUpForm from './forms/PostSignUpForm.js';
 import Translated from './Translated.js';
 import Dialog from './Dialog.js';
 

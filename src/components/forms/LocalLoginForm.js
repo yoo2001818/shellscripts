@@ -2,11 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import reduxForm from 'redux-form';
 
-import Translated from './Translated.js';
-import ErrorInput from './ErrorInput.js';
-import translate from '../lang/index.js';
-import { login } from '../actions/session.js';
-import Alert from './Alert.js';
+import Translated from '../Translated.js';
+import ErrorInput from '../ErrorInput.js';
+import translate from '../../lang/index.js';
+import { login } from '../../actions/session.js';
+import Alert from '../Alert.js';
 
 class LocalLoginForm extends Component {
   handleSubmit(data) {

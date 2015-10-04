@@ -40,6 +40,7 @@
   "authMethods": "인증 수단",
   "notifications": "알림",
   "account": "계정",
+  "language": "언어",
   "AUTH_INVALID_USERNAME": "올바른 사용자 이름이 아닙니다",
   "AUTH_INVALID_PASSWORD": "비밀번호가 틀립니다",
   "AUTH_USERNAME_POLICY": "사용자 이름은 알파벳과 숫자로만 구성되어야 합니다",

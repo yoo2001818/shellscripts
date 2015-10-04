@@ -11,8 +11,8 @@ import Translated from '../components/Translated.js';
 import { oAuthSignUp, login, logout, methodLoad } from '../actions/session.js';
 import { reset } from 'redux-form';
 import Dialog from '../components/Dialog.js';
-import LocalLoginForm from '../components/LocalLoginForm.js';
-import SignOutForm from '../components/SignOutForm.js';
+import LocalLoginForm from '../components/forms/LocalLoginForm.js';
+import SignOutForm from '../components/forms/SignOutForm.js';
 import LoadingOverlay from '../components/LoadingOverlay.js';
 
 class Login extends Component {
