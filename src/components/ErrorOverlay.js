@@ -1,5 +1,3 @@
-import './style/ErrorOverlay.scss';
-
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
@@ -8,6 +6,7 @@ import Dialog from './Dialog.js';
 import Alert from './Alert.js';
 import Translated from './Translated.js';
 import translate from '../lang/index.js';
+import DialogOverlay from './DialogOverlay.js';
 
 class ErrorOverlay extends Component {
   handleDismiss() {
@@ -37,22 +36,18 @@ class ErrorOverlay extends Component {
       errorMsg = error.body.message;
     }
     return (
-      <div id='errorCover'>
-        <div className='middle'>
-          <Dialog title={__('error')}>
-            <div>
-              <Translated name='errorDesc' />
-            </div>
-            <Alert>{`${errorMsg} @ ${error.type}`}</Alert>
-            <div className='footer'>
-              <button onClick={this.handleDismiss.bind(this)}
-              ref='dismiss'>
-                <Translated name='dismiss' />
-              </button>
-            </div>
-          </Dialog>
+      <DialogOverlay title={__('error')}>
+        <div>
+          <Translated name='errorDesc' />
         </div>
-      </div>
+        <Alert>{`${errorMsg} @ ${error.type}`}</Alert>
+        <div className='footer'>
+          <button onClick={this.handleDismiss.bind(this)}
+          ref='dismiss'>
+            <Translated name='dismiss' />
+          </button>
+        </div>
+      </DialogOverlay>
     );
   }
 }

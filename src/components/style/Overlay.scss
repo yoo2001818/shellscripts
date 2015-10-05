@@ -1,4 +1,4 @@
-.loadingOverlay {
+.overlay {
   position: absolute;
   z-index: 30;
   top: 0;
@@ -14,8 +14,17 @@
       display: table-cell;
       text-align: center;
       vertical-align: middle;
-      font-size: 2em;
+    }
+  }
+  &.loading {
+    .container .message {
+      font-size: 3rem;
       color: #fff;
     }
+  }
+  &.fixed {
+    position: fixed;
+    z-index: 100;
+    overflow: auto;
   }
 }

@@ -40,7 +40,7 @@ class UserProfileEditForm extends Component {
               accept='image/*' className='dropzone' multiple={false}
               activeClassName='' rejectClassname=''>
               <img src={user.photo || userPlaceholder} />
-              <Overlay>
+              <Overlay className='loading'>
                 <i className='fa fa-plus'></i>
               </Overlay>
             </Dropzone>
