@@ -54,7 +54,7 @@ export default class ErrorInput extends Component {
 
 ErrorInput.propTypes = {
   placeholder: PropTypes.string,
-  showPlaceholder: PropTypes.boolean,
+  showPlaceholder: PropTypes.bool,
   type: PropTypes.string,
   className: PropTypes.string,
   error: PropTypes.any,

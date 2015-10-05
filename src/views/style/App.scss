@@ -83,4 +83,9 @@ input, textarea {
   &:invalid {
     box-shadow: none;
   }
+  &[type="range"] {
+    border: none !important;
+    border-radius: none;
+    background-color: transparent !important;
+  }
 }

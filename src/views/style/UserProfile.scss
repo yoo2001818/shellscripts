@@ -6,9 +6,11 @@ $break-small: 500pt;
     padding: 0.5em;
     margin-top: 1em;
     position: relative;
-    .photo, .content {
-      display: inline-block;
-      vertical-align: top;
+    &, &>form {
+      &>.photo, &>.content {
+        display: inline-block;
+        vertical-align: top;
+      }
     }
     .photo {
       img {
@@ -45,14 +47,14 @@ $break-small: 500pt;
       }
       margin: 0 0.5em;
     }
-    .content {
+    &>.content, &>form>.content {
       padding: 0 0.5em;
       margin-top: 0.5em;
       max-width: 18em;
       width: 100%;
       text-align: left;
       word-wrap: break-word;
-      * {
+      p, h1 {
         margin: 0;
         padding: 0;
       }

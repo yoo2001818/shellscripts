@@ -28,6 +28,9 @@
       }
     }
   }
+  &.large {
+    max-width: 32em;
+  }
   & > h1 {
     text-align: center;
     font-size: 1.2em;
@@ -36,6 +39,9 @@
   & > .content {
     margin: 1em;
     margin-top: 2em;
+    canvas {
+      max-width: 100%;
+    }
   }
   &.loading {
     button {
@@ -47,6 +53,14 @@
   .footer {
     margin-top: 1em;
     text-align: center;
+    &.linear {
+      text-align: center;
+      button {
+        width: auto;
+        padding: 0.6em 1.8em;
+        margin: 0.5em 0.4em;
+      }
+    }
   }
   button {
     width: 100%;
