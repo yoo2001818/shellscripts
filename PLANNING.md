@@ -1,6 +1,6 @@
 # Shellscripts Planning Document
 Shellscripts is a shell script repository website; You can easily get and run
-shellscripts as simple as package managers such as `apt-get`.
+shellentries as simple as package managers such as `apt-get`.
 
 There will be two frontend for Shellscripts:
 - Web frontend.
@@ -36,14 +36,41 @@ Users can have multiple auth methods.
 - identifier - String
 - data - Text
 
-## Script
-Represents a script.
+## Entry
+Represents a script or a collection.
 
 - name - String
+- title - String
 - author - User
 - tags - Tag
 - description - Text
+- type - Enum
+
+Script only:
+
 - script - Text
+
+Collection only:
+
+**TODO**
+
+### Accessing
+
+- /entries/:username/:name
+
+`:name` is like a slug - it's an unique identifier.
+Also, each entry resides in a user: That means entries can be accessed like
+`testAccount/rmRfv`.
+
+Why use `username/name` format? It's much better than `5323214` format right?
+
+### TODO
+
+- Versions
+- Comments
+- License
+- Upvotes / Downvotes or Stars
+- Collections
 
 ## Tag
 Represents a tag. Tag can be used as a 'distribution' marker, etc.
@@ -52,7 +79,7 @@ Represents a tag. Tag can be used as a 'distribution' marker, etc.
 - description - Text
 - type - TagType
 - author - User
-- scripts - Script
+- entries - Entry
 
 ## TagType
 A tag type, such as 'distribution', 'language', 'arch'.
@@ -127,52 +154,52 @@ Sets specific field of the user's profile.
 ### DELETE /user
 Deactivate the user forever.
 
-## Script
+## Entries
 
-### GET /scripts/
-Search a script.
+### GET /entries/
+Search entries.
 
-### GET /scripts/:id
-Returns a script with the ID.
+### GET /entries/:author/:name
+Returns a entry.
 
-### PUT /scripts/:id
-Edit the script.
+### PUT /entries/:author/:name
+Edit the entry.
 
-### DELETE /scripts/:id
-Remove the script.
+### DELETE /entries/:author/:name
+Remove the entry.
 
-### POST /scripts/:id/vote
-Vote the script.
+### POST /entries/:author/:name/vote
+Cast a vote.
 
-### DELETE /scripts/:id/vote
+### DELETE /entries/:author/:name/vote
 Cancel the vote.
 
-### GET /scripts/:id/comments
-Returns comments in the script.
+### GET /entries/:author/:name/comments
+Returns comments in the entry.
 
-### POST /scripts/:id/comments
-Post a comment into the script.
+### POST /entries/:author/:name/comments
+Post a comment into the entry.
 
-### POST /scripts/:id/report
-Report the script to admins.
+### POST /entries/:author/:name/report
+Report the entry to admins.
 
-### POST /scripts/:id/tag
-Post a tag into the script.
+### POST /entries/:author/:name/tag
+Post a tag into the entry.
 
-### PUT /scripts/:id/tag
-Replace entire tag list of the script.
+### PUT /entries/:author/:name/tag
+Replace entire tag list of the entry.
 
-### DELETE /scripts/:id/tag
+### DELETE /entries/:author/:name/tag
 Delete entire tag list.
 
-### GET /scripts/:id/tag
+### GET /entries/:author/:name/tag
 Return a tag list.
 
-### DELETE /scripts/:id/tag/:tag
+### DELETE /entries/:author/:name/tag/:tag
 Remove a tag from the tag list.
 
-### POST /scripts/
-Saves a new script to the database.
+### POST /entries/
+Save a new entry to the database.
 
 ## Comment
 
