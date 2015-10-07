@@ -22,7 +22,8 @@
     "new-cap": [2,
       {
         "capIsNewExceptions": [
-          "Server"
+          "Server",
+          "ENUM"
         ]
       }
     ],

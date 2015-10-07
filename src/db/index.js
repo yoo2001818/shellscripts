@@ -94,28 +94,29 @@ export const Tag = sequelize.define('tag', {
   description: Sequelize.TEXT
 });
 
-export const Script = sequelize.define('script', {
+export const Entry = sequelize.define('entry', {
   name: {
     type: Sequelize.STRING,
-    allowNull: false,
-    unique: true
+    allowNull: false
   },
+  title: Sequelize.STRING,
   description: Sequelize.TEXT,
+  type: Sequelize.ENUM('script', 'collection'),
   script: Sequelize.TEXT
 });
 
 Passport.belongsTo(User);
 User.hasMany(Passport);
-User.hasMany(Script);
+User.hasMany(Entry);
 // Uh... why do I need this?
 User.hasMany(Tag);
 
 TagType.hasMany(Tag);
 Tag.belongsTo(User, {as: 'author'});
 Tag.belongsTo(TagType, {as: 'type'});
-Tag.belongsToMany(Script, {through: 'scriptTag'});
+Tag.belongsToMany(Entry, {through: 'entryTag'});
 
-Script.belongsTo(User, {as: 'author'});
-Script.belongsToMany(Tag, {through: 'scriptTag'});
+Entry.belongsTo(User, {as: 'author'});
+Entry.belongsToMany(Tag, {through: 'entryTag'});
 
 sequelize.sync();
