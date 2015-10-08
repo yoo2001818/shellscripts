@@ -43,6 +43,7 @@ Represents a script or a collection.
 - title - String
 - author - User
 - tags - Tag
+- brief - Text
 - description - Text
 - type - Enum
 
@@ -78,7 +79,7 @@ Represents a tag. Tag can be used as a 'distribution' marker, etc.
 - name - String, Unique
 - description - Text
 - type - TagType
-- author - User
+- ~~author - User~~
 - entries - Entry
 
 ## TagType
