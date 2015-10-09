@@ -12,8 +12,16 @@ const mockupData = [
     name: 'Reinstall GRUB',
     title: 'reinstallgrub',
     author: {
-      id: 4,
-      username: 'QWERTY'
+      id: 2,
+      username: 'yoo2001818',
+      login: 'yoo2001818',
+      email: 'test@example.com',
+      signedUp: true,
+      isAdmin: true,
+      name: '끼로',
+      bio: '안녕하세요 끼로입니다\n와와 잘된다',
+      photo: '/uploads/user_2_photo.png?version=1444062538641',
+      website: 'http://kkiro.kr/'
     },
     tags: [
       {
