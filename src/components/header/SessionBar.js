@@ -18,7 +18,7 @@ class SessionBar extends Component {
   }
   render() {
     const __ = translate(this.props.lang.lang);
-    const { session } = this.props;
+    const { session, user } = this.props;
     if (session.load.loading) {
       return (
         <div className='session loading'>
@@ -26,8 +26,7 @@ class SessionBar extends Component {
         </div>
       );
     }
-    if (session.id !== false) {
-      const user = this.props.user.entities[session.id];
+    if (user) {
       if (!user.signedUp) {
         return (
           <div className='session' />
@@ -89,10 +88,10 @@ SessionBar.propTypes = {
 };
 
 export default connect(
-  state => ({
-    session: state.session,
-    user: state.user,
-    lang: state.lang
-  }),
+  state => {
+    const { session, entities: { users }, lang } = state;
+    const user = users[session.login];
+    return { session, user, lang };
+  },
   { logout }
 )(SessionBar);

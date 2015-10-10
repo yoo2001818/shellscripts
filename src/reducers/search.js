@@ -15,21 +15,21 @@ export default function search(state = {
   if (!action.payload) return Object.assign({}, state, { load });
   const { query } = action.payload;
   switch (action.type) {
-    case SearchActions.FETCH:
-      break;
-    case SearchActions.SET_QUERY:
-      // Invalidate result too.
-      return Object.assign({}, state, {
-        query,
-        tempQuery: query,
-        result: undefined,
-        load
-      });
-    case SearchActions.SET_TEMP_QUERY:
-      return Object.assign({}, state, {
-        tempQuery: query,
-        load
-      });
+  case SearchActions.FETCH:
+    break;
+  case SearchActions.SET_QUERY:
+    // Invalidate result too.
+    return Object.assign({}, state, {
+      query,
+      tempQuery: query,
+      result: undefined,
+      load
+    });
+  case SearchActions.SET_TEMP_QUERY:
+    return Object.assign({}, state, {
+      tempQuery: query,
+      load
+    });
   }
   return Object.assign({}, state, { load });
 }

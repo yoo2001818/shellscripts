@@ -4,6 +4,7 @@ import thunkMiddleware from 'redux-thunk';
 import promiseMiddleware from '../middleware/promise.js';
 import createLogger from 'redux-logger';
 import apiMiddleware from '../middleware/api.js';
+import normalizeMiddleware from '../middleware/normalize.js';
 
 import * as reducers from '../reducers';
 
@@ -20,6 +21,7 @@ export default function configureStore(initialState, client) {
     thunkMiddleware,
     apiMiddleware(client),
     promiseMiddleware,
+    normalizeMiddleware,
     logger
   );
 
@@ -30,9 +32,8 @@ export default function configureStore(initialState, client) {
     createStoreWithMiddleware = compose(
       middlewares,
       devTools(),
-      persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/)),
-      createStore
-    );
+      persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
+    )(createStore);
   }
 
   return createStoreWithMiddleware(reducer, initialState);

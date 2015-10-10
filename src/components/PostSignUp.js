@@ -8,8 +8,7 @@ import Dialog from './Dialog.js';
 class PostSignUp extends Component {
   // TODO Logout when user leaves the page.
   render() {
-    let { id } = this.props.session;
-    let user = this.props.user.entities[id];
+    let user = this.props.user;
     return (
       <div>
         <p>
@@ -30,9 +29,9 @@ PostSignUp.propTypes = {
 };
 
 export default connect(
-  store => ({
-    session: store.session,
-    user: store.user,
-    lang: store.lang
-  })
+  store => {
+    const { session, entities: { users }, lang } = store;
+    const user = users[session.login];
+    return { session, user, lang };
+  }
 )(PostSignUp);

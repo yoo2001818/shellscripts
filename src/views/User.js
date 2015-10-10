@@ -4,17 +4,10 @@ import { connect } from 'react-redux';
 import { load } from '../actions/user.js';
 import NotFound from './NotFound.js';
 
-function getUserByUsername(user, username) {
-  if (username == null) return null;
-  const { entities, usernames } = user;
-  const userId = usernames[username.toLowerCase()];
-  if (userId === null) return null;
-  return entities[userId];
-}
-
 class User extends Component {
   render() {
-    const user = getUserByUsername(this.props.user, this.props.params.username);
+    const { users } = this.props;
+    const user = users[this.props.params.username.toLowerCase()];
     if (user) {
       // Inject user, that's it.
       return cloneElement(this.props.children, { user });
@@ -36,12 +29,12 @@ class User extends Component {
 
 User.propTypes = {
   params: PropTypes.object,
-  user: PropTypes.object,
+  users: PropTypes.object,
   children: PropTypes.object
 };
 
 const ConnectUser = connect(
-  store => ({user: store.user}),
+  store => ({users: store.entities.users}),
   { load }
 )(User);
 

@@ -11,9 +11,9 @@ class SignOutForm extends Component {
     this.props.logout();
   }
   render() {
-    const { id } = this.props.session;
-    if (id === false) return false;
-    const { username } = this.props.user.entities[id];
+    const { user } = this.props;
+    if ( !user ) return false;
+    const { username } = user;
     return (
       <div>
         <Translated name='alreadySignedIn'>{ username }</Translated>
@@ -34,9 +34,10 @@ SignOutForm.propTypes = {
 };
 
 export default connect(
-  store => ({
-    session: store.session,
-    user: store.user
-  }),
+  store => {
+    const { session, entities: { users }} = store;
+    const user = users[session.login];
+    return { session, user };
+  },
   { logout }
 )(SignOutForm);

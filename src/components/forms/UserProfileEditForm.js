@@ -184,7 +184,6 @@ export default connect(
   store => ({
     form: store.form,
     lang: store.lang,
-    session: store.session,
     load: store.load
   })
 )(reduxForm({

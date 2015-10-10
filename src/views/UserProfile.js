@@ -28,7 +28,7 @@ class UserProfile extends Component {
     let { editing } = this.state;
     const { user, session } = this.props;
     // Editing should be immediately stopped if user signs out
-    if (session.id !== user.id) editing = false;
+    if (session.login !== user.login) editing = false;
     // TODO This is a mess. We should seperate editing page / viewing page -_-
     const card = editing ? (
       <UserProfileEditForm initialValues={user} user={user}
@@ -59,7 +59,7 @@ class UserProfile extends Component {
             {user.bio}
           </p>
         </div>
-        { !editing && session.id === user.id ? (
+        { !editing && session.login === user.login ? (
           <div className='edit'>
             <button onClick={this.handleStartEdit.bind(this)}>
               <i className="fa fa-pencil"></i>

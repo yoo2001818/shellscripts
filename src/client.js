@@ -35,25 +35,10 @@ render(
   document.getElementById('wrapper')
 );
 
-/*Router.run(routes, HistoryLocation, (Handler, routerState) => {
-  prefetch(store, routerState);
-  let devTools = null;
-  if (__CLIENT__ && __DEVELOPMENT__ && __DEVTOOLS__) {
-    const { DevTools, DebugPanel, LogMonitor }
-      = require('redux-devtools/lib/react');
-    devTools = (
-      <DebugPanel top right bottom key="debugPanel">
-        <DevTools store={store} monitor={LogMonitor}/>
-      </DebugPanel>
-    );
-  }
-  React.render(
-    <div id='root'>
-      <Provider store={store}>
-        {() => <Handler routerState={routerState} />}
-      </Provider>
-      {devTools}
-    </div>,
-    document.getElementById('wrapper')
-  );
-});*/
+if (__CLIENT__ && __DEVELOPMENT__ && __DEVTOOLS__) {
+  // Use require because imports can't be conditional.
+  // In production, you should ensure process.env.NODE_ENV
+  // is envified so that Uglify can eliminate this
+  // module and its dependencies as dead code.
+  require('./utils/createDevToolsWindow.js')(store);
+}

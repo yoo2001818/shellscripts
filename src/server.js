@@ -37,10 +37,11 @@ if (!__DEVELOPMENT__) {
   let compiler = webpack(webpackConfig);
 
   app.use(webpackHotMiddleware(compiler, {
-     log: null, heartbeat: 10 * 1000
+    log: null, heartbeat: 10 * 1000
   }));
   app.use(compression());
   app.use(webpackDevMiddleware(compiler, {
+    noInfo: true,
     publicPath: '/assets/'
   }));
 }

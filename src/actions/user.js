@@ -1,5 +1,6 @@
 import { createAction } from 'redux-actions';
 import { api, GET, POST } from '../middleware/api.js';
+import { User } from '../schema/index.js';
 
 export const FETCH = 'USER_FETCH';
 export const SET_PROFILE = 'USER_SET_PROFILE';
@@ -9,7 +10,8 @@ export const fetch = createAction(FETCH,
   username => api(GET, `/api/users/${username}`),
   username => ({
     username,
-    errors: [404]
+    errors: [404],
+    schema: User
   })
 );
 
@@ -19,7 +21,8 @@ export const setProfile = createAction(SET_PROFILE,
   (username, data) => api(POST, `/api/user`, data),
   (username) => ({
     username,
-    errors: [404]
+    errors: [404],
+    schema: User
   })
 );
 
@@ -34,14 +37,17 @@ export const uploadPhoto = createAction(UPLOAD_PHOTO,
     $files: {
       photo: file
     }
+  }),
+  () => ({
+    schema: User
   })
 );
 
 export function load(username = '') {
   return (dispatch, getState) => {
-    const { user } = getState();
-    const userId = user.usernames[username.toLowerCase()];
-    if (userId == null || user.entities[userId] == null) {
+    const { entities: { users } } = getState();
+    const userId = users[username.toLowerCase()];
+    if (userId == null || users[userId] == null) {
       return dispatch(fetch(username));
     }
     return Promise.resolve();

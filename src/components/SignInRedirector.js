@@ -3,18 +3,18 @@ import { connect } from 'react-redux';
 
 class SignInRedirector extends Component {
   componentWillMount() {
-    let { id } = this.props.session;
+    let { login } = this.props.session;
     let { history } = this.context;
     // Redirect if user hasn't signed in.
-    if (id === false) {
+    if (login == null) {
       history.replaceState(null, '/login');
     }
   }
   componentDidUpdate() {
-    let { id } = this.props.session;
+    let { login } = this.props.session;
     let { history } = this.context;
     // Redirect if user hasn't signed in.
-    if (id === false) {
+    if (login == null) {
       history.replaceState(null, '/login');
     }
   }

@@ -1,5 +1,6 @@
 // Session related actions come here
 import { createAction } from 'redux-actions';
+import { User } from '../schema/index.js';
 import { api, GET, POST, DELETE } from '../middleware/api.js';
 
 export const FETCH = 'SESSION_FETCH';
@@ -15,11 +16,14 @@ export const CHECK_EMAIL = 'SESSION_CHECK_EMAIL';
 export const fetch = createAction(FETCH,
   () => api(GET, '/api/session', {}),
   () => ({
-    errors: [401]
+    errors: [401],
+    schema: User
   }));
 export const login = createAction(LOGIN,
   credentials => api(POST, '/api/session/local', credentials),
-  (_, meta) => meta);
+  (_, meta) => Object.assign({}, meta, {
+    schema: User
+  }));
 export const logout = createAction(LOGOUT,
   () => api(DELETE, '/api/session', {}),
   (_, meta) => meta);
@@ -28,10 +32,14 @@ export const logout = createAction(LOGOUT,
 // users table, and put user's ID in here.
 export const signUpFinalize = createAction(SIGNUP_FINALIZE,
   data => api(POST, '/api/user/finalize', data),
-  (_, meta) => meta);
+  (_, meta) => Object.assign({}, meta, {
+    schema: User
+  }));
 export const localSignUp = createAction(LOCAL_SIGNUP,
   credentials => api(POST, '/api/session/local/register', credentials),
-  (_, meta) => meta);
+  (_, meta) => Object.assign({}, meta, {
+    schema: User
+  }));
 export const oAuthSignUp = createAction(OAUTH_SIGNUP,
   // Some weird trick
   () => new Promise(resolve => {

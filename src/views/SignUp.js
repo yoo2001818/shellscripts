@@ -31,9 +31,9 @@ class SignUp extends Component {
   }
   render() {
     const __ = translate(this.props.lang.lang);
-    let { id, method, load: { loading } } = this.props.session;
-    if (id !== false) {
-      const { signedUp } = this.props.user.entities[id];
+    let { login, method, load: { loading } } = this.props.session;
+    if (login != null) {
+      const { signedUp } = this.props.user;
       return (
         <div id='signup'>
           <Helmet title={__('signUp')} />
@@ -115,11 +115,11 @@ SignUp.propTypes = {
 };
 
 const ConnectSignUp = connect(
-  store => ({
-    session: store.session,
-    user: store.user,
-    lang: store.lang
-  }),
+  store => {
+    const { session, entities: { users }, lang } = store;
+    const user = users[session.login];
+    return { session, user, lang };
+  },
   { oAuthSignUp, reset }
 )(SignUp);
 
