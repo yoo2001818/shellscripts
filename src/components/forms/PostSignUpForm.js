@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import reduxForm from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { isEmail, isAlphanumeric } from 'validator';
 
 import Translated from '../Translated.js';

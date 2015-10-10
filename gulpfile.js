@@ -41,10 +41,10 @@ gulp.task('watch', function() {
   gulp.watch(['src/**', 'test/**'], ['mocha', 'lint', 'webpack']);
 });
 
-gulp.task('clean', function(callback) {
-  del([
+gulp.task('clean', function() {
+  return del([
     'dist/**/*'
-  ], callback);
+  ]);
 });
 
 gulp.task('dev', function() {

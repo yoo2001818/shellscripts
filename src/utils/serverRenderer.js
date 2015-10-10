@@ -1,5 +1,6 @@
 import React from 'react';
-import createLocation from 'history/lib/createLocation';
+import { renderToString } from 'react-dom/server';
+import { createMemoryHistory } from 'history';
 import { RoutingContext, match } from 'react-router';
 import { Provider } from 'react-redux';
 import Helmet from 'react-helmet';
@@ -36,7 +37,8 @@ export default function serverRenderer(req, res) {
   if (__SERVER__ && __DEVELOPMENT__) {
     __WEBPACK_ISOMORPHIC_TOOLS__.refresh();
   }
-  const location = createLocation(req.originalUrl);
+  const history = createMemoryHistory();
+  const location = history.createLocation(req.originalUrl);
   const store = configureStore(undefined, superagentClient(req));
   // TODO should be moved to somewhere else...
   store.dispatch(LangActions.set(req.acceptsLanguages('ko', 'en') || 'en'));
@@ -50,10 +52,10 @@ export default function serverRenderer(req, res) {
     } else {
       prefetch(store, renderProps)
       .then(() => {
-        let appHtml = React.renderToString(
+        let appHtml = renderToString(
           <div id='root'>
             <Provider store={store}>
-              {() => <RoutingContext {...renderProps} />}
+              <RoutingContext {...renderProps} />
             </Provider>
           </div>
         );

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import reduxForm from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { isEmail, isURL } from 'validator';
 import Dropzone from 'react-dropzone';
 import AvatarEditor from 'react-avatar-editor';
