@@ -107,16 +107,16 @@ export const Entry = sequelize.define('entry', {
 
 Passport.belongsTo(User);
 User.hasMany(Passport);
-User.hasMany(Entry);
+User.hasMany(Entry, {as: 'entries'});
 // Uh... why do I need this?
-User.hasMany(Tag);
+User.hasMany(Tag, {as: 'tags'});
 
-TagType.hasMany(Tag);
+TagType.hasMany(Tag, {as: 'tags'});
 Tag.belongsTo(User, {as: 'author'});
 Tag.belongsTo(TagType, {as: 'type'});
-Tag.belongsToMany(Entry, {through: 'entryTag'});
+Tag.belongsToMany(Entry, {through: 'entryTag', as: 'entries'});
 
 Entry.belongsTo(User, {as: 'author'});
-Entry.belongsToMany(Tag, {through: 'entryTag'});
+Entry.belongsToMany(Tag, {through: 'entryTag', as: 'tags'});
 
 sequelize.sync();

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { loadList } from '../actions/entry.js';
+import { connect } from 'react-redux';
 import Translated from '../components/Translated.js';
 
-export default class Index extends Component {
+class Index extends Component {
   render() {
     return (
       <div>
@@ -12,3 +14,15 @@ export default class Index extends Component {
     );
   }
 }
+
+export const ConnectIndex = connect(
+  store => ({
+    entities: store.entities
+  })
+)(Index);
+
+ConnectIndex.fetchData = function(store) {
+  return store.dispatch(loadList());
+};
+
+export default ConnectIndex;
