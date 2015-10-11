@@ -8,7 +8,7 @@ export default function session(state = {
     completed: 0, total: 0, loading: false
   },
   loaded: false,
-  login: false,
+  login: null,
   method: null
 }, action) {
   const load = loadReducer(state.load, action);
@@ -25,7 +25,7 @@ export default function session(state = {
     return Object.assign({}, state, {
       loaded: true,
       load,
-      login: error ? false : login
+      login: error ? null : login
     });
   case SessionActions.LOGIN:
     if (error) return state;
