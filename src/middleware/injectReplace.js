@@ -8,6 +8,11 @@ export const injectReplaceMiddleware = () => next => action => {
   const { payload, meta } = action;
   if (meta == null) return next(action);
   if (meta.replace == null) return next(action);
+  if (meta.errors && Array.isArray(meta.errors) &&
+    meta.errors.indexOf(payload.status) === -1
+  ) {
+    return next(action);
+  }
   return next(Object.assign({}, action, {
     payload: Object.assign({}, payload, {
       entities: meta.replace

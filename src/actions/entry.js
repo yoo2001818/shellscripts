@@ -22,6 +22,7 @@ export const fetch = createAction(FETCH,
         [username + '/' + name]: null
       }
     },
+    errors: [404],
     schema: Entry
   })
 );
