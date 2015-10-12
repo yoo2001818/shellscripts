@@ -19,7 +19,7 @@ export const fetch = createAction(FETCH,
     replace: {
       entries: {
         // I've heard that `` strings don't work in here.
-        [username + '/' + name]: null
+        [username.toLowerCase() + '/' + name.toLowerCase()]: null
       }
     },
     errors: [404],

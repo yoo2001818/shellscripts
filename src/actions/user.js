@@ -11,7 +11,7 @@ export const fetch = createAction(FETCH,
   username => ({
     replace: {
       users: {
-        [username]: null
+        [username.toLowerCase()]: null
       }
     },
     errors: [404],

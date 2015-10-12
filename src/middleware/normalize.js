@@ -8,8 +8,6 @@ export const normalizeMiddleware = store => next => action => {
   const { payload } = action;
   let body = payload;
   if (payload.body) body = payload.body;
-  console.log(action.payload);
-  console.log(normalize(body, action.meta.schema));
   return store.dispatch(Object.assign({}, action, {
     payload: normalize(body, action.meta.schema),
     meta: Object.assign({}, action.meta, {

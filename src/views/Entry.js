@@ -6,8 +6,9 @@ import NotFound from './NotFound.js';
 
 class Entry extends Component {
   render() {
-    const { params: { entryname }, entries, user } = this.props;
-    const entry = entries[user.login + '/' + entryname.toLowerCase()];
+    const { params: { username, entryname }, entries } = this.props;
+    const entry = entries[username.toLowerCase() + '/' +
+      entryname.toLowerCase()];
     if (entry) {
       // Inject entry
       return cloneElement(this.props.children, { entry });
@@ -29,7 +30,6 @@ class Entry extends Component {
 
 Entry.propTypes = {
   params: PropTypes.object,
-  user: PropTypes.object,
   entries: PropTypes.object,
   children: PropTypes.object
 };

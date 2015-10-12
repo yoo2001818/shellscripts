@@ -100,6 +100,7 @@ export const Entry = sequelize.define('entry', {
     allowNull: false
   },
   title: Sequelize.STRING,
+  brief: Sequelize.TEXT,
   description: Sequelize.TEXT,
   type: Sequelize.ENUM('script', 'collection'),
   script: Sequelize.TEXT

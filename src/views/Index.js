@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import { loadList } from '../actions/entry.js';
 import { connect } from 'react-redux';
 import Translated from '../components/Translated.js';
+import UserMiniCard from '../components/UserMiniCard.js';
 
 class Index extends Component {
   render() {
@@ -11,11 +13,11 @@ class Index extends Component {
       const user = entities.users[entry.author];
       return (
         <div className='article' key={key}>
-          <h1>{entry.title}</h1>
+          <Link to={`/${user.login}/${entry.name}`}>
+            <h1>{entry.title}</h1>
+          </Link>
           <h2>{entry.name}</h2>
-          <p>
-            <img src={user.photo} width='24px'/> {user.name} (@{user.username})
-          </p>
+          <UserMiniCard user={user} />
           <p>
             {entry.brief}
           </p>

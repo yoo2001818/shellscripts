@@ -35,7 +35,12 @@ const mockupData = [
       }
     ],
     brief: 'Reinstalls GRUB bootloader. Only supports x86 Linux.',
-    type: 'script'
+    description: 'This requires something. what?',
+    type: 'script',
+    script:
+`#!/bin/bash
+echo 'Nope'
+exit 0`
   }
 ];
 

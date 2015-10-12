@@ -9,7 +9,6 @@ export const User = new Schema('users', {
 
 export const Entry = new Schema('entries', {
   idAttribute: entity => {
-    console.log(entity);
     return entity.author.login + '/' + entity.name
   }
 });

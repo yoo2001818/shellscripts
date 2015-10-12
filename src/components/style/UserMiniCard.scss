@@ -1,0 +1,47 @@
+.user-mini-card {
+  &>a {
+    &>.photo {
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 0;
+      img {
+        width: 2.5em;
+        height: 2.5em;
+        max-width: 2.5em;
+        max-height: 2.5em;
+        background-color: #fff;
+        box-sizing: border-box;
+        border: 1px solid #999;
+        border-radius: 0.2rem;
+      }
+    }
+    &>.name {
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 0.5em;
+      max-width: 20em;
+      overflow: hidden;
+      font-weight: bold;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    &>.username {
+      display: inline-block;
+      vertical-align: middle;
+      color: #666;
+      margin-left: 0.35em;
+      font-size: 0.9em;
+      // Uh, this isn't Twitter. wtf
+      /*&:before {
+        content: '@';
+      }*/
+    }
+    color: #000;
+    &:hover {
+      color: #444;
+      &>.name {
+        text-decoration: underline;
+      }
+    }
+  }
+}

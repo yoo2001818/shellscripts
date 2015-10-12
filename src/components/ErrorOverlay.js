@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import { errorDismiss } from '../actions/load.js';
-import Dialog from './Dialog.js';
 import Alert from './Alert.js';
 import Translated from './Translated.js';
 import translate from '../lang/index.js';

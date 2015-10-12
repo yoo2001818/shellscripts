@@ -26,11 +26,11 @@ export const routes = (
       <Route path='authMethods' component={AuthMethodSettings} />
       <Route path='*' component={NotFound} />
     </Route>
+    <Route path=':username/:entryname' component={Entry}>
+      <IndexRoute component={EntryView} />
+    </Route>
     <Route path=':username' component={User}>
       <IndexRoute component={UserProfile} />
-      <Route path=':entryname' component={Entry}>
-        <IndexRoute component={EntryView} />
-      </Route>
     </Route>
     <Route path='*' component={NotFound} />
   </Route>
