@@ -28,7 +28,7 @@ export const routes = (
     </Route>
     <Route path=':username' component={User}>
       <IndexRoute component={UserProfile} />
-      <Route path=':entry' component={Entry}>
+      <Route path=':entryname' component={Entry}>
         <IndexRoute component={EntryView} />
       </Route>
     </Route>

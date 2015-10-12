@@ -40,8 +40,9 @@ export function loadList() {
   };
 }
 
-export function load() {
-  return (dispatch, getState) => {
-
+export function load(username, name) {
+  return (dispatch) => {
+    // Well, always reload... for now.
+    return dispatch(fetch(username, name));
   };
 }
