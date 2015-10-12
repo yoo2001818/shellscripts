@@ -4,11 +4,25 @@ import { api, GET } from '../middleware/api.js';
 import { Entry } from '../schema/index.js';
 
 export const FETCH_LIST = 'ENTRY_FETCH_LIST';
+export const FETCH = 'ENTRY_FETCH';
 
 export const fetchList = createAction(FETCH_LIST,
   () => api(GET, '/api/entries/'),
   () => ({
     schema: arrayOf(Entry)
+  })
+);
+
+export const fetch = createAction(FETCH,
+  (username, name) => api(GET, `/api/entries/${username}/${name}`),
+  (username, name) => ({
+    replace: {
+      entries: {
+        // I've heard that `` strings don't work in here.
+        [username + '/' + name]: null
+      }
+    },
+    schema: Entry
   })
 );
 
@@ -22,5 +36,11 @@ export function loadList() {
     }
     // Otherwise, refetch.
     return dispatch(fetchList());
+  };
+}
+
+export function load() {
+  return (dispatch, getState) => {
+
   };
 }

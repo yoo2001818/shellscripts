@@ -9,8 +9,8 @@ export default router;
 const mockupData = [
   {
     id: 1,
-    name: 'Reinstall GRUB',
-    title: 'reinstallgrub',
+    name: 'reinstallgrub',
+    title: 'Reinstall GRUB',
     author: {
       id: 2,
       username: 'yoo2001818',

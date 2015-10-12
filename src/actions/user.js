@@ -9,7 +9,11 @@ export const UPLOAD_PHOTO = 'USER_UPLOAD_PHOTO';
 export const fetch = createAction(FETCH,
   username => api(GET, `/api/users/${username}`),
   username => ({
-    username,
+    replace: {
+      users: {
+        [username]: null
+      }
+    },
     errors: [404],
     schema: User
   })
@@ -19,8 +23,7 @@ export const setProfile = createAction(SET_PROFILE,
   // This always modifies user itself for now
   // TODO Implement set profile if admin
   (username, data) => api(POST, `/api/user`, data),
-  (username) => ({
-    username,
+  () => ({
     errors: [404],
     schema: User
   })

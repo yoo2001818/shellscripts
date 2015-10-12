@@ -12,6 +12,8 @@ import UserProfile from './UserProfile.js';
 import Settings from './Settings.js';
 import AccountSettings from './settings/AccountSettings.js';
 import AuthMethodSettings from './settings/AuthMethodSettings.js';
+import Entry from './Entry.js';
+import EntryView from './EntryView.js';
 
 export const routes = (
   <Route path='/' component={App}>
@@ -26,6 +28,9 @@ export const routes = (
     </Route>
     <Route path=':username' component={User}>
       <IndexRoute component={UserProfile} />
+      <Route path=':entry' component={Entry}>
+        <IndexRoute component={EntryView} />
+      </Route>
     </Route>
     <Route path='*' component={NotFound} />
   </Route>
