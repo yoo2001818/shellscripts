@@ -12,6 +12,13 @@ export default class Dialog extends Component {
     };
     this.handleClickEvent = this.handleClick.bind(this);
   }
+  componentDidMount() {
+    this.mounted = true;
+  }
+  componentWillUnmount() {
+    this.mounted = false;
+    document.removeEventListener('click', this.handleClickEvent);
+  }
   handleClick(e) {
     const { hidden } = this.state;
     if (hidden) {
@@ -19,9 +26,11 @@ export default class Dialog extends Component {
     } else {
       document.removeEventListener('click', this.handleClickEvent);
     }
-    this.setState({
-      hidden: !hidden
-    });
+    if (this.mounted) {
+      this.setState({
+        hidden: !hidden
+      });
+    }
     e.preventDefault();
   }
   render() {

@@ -47,7 +47,7 @@ export default function session(state = {
     });
   case SessionActions.LOGOUT:
     if (error) return state;
-    return { load, loaded: true, method, login: false };
+    return { load, loaded: true, method, login: null };
   case SessionActions.METHOD_FETCH:
     if (error) return state;
     return Object.assign({}, state, {

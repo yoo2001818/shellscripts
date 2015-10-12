@@ -12,7 +12,7 @@ class SignOutForm extends Component {
   }
   render() {
     const { user } = this.props;
-    if ( !user ) return false;
+    if (user == null) return false;
     const { username } = user;
     return (
       <div>
