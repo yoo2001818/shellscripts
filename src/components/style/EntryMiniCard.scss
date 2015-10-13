@@ -1,0 +1,58 @@
+.entry-mini-card {
+  padding: 0.6em 0.8em;
+  border: 1px solid #aaa;
+  border-radius: 0.3em;
+  &>.title {
+    vertical-align: middle;
+    font-size: 1.8em;
+    font-weight: normal;
+    margin: 0.4em 0;
+    &>.fa {
+      color: #444;
+      padding-right: 0.3em;
+    }
+    &:after {
+      content: '';
+      clear: both;
+      display: block;
+      font-size: 0;
+    }
+    &>a {
+      color: #000;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  &>.permalink {
+    float: right;
+    display: inline-block;
+    line-height: 2.5rem;
+    vertical-align: middle;
+    font-size: 0.9em;
+    max-width: 20em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    &>a {
+      color: #666;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  &>.tags {
+    padding: 0;
+    margin: 0.4em 0;
+    list-style-type: none;
+    &>li {
+      padding: 0.4em;
+      display: inline-block;
+      border: 1px solid #aaa;
+      border-radius: 0.3em;
+      font-size: 0.9em;
+    }
+  }
+}

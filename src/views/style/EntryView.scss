@@ -6,36 +6,9 @@
     box-sizing: border-box;
     border: 1px solid #aaa;
     border-radius: 0.3em;
-    &>.info {
-      padding: 0.6em 0.8em;
-      &>.title {
-        vertical-align: middle;
-        font-size: 1.8em;
-        font-weight: normal;
-        margin: 0.4em 0;
-        &>.fa {
-          color: #444;
-          padding-right: 0.3em;
-        }
-        &:after {
-          content: '';
-          clear: both;
-          display: block;
-          font-size: 0;
-        }
-      }
-      &>.permalink {
-        float: right;
-        display: inline-block;
-        line-height: 2.5rem;
-        vertical-align: middle;
-        color: #666;
-        font-size: 0.9em;
-        max-width: 20em;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-      }
+    &>.entry-mini-card {
+      border: none;
+      border-radius: 0;
     }
     &>.description {
       clear: both;

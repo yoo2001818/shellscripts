@@ -20,7 +20,7 @@
     position: absolute;
     top: 100%;
     z-index: 10;
-    background-color: #333;
+    background-color: #222;
     margin-top: 0.3em;
     line-height: 1em;
     padding: 0.6em;
@@ -32,10 +32,11 @@
     opacity: 0;
     font-size: 0.9em;
     transition: margin-top 0.3s, opacity 0.2s;
+    color: #fff;
   }
   &>.content {
     &:after {
-      @include arrowTop(0.5em, #333);
+      @include arrowTop(0.5em, #222);
       visibility: hidden;
       margin-top: 0.3em;
       opacity: 0;
