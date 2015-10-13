@@ -10,7 +10,7 @@ export default {
     name: 'Local',
     enabled: true,
     redirect: false,
-    strategy: new LocalStrategy(localLogin)
+    strategy: new LocalStrategy(config.local, localLogin)
   },
   github: {
     name: 'GitHub',

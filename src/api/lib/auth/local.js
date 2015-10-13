@@ -19,7 +19,7 @@ export function validatePassword(passport, password) {
   });
 }
 
-export default function login(username, password, done) {
+export default function login(req, username, password, done) {
   let passport;
   // Retrieve passport with the username
   Passport.findOne({

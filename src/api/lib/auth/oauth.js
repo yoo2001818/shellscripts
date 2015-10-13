@@ -1,8 +1,9 @@
 import { User, Passport, sequelize } from '../../../db/index.js';
 
-export default function login(type, accessToken, refreshToken, profile, done) {
+export default function login(type, req, accessToken, refreshToken, profile,
+  done
+) {
   const profileId = profile.id; // Strangely, id is a string.
-  console.log(profile);
   let email = null;
   if (profile.emails && profile.emails[0]) email = profile.emails[0].value;
   sequelize.transaction(transaction =>
@@ -14,17 +15,11 @@ export default function login(type, accessToken, refreshToken, profile, done) {
       }
     })
     .then(passport => {
-      // TODO registering auth method to current user
       if (!passport) {
-        // Register a new user and a passport.
-        return User.create({
-          email
-        }, {
-          transaction
-        })
-        .then(user => {
+        if (req.user) {
+          // Register a passport pointing the current user.
           return Passport.create({
-            userId: user.id,
+            userId: req.user.id,
             type,
             identifier: profileId,
             // refreshToken is useless.
@@ -32,18 +27,48 @@ export default function login(type, accessToken, refreshToken, profile, done) {
           }, {
             transaction
           })
-          .then(() => new Promise((resolve) => {
-            resolve(user);
-          }));
-        });
+          .then(() => req.user);
+        } else {
+          // Register a new user and a passport.
+          return User.create({
+            email
+          }, {
+            transaction
+          })
+          .then(user => {
+            return Passport.create({
+              userId: user.id,
+              type,
+              identifier: profileId,
+              // refreshToken is useless.
+              data: accessToken
+            }, {
+              transaction
+            })
+            .then(() => user);
+          });
+        }
       } else {
-        // Update passport access token
-        passport.data = accessToken;
-        return passport.save()
-        // Sign in using the passport.
-        .then(() => passport.getUser());
+        if (req.user) {
+          // Nopeeee
+          throw {
+            id: 'AUTH_METHOD_ALREADY_EXISTS',
+            message: 'You already have this authentication method. You\'ll ' +
+              'need to unregister current method in order to register new one.',
+            invalid: true
+          };
+        } else {
+          // Update passport access token
+          passport.data = accessToken;
+          return passport.save()
+          // Sign in using the passport.
+          .then(() => passport.getUser());
+        }
       }
     })
   )
-  .then(user => done(null, user), err => done(err));
+  .then(user => done(null, user), err => {
+    console.log(err.stack);
+    done(err);
+  });
 }

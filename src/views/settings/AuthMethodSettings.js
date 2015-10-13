@@ -19,7 +19,7 @@ class AuthMethodSettings extends Component {
     const { method } = this.props;
     const methods = _.values(method);
     const methodEnabledCount = methods.reduce(
-      (sum, element) => sum + element.inUse ? 1 : 0, 0);
+      (sum, element) => sum + (element.inUse ? 1 : 0), 0);
     const methodTags = methods.map(provider => {
       if (provider.inUse) {
         return (
