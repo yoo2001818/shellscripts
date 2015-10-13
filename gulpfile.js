@@ -30,11 +30,11 @@ gulp.task('webpack', function(callback) {
   });
 });
 
-gulp.task('apidoc', function() {
-  apidoc.exec({
+gulp.task('apidoc', function(done) {
+  apidoc({
     src: 'src/',
     dest: 'doc/'
-  });
+  }, done);
 });
 
 gulp.task('watch', function() {
