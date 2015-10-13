@@ -9,6 +9,7 @@ export const LOGOUT = 'SESSION_LOGOUT';
 export const SIGNUP_FINALIZE = 'SESSION_SIGNUP_FINALIZE';
 export const LOCAL_SIGNUP = 'SESSION_LOCAL_SIGNUP';
 export const OAUTH_SIGNUP = 'SESSION_OAUTH_SIGNUP';
+export const METHOD_DELETE = 'SESSION_METHOD_DELETE';
 export const METHOD_FETCH = 'SESSION_METHOD_FETCH';
 export const CHECK_USERNAME = 'SESSION_CHECK_USERNAME';
 export const CHECK_EMAIL = 'SESSION_CHECK_EMAIL';
@@ -61,6 +62,11 @@ export const oAuthSignUp = createAction(OAUTH_SIGNUP,
   }));
 export const methodFetch = createAction(METHOD_FETCH,
   () => api(GET, '/api/session/methods', {}));
+export const methodDelete = createAction(METHOD_DELETE,
+  method => api(DELETE, `/api/session/${method}`),
+  method => ({
+    method
+  }));
 export const checkUsername = createAction(CHECK_USERNAME,
   username => api(GET, `/api/users/${username}`),
   () => ({

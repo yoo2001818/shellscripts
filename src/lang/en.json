@@ -42,6 +42,8 @@
   "account": "Account",
   "language": "Language",
   "setProfilePhoto": "Upload a new profile photo",
+  "unregister": "Delete",
+  "register": "Register",
   "AUTH_INVALID_USERNAME": "Invalid username",
   "AUTH_INVALID_PASSWORD": "Invalid password",
   "AUTH_USERNAME_POLICY": "Username should only contain alphanumberic characters.",

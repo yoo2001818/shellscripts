@@ -3,6 +3,7 @@ import passport from './lib/passport.js';
 import { register } from './lib/auth/local.js';
 import strategies from './lib/auth/strategy.js';
 import authRequired from './lib/authRequired.js';
+import { Passport } from '../db/index.js';
 
 function validateAuthRequest(req, res, next) {
   const { method } = req.params;
@@ -315,6 +316,71 @@ router.post('/session/:method', validateAuthRequest, (req, res, next) => {
       return;
     });
   })(req, res, next);
+});
+
+/**
+ * @api {delete} /session/:method Delete the auth method
+ * @apiParam (Parameter) {String} method The method to use.
+ * @apiGroup Session
+ * @apiName DeleteAuthMethod
+ * @apiDescription Deletes the registered authentication method.
+ *
+ *   This can be only issued by signed in users, otherwise this will return
+ *   401 Not Authorized.
+ *
+ *   This can't be executed if there is only one auth method available, and
+ *   the user is trying to delete the auth method. If that happens, the server
+ *   will return 403 Forbidden.
+ *
+ *   If the auth method is not available, this will return 404 Not Found.
+ *   If the action succeeds, this will return 200 OK.
+ * @apiSuccessExample {json} If the action is successful:
+ *   HTTP/1.1 200 OK
+ *   {}
+ * @apiErrorExample {json} If user hasn't signed in:
+ *   HTTP/1.1 401 Unauthorized
+ *   {
+ *     "id": "AUTH_NOT_SIGNED_IN",
+ *     "message": "Not signed in"
+ *   }
+ * @apiErrorExample {json} If auth method is not registered:
+ *   HTTP/1.1 404 Not Found
+ *   {
+ *     "id": "AUTH_METHOD_NOT_FOUND",
+ *     "message": "Specified authentication method is not found."
+ *   }
+ * @apiErrorExample {json} If only one auth method is left:
+ *   HTTP/1.1 403 Forbidden
+ *   {
+ *     "id": "AUTH_METHOD_CANNOT_DELETE_PRIMARY",
+ *     "message": "You cannot delete your primary authentication method."
+ *   }
+ */
+router.delete('/session/:method', authRequired, (req, res) => {
+  const { method } = req.params;
+  req.user.getPassports()
+  .then(passports => {
+    if (passports.length <= 1) {
+      // No auth methods will be available if we do this.
+      res.status(403);
+      res.json({
+        id: 'AUTH_METHOD_CANNOT_DELETE_PRIMARY',
+        message: 'You cannot delete your primary authentication method.'
+      });
+      return;
+    }
+    // Otherwise, just delete them.
+    // TODO check for AUTH_METHOD_NOT_FOUND. :/
+    return Passport.destroy({
+      where: {
+        type: method,
+        userId: req.user.id
+      }
+    })
+    .then(() => {
+      res.send({});
+    })
+  });
 });
 
 /**

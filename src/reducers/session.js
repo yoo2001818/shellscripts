@@ -13,7 +13,7 @@ export default function session(state = {
 }, action) {
   const load = loadReducer(state.load, action);
   let { method } = state;
-  const { type, payload, error } = action;
+  const { type, payload, meta, error } = action;
   let login;
   if (payload) login = payload.result;
   switch (type) {
@@ -52,6 +52,15 @@ export default function session(state = {
     if (error) return state;
     return Object.assign({}, state, {
       load, method: payload.body
+    });
+  case SessionActions.METHOD_DELETE:
+    if (error) return state;
+    return Object.assign({}, state, {
+      load, method: Object.assign({}, state.method, {
+        [meta.method]: Object.assign({}, state.method[meta.method], {
+          inUse: false
+        })
+      })
     });
   }
   return Object.assign({}, state, {

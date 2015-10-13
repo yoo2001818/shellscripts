@@ -2,12 +2,18 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { oAuthSignUp, methodFetch } from '../../actions/session.js';
+import { oAuthSignUp, methodDelete, methodFetch }
+  from '../../actions/session.js';
 // import translate from '../../lang/index.js';
 import Translated from '../../components/ui/Translated.js';
+import LoadingOverlay from '../../components/ui/LoadingOverlay.js';
 // import LabelInput from '../../components/LabelInput.js';
 
 class AuthMethodSettings extends Component {
+  handleDelete(provider, e) {
+    this.props.methodDelete(provider);
+    e.preventDefault();
+  }
   handleOAuth(provider, e) {
     // This requires actual page forwarding...
     window.location = '/api/session/' + provider;
@@ -16,7 +22,7 @@ class AuthMethodSettings extends Component {
     e.preventDefault();
   }
   render() {
-    const { method } = this.props;
+    const { method, loading } = this.props;
     const methods = _.values(method);
     const methodEnabledCount = methods.reduce(
       (sum, element) => sum + (element.inUse ? 1 : 0), 0);
@@ -27,9 +33,15 @@ class AuthMethodSettings extends Component {
             <h2>{provider.name}</h2>
             <div className='actions'>
               { methodEnabledCount > 1 ? (
-                <button className='red-button'>등록 해제</button>
+                <button className='red-button'
+                  onClick={this.handleDelete.bind(this, provider.identifier)}
+                >
+                  <Translated name='unregister' />
+                </button>
               ) : (
-                <button disabled>등록 해제</button>
+                <button disabled>
+                  <Translated name='unregister' />
+                </button>
               ) }
             </div>
           </div>
@@ -42,7 +54,7 @@ class AuthMethodSettings extends Component {
               <button
                 onClick={this.handleOAuth.bind(this, provider.identifier)}
               >
-                등록
+                <Translated name='register' />
               </button>
             </div>
           </div>
@@ -59,6 +71,7 @@ class AuthMethodSettings extends Component {
           <div className='content'>
             { methodTags }
           </div>
+          <LoadingOverlay loading={loading} />
         </section>
       </div>
     );
@@ -68,15 +81,18 @@ class AuthMethodSettings extends Component {
 AuthMethodSettings.propTypes = {
   lang: PropTypes.object,
   method: PropTypes.object,
-  oAuthSignUp: PropTypes.func
+  oAuthSignUp: PropTypes.func,
+  methodDelete: PropTypes.func,
+  loading: PropTypes.bool
 };
 
 export const ConnectAuthMethodSettings = connect(
   store => ({
     lang: store.lang,
-    method: store.session.method
+    method: store.session.method,
+    loading: store.session.load.loading
   }),
-  { oAuthSignUp }
+  { oAuthSignUp, methodDelete }
 )(AuthMethodSettings);
 
 ConnectAuthMethodSettings.fetchData = function(store) {

@@ -72,6 +72,7 @@ $break-small: 500pt;
     font-size: 0;
   }
   section {
+    position: relative;
     &>h1 {
       font-size: 1.3em;
       font-weight: bold;
