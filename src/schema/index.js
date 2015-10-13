@@ -4,7 +4,9 @@
 import { Schema, arrayOf } from 'normalizr';
 
 export const User = new Schema('users', {
-  idAttribute: 'login'
+  idAttribute: entity => {
+    return entity.login || entity.id;
+  }
 });
 
 export const Entry = new Schema('entries', {

@@ -37,6 +37,20 @@ html {
   margin: 0 auto;
 }
 
+button.red-button {
+  color: #C10808;
+  background-color: #FFF5F5;
+  border: 1px solid #EB9594;
+  &:hover {
+    border: 1px solid #EBAFAE;
+    background-color: #FFFAFA;
+  }
+  &:active {
+    border: 1px solid #EB9594;
+    background-color: #FFFFFF;
+  }
+}
+
 button {
   font-size: 1em;
   background-color: #F5FAFF;

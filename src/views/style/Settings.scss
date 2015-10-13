@@ -15,7 +15,7 @@ $break-small: 500pt;
       overflow: hidden;
     }
     h1 {
-      font-size: 1em;
+      font-size: 1.2em;
       font-weight: bold;
       margin: 0;
       padding: 0.6em 1em;
@@ -73,13 +73,31 @@ $break-small: 500pt;
   }
   section {
     &>h1 {
-      font-size: 1.2em;
+      font-size: 1.3em;
       font-weight: bold;
       margin: 0;
-      padding: 0.8em 1em;
+      padding: 0.8rem 1rem;
       color: #333;
       //background-color: #f9f9f9;
       //border-bottom: 1px solid #ccc;
+    }
+    .authMethod {
+      display: table;
+      width: 100%;
+      &>h2 {
+        display: table-cell;
+        font-size: 1.05em;
+        padding: 0;
+        margin: 0;
+        color: #333;
+        width: 80%;
+        vertical-align: middle;
+      }
+      &>.actions {
+        display: table-cell;
+        min-width: 8em;
+        vertical-align: middle;
+      }
     }
     &>.content {
       padding: 1em;
