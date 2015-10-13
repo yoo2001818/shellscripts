@@ -3,7 +3,7 @@ import './style/Settings.scss';
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import SignInRedirector from '../components/SignInRedirector.js';
-import Translated from '../components/Translated.js';
+import Translated from '../components/ui/Translated.js';
 
 export default class Settings extends Component {
   render() {

@@ -3,8 +3,8 @@ import './style/App.scss';
 import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { load } from '../actions/session.js';
-import ProgressBar from '../components/ProgressBar.js';
-import ErrorOverlay from '../components/ErrorOverlay.js';
+import ProgressBar from '../components/ui/ProgressBar.js';
+import ErrorOverlay from '../components/ui/ErrorOverlay.js';
 import Header from '../components/Header.js';
 import Footer from '../components/Footer.js';
 

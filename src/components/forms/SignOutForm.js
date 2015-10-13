@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import Translated from '../Translated.js';
+import Translated from '../ui/Translated.js';
 import { logout } from '../../actions/session.js';
 
 class SignOutForm extends Component {

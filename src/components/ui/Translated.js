@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import translate from '../lang/index.js';
+import translate from '../../lang/index.js';
 import { connect } from 'react-redux';
 
 class Translated extends Component {

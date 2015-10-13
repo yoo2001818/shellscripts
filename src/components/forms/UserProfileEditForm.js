@@ -5,11 +5,11 @@ import { isEmail, isURL } from 'validator';
 import Dropzone from 'react-dropzone';
 import AvatarEditor from 'react-avatar-editor';
 
-import DialogOverlay from '../DialogOverlay.js';
-import Translated from '../Translated.js';
-import ErrorInput from '../ErrorInput.js';
+import DialogOverlay from '../ui/DialogOverlay.js';
+import Translated from '../ui/Translated.js';
+import ErrorInput from '../ui/ErrorInput.js';
 import translate from '../../lang/index.js';
-import Overlay from '../Overlay.js';
+import Overlay from '../ui/Overlay.js';
 import userPlaceholder from '../../assets/userPlaceholder.png';
 
 import { setProfile, uploadPhoto } from '../../actions/user.js';

@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 
 import SearchBar from './SearchBar.js';
 import SessionBar from './header/SessionBar.js';
-import Translated from './Translated.js';
+import Translated from './ui/Translated.js';
 import SignedUpRedirector from './SignedUpRedirector.js';
 
 export default class Header extends Component {

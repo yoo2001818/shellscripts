@@ -7,13 +7,13 @@ import _ from 'lodash';
 import Helmet from 'react-helmet';
 
 import translate from '../lang/index.js';
-import Translated from '../components/Translated.js';
+import Translated from '../components/ui/Translated.js';
 import { oAuthSignUp, login, logout, methodLoad } from '../actions/session.js';
 import { reset } from 'redux-form';
-import Dialog from '../components/Dialog.js';
+import Dialog from '../components/ui/Dialog.js';
 import LocalLoginForm from '../components/forms/LocalLoginForm.js';
 import SignOutForm from '../components/forms/SignOutForm.js';
-import LoadingOverlay from '../components/LoadingOverlay.js';
+import LoadingOverlay from '../components/ui/LoadingOverlay.js';
 
 class Login extends Component {
   componentWillUnmount() {

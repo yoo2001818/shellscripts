@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 // import translate from '../../lang/index.js';
-import Translated from '../../components/Translated.js';
+import Translated from '../../components/ui/Translated.js';
 // import LabelInput from '../../components/LabelInput.js';
 
 class AuthMethodSettings extends Component {

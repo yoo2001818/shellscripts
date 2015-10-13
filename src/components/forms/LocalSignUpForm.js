@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { isEmail, isAlphanumeric } from 'validator';
 
-import Translated from '../Translated.js';
-import ErrorInput from '../ErrorInput.js';
+import Translated from '../ui/Translated.js';
+import ErrorInput from '../ui/ErrorInput.js';
 import translate from '../../lang/index.js';
 import { localSignUp, checkUsername } from '../../actions/session.js';
 

@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { errorDismiss } from '../actions/load.js';
+import { errorDismiss } from '../../actions/load.js';
 import Alert from './Alert.js';
 import Translated from './Translated.js';
-import translate from '../lang/index.js';
+import translate from '../../lang/index.js';
 import DialogOverlay from './DialogOverlay.js';
 
 class ErrorOverlay extends Component {

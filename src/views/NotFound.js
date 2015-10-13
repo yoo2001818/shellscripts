@@ -4,7 +4,7 @@ import notFoundImage from '../assets/notFound.png';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import Translated from '../components/Translated.js';
+import Translated from '../components/ui/Translated.js';
 import translate from '../lang/index.js';
 
 class NotFound extends Component {

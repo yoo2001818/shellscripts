@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { loadList } from '../actions/entry.js';
 import { connect } from 'react-redux';
-import Translated from '../components/Translated.js';
+import Translated from '../components/ui/Translated.js';
 import UserMiniCard from '../components/UserMiniCard.js';
 
 class Index extends Component {

@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import PostSignUpForm from './forms/PostSignUpForm.js';
-import Translated from './Translated.js';
-import Dialog from './Dialog.js';
+import Translated from './ui/Translated.js';
+import Dialog from './ui/Dialog.js';
 
 class PostSignUp extends Component {
   // TODO Logout when user leaves the page.

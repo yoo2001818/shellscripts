@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
-import DropDownMenu from '../DropDownMenu.js';
-import Translated from '../Translated.js';
+import DropDownMenu from '../ui/DropDownMenu.js';
+import Translated from '../ui/Translated.js';
 import { logout } from '../../actions/session.js';
 import translate from '../../lang/index.js';
 import userPlaceholder from '../../assets/userPlaceholder.png';
