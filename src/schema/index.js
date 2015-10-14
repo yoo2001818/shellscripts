@@ -5,13 +5,14 @@ import { Schema, arrayOf } from 'normalizr';
 
 export const User = new Schema('users', {
   idAttribute: entity => {
-    return entity.login || entity.id;
+    if (entity.username) return entity.username.toLowerCase();
+    return entity.id;
   }
 });
 
 export const Entry = new Schema('entries', {
   idAttribute: entity => {
-    return entity.author.login + '/' + entity.name
+    return entity.author.username.toLowerCase() + '/' + entity.name
   }
 });
 

@@ -30,8 +30,10 @@ function buildEntryGet(options) {
     }) : undefined,
     include: [{
       model: TagType,
-      as: 'type'
-    }]
+      as: 'type',
+      attributes: ['name']
+    }],
+    attributes: ['name', 'description']
   });
   include.push({
     model: User,
@@ -40,7 +42,8 @@ function buildEntryGet(options) {
       login: {
         $like: username.toLowerCase()
       }
-    }) : undefined
+    }) : undefined,
+    attributes: ['username', 'name', 'photo']
   });
   if (userId != null) where.authorId = userId;
   if (type != null) {
@@ -60,7 +63,10 @@ function buildEntryGet(options) {
     limit: 20,
     order: [
       ['id', 'DESC']
-    ]
+    ],
+    attributes: {
+      exclude: ['userId', 'author']
+    }
   };
 }
 
@@ -87,7 +93,15 @@ export default router;
 router.get('/entries/', (req, res) => {
   Entry.findAll(buildEntryGet(req.query))
   .then(entries => {
-    res.json(entries);
+    res.json(entries.map(entry => {
+      let displayEntry = entry.toJSON();
+      Object.assign(displayEntry, {
+        tags: displayEntry.tags.map(tag => Object.assign({}, tag, {
+          entryTag: undefined
+        }))
+      });
+      return displayEntry;
+    }));
   });
 });
 
@@ -139,7 +153,15 @@ authorRouter.get('/', (req, res) => {
     userId: req.selUser.id
   })))
   .then(entries => {
-    res.json(entries);
+    res.json(entries.map(entry => {
+      let displayEntry = entry.toJSON();
+      Object.assign(displayEntry, {
+        tags: displayEntry.tags.map(tag => Object.assign({}, tag, {
+          entryTag: undefined
+        }))
+      });
+      return displayEntry;
+    }));
   });
 });
 
@@ -159,13 +181,19 @@ authorRouter.use('/:name', (req, res, next) => {
         as: 'tags',
         include: [{
           model: TagType,
-          as: 'type'
-        }]
+          as: 'type',
+          attributes: ['name']
+        }],
+        attributes: ['name', 'description']
       }, {
         model: User,
-        as: 'author'
+        as: 'author',
+        attributes: ['username', 'name', 'photo']
       }
-    ]
+    ],
+    attributes: {
+      exclude: ['userId', 'author']
+    }
   })
   .then(entry => {
     req.selEntryName = name;
@@ -192,7 +220,13 @@ entryRouter.get('/', (req, res) => {
     });
     return;
   }
-  res.json(req.selEntry);
+  let entry = req.selEntry.toJSON();
+  Object.assign(entry, {
+    tags: entry.tags.map(tag => Object.assign({}, tag, {
+      entryTag: undefined
+    }))
+  });
+  res.json(entry);
 });
 
 /**
@@ -285,7 +319,13 @@ entryRouter.post('/', authRequired, checkModifiable, (req, res) => {
     }))
   )
   .then(entry => {
-    res.json(entry);
+    let displayEntry = entry.toJSON();
+    Object.assign(displayEntry, {
+      tags: displayEntry.tags.map(tag => Object.assign({}, tag, {
+        entryTag: undefined
+      }))
+    });
+    res.json(displayEntry);
   })
   .catch(err => {
     console.log(err.stack);
