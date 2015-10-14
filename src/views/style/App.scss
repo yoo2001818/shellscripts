@@ -31,10 +31,31 @@ html {
   padding: 0 0.5em;
 }
 
-.form {
-  width: 100%;
-  max-width: 25em;
+.small-content {
   margin: 0 auto;
+  max-width: 40em;
+}
+
+.ace_editor {
+  box-sizing: border-box;
+  padding: 0.6em 0.8em;
+  margin: 0.5em 0;
+  border-radius: 0.2em;
+  border: 1px solid #ccc;
+}
+
+.form {
+  h1 {
+    text-align: center;
+  }
+  .footer {
+    text-align: right;
+    button {
+      width: auto;
+      padding-left: 3em;
+      padding-right: 3em;
+    }
+  }
 }
 
 button.red-button {
@@ -101,5 +122,8 @@ input, textarea {
     border: none !important;
     border-radius: none;
     background-color: transparent !important;
+  }
+  &.code {
+    font-family: Droid Sans Mono, NanumGothicCoding, 나눔고딕코딩, monospace;
   }
 }

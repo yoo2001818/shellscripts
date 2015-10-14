@@ -14,6 +14,7 @@ import AccountSettings from './settings/AccountSettings.js';
 import AuthMethodSettings from './settings/AuthMethodSettings.js';
 import Entry from './Entry.js';
 import EntryView from './EntryView.js';
+import EntryCreate from './EntryCreate.js';
 
 export const routes = (
   <Route path='/' component={App}>
@@ -26,6 +27,7 @@ export const routes = (
       <Route path='authMethods' component={AuthMethodSettings} />
       <Route path='*' component={NotFound} />
     </Route>
+    <Route path='new' component={EntryCreate} />
     <Route path=':username/:entryname' component={Entry}>
       <IndexRoute component={EntryView} />
     </Route>

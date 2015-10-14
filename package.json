@@ -30,6 +30,7 @@
     "passport-local": "^1.0.0",
     "qs": "^5.2.0",
     "react": "^0.14.0",
+    "react-ace": "^2.5.0",
     "react-avatar-editor": "^2.0.0",
     "react-dom": "^0.14.0",
     "react-dropzone": "^2.1.0",

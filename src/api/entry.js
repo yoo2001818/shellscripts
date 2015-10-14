@@ -239,7 +239,7 @@ entryRouter.get('/', (req, res) => {
  * @apiParam (Body) {String} brief Brief description. (Usually one line)
  * @apiParam (Body) {String} description Detailed description. Accepts markdown.
  * @apiParam (Body) {String[]} tags The tags name of the entry.
- * @apiParam (Body) {Enum(script,collection)} type The type of the entry.
+ * @apiParam (Body) {String="script","collection"} type The type of the entry.
  * @apiParam (Body) {String} [script] The script data of the entry.
  * @apiParam (Body) {Boolean} [requiresRoot] Whether if this requires root.
  * @apiDescription Creates and returns a new entry.
@@ -344,7 +344,7 @@ entryRouter.post('/', authRequired, checkModifiable, (req, res) => {
  * @apiParam (Body) {String} brief Brief description. (Usually one line)
  * @apiParam (Body) {String} description Detailed description. Accepts markdown.
  * @apiParam (Body) {String[]} tags The tags name of the entry.
- * @apiParam (Body) {Enum(script,collection)} type The type of the entry.
+ * @apiParam (Body) {String="script","collection"} type The type of the entry.
  * @apiParam (Body) {String} [script] The script data of the entry.
  * @apiParam (Body) {Boolean} [requiresRoot] Whether if this requires root.
  * @apiDescription Edits and returns the entry.

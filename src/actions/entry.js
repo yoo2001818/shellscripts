@@ -1,10 +1,11 @@
 import { createAction } from 'redux-actions';
 import { arrayOf } from 'normalizr';
-import { api, GET } from '../middleware/api.js';
+import { api, GET, POST } from '../middleware/api.js';
 import { Entry } from '../schema/index.js';
 
 export const FETCH_LIST = 'ENTRY_FETCH_LIST';
 export const FETCH = 'ENTRY_FETCH';
+export const CREATE = 'ENTRY_POST';
 
 export const fetchList = createAction(FETCH_LIST,
   () => api(GET, '/api/entries/'),
@@ -23,6 +24,16 @@ export const fetch = createAction(FETCH,
       }
     },
     errors: [404],
+    schema: Entry
+  })
+);
+
+export const create = createAction(CREATE,
+  (data) => api(POST, `/api/entries/${data.username}/${data.name}`,
+    Object.assign({}, data, {
+      type: 'script'
+    })),
+  () => ({
     schema: Entry
   })
 );

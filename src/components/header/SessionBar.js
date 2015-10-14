@@ -34,6 +34,9 @@ class SessionBar extends Component {
       }
       return (
         <div className='session'>
+          <Link to={'/new'}>
+            <i className='fa fa-plus' />
+          </Link>
           <DropDownMenu title={(
             <img className='profile' src={user.photo || userPlaceholder}/>
           )} caption={__('profileAndSettings')} href={`/${user.username}`}>
