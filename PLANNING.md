@@ -50,6 +50,7 @@ Represents a script or a collection.
 Script only:
 
 - script - Text
+- requiresRoot - Boolean
 
 Collection only:
 

@@ -20,11 +20,17 @@ export const Passport = sequelize.define('passport', {
 export const User = sequelize.define('user', {
   login: {
     type: Sequelize.STRING,
-    unique: true
+    unique: true,
+    validate: {
+      is: /^[a-z0-9]+$/
+    }
   },
   username: {
     type: Sequelize.STRING,
-    unique: true
+    unique: true,
+    validate: {
+      is: /^[a-zA-Z0-9]+$/
+    }
   },
   email: {
     type: Sequelize.STRING,
@@ -69,7 +75,7 @@ export const User = sequelize.define('user', {
       let obj = this.get({
         plain: true
       });
-      delete obj.createdAt;
+      delete obj.passports;
       delete obj.updatedAt;
       return obj;
     }
@@ -80,30 +86,94 @@ export const TagType = sequelize.define('tagType', {
   name: {
     type: Sequelize.STRING,
     allowNull: false,
-    unique: true
+    unique: true,
+    validate: {
+      is: /^([a-z0-9][a-z0-9\-]+[a-z0-9]|[a-z0-9]+)$/
+    }
   },
   description: Sequelize.TEXT
+}, {
+  hooks: {
+    beforeValidate: entry => {
+      if (entry.name) {
+        entry.name = entry.name.toLowerCase();
+      }
+    }
+  },
+  instanceMethods: {
+    toJSON: function() {
+      let obj = this.get({
+        plain: true
+      });
+      delete obj.createdAt;
+      delete obj.updatedAt;
+      return obj;
+    }
+  }
 });
 
 export const Tag = sequelize.define('tag', {
   name: {
     type: Sequelize.STRING,
     allowNull: false,
-    unique: true
+    unique: true,
+    validate: {
+      is: /^([a-z0-9][a-z0-9\-]+[a-z0-9]|[a-z0-9]+)$/
+    }
   },
   description: Sequelize.TEXT
+}, {
+  hooks: {
+    beforeValidate: entry => {
+      if (entry.name) {
+        entry.name = entry.name.toLowerCase();
+      }
+    }
+  },
+  instanceMethods: {
+    toJSON: function() {
+      let obj = this.get({
+        plain: true
+      });
+      delete obj.createdAt;
+      return obj;
+    }
+  }
 });
 
 export const Entry = sequelize.define('entry', {
   name: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      is: /^([a-z0-9][a-z0-9\-]+[a-z0-9]|[a-z0-9]+)$/
+    }
   },
   title: Sequelize.STRING,
   brief: Sequelize.TEXT,
   description: Sequelize.TEXT,
-  type: Sequelize.ENUM('script', 'collection'),
-  script: Sequelize.TEXT
+  type: {
+    type: Sequelize.ENUM('script', 'collection'),
+    allowNull: false
+  },
+  script: Sequelize.TEXT,
+  requiresRoot: Sequelize.BOOLEAN
+}, {
+  hooks: {
+    beforeValidate: entry => {
+      if (entry.name) {
+        entry.name = entry.name.toLowerCase();
+      }
+    }
+  },
+  instanceMethods: {
+    toJSON: function() {
+      let obj = this.get({
+        plain: true
+      });
+      return obj;
+    }
+  }
 });
 
 Passport.belongsTo(User);

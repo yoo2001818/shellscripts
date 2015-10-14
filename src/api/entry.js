@@ -1,55 +1,78 @@
 import Express from 'express';
-import { User } from '../db/index.js';
+import { sequelize, User, Entry, Tag, TagType } from '../db/index.js';
 import authRequired from './lib/authRequired.js';
 import adminRequired from './lib/adminRequired.js';
 
+function checkModifiable(req, res, next) {
+  if (req.selUser.id !== req.user.id) {
+    adminRequired(req, res, next);
+    return;
+  }
+  next();
+}
+
+function buildEntryGet(options) {
+  let { title, tags, username, userId, type, lastIndex } = options;
+  const where = {};
+  const include = [];
+  if (title != null) {
+    where.title = {
+      $like: title
+    };
+  }
+  include.push({
+    model: Tag,
+    as: 'tags',
+    where: tags ? ({
+      name: {
+        $in: tags
+      }
+    }) : undefined,
+    include: [{
+      model: TagType,
+      as: 'type'
+    }]
+  });
+  include.push({
+    model: User,
+    as: 'author',
+    where: username != null ? ({
+      login: {
+        $like: username.toLowerCase()
+      }
+    }) : undefined
+  });
+  if (userId != null) where.authorId = userId;
+  if (type != null) {
+    where.type = type;
+  }
+  // This shouldn't be done in here but whatever. :/
+  lastIndex = parseInt(lastIndex);
+  if (!isNaN(lastIndex)) {
+    where.id = {
+      $lt: lastIndex
+    };
+  }
+  return {
+    where,
+    include,
+    // TODO currently it's hardcoded. should be changed
+    limit: 20,
+    order: [
+      ['id', 'DESC']
+    ]
+  };
+}
+
 export const router = new Express.Router();
 export default router;
-
-const mockupData = [
-  {
-    id: 1,
-    name: 'reinstallgrub',
-    title: 'Reinstall GRUB',
-    author: {
-      id: 2,
-      username: 'yoo2001818',
-      login: 'yoo2001818',
-      email: 'test@example.com',
-      signedUp: true,
-      isAdmin: true,
-      name: '끼로',
-      bio: '안녕하세요 끼로입니다\n와와 잘된다',
-      photo: '/uploads/user_2_photo.png?version=1444062538641',
-      website: 'http://kkiro.kr/'
-    },
-    tags: [
-      {
-        id: 1,
-        name: 'bootloader',
-        description: 'Bootloader related stuff',
-        type: {
-          id: 1,
-          name: 'program'
-        }
-      }
-    ],
-    brief: 'Reinstalls GRUB bootloader. Only supports x86 Linux.',
-    description: 'This requires something. what?',
-    type: 'script',
-    script:
-`#!/bin/bash
-echo 'Nope'
-exit 0`
-  }
-];
 
 /**
  * @api {get} /entries/ Get entries list
  * @apiGroup Entry
  * @apiName SearchEntries
- * @apiParam (Query) {String} [name] The entries' name to search
- * @apiParam (Query) {String} [tags] The entries' tags to search
+ * @apiParam (Query) {String} [title] The entries' title to search
+ * @apiParam (Query) {String[]} [tags] The entries' tags to search
  * @apiParam (Query) {String} [username] The entries' username to search
  * @apiParam (Query) {String} [type] The entries' type
  * @apiParam (Query) {Integer} [lastIndex] The last entry's ID you've seen
@@ -62,8 +85,10 @@ exit 0`
  *   and this will send entries starting from there.
  */
 router.get('/entries/', (req, res) => {
-  // Respond with mockup data
-  res.json(mockupData);
+  Entry.findAll(buildEntryGet(req.query))
+  .then(entries => {
+    res.json(entries);
+  });
 });
 
 // /entries/:author router
@@ -110,16 +135,43 @@ router.use('/entries/:author', (req, res, next) => {
  *   and this will send entries starting from there.
  */
 authorRouter.get('/', (req, res) => {
-  // Also mockup
-  res.json(mockupData);
+  Entry.findAll(buildEntryGet(Object.assign({}, req.query, {
+    userId: req.selUser.id
+  })))
+  .then(entries => {
+    res.json(entries);
+  });
 });
 
 export const entryRouter = new Express.Router();
 
 authorRouter.use('/:name', (req, res, next) => {
+  const { name } = req.params;
   // Inject entry to request
-  req.selEntry = mockupData[0];
-  next();
+  Entry.findOne({
+    where: {
+      authorId: req.selUser.id,
+      name: name.toLowerCase()
+    },
+    include: [
+      {
+        model: Tag,
+        as: 'tags',
+        include: [{
+          model: TagType,
+          as: 'type'
+        }]
+      }, {
+        model: User,
+        as: 'author'
+      }
+    ]
+  })
+  .then(entry => {
+    req.selEntryName = name;
+    req.selEntry = entry;
+    next();
+  })
 }, entryRouter);
 
 /**
@@ -131,31 +183,133 @@ authorRouter.use('/:name', (req, res, next) => {
  * @apiDescription Returns the entry.
  */
 entryRouter.get('/', (req, res) => {
-  // Also mockup
-  res.json(mockupData[0]);
+  if (req.selEntry == null) {
+    // Not found
+    res.status(404);
+    res.json({
+      id: 'ENTRY_NOT_FOUND',
+      message: 'Specified entry is not found.'
+    });
+    return;
+  }
+  res.json(req.selEntry);
 });
 
 /**
  * @api {post} /entries/:author/:name Create an entry
  * @apiGroup Entry
  * @apiName CreateEntry
- * @apiParam (Parameter) {String} author The author of the entry
- * @apiParam (Parameter) {String} name The name of the entry
- * @apiDescription Returns the created entry.
+ * @apiParam (Parameter) {String} author The author of the entry.
+ * @apiParam (Parameter) {String} name The name of the entry. (aka slug)
+ * @apiParam (Body) {String} title The title of the entry.
+ * @apiParam (Body) {String} brief Brief description. (Usually one line)
+ * @apiParam (Body) {String} description Detailed description. Accepts markdown.
+ * @apiParam (Body) {String[]} tags The tags name of the entry.
+ * @apiParam (Body) {Enum(script,collection)} type The type of the entry.
+ * @apiParam (Body) {String} [script] The script data of the entry.
+ * @apiParam (Body) {Boolean} [requiresRoot] Whether if this requires root.
+ * @apiDescription Creates and returns a new entry.
  */
-entryRouter.post('/', authRequired, adminRequired, (req, res) => {
-  res.sendStatus(501);
+entryRouter.post('/', authRequired, checkModifiable, (req, res) => {
+  if (req.selEntry != null) {
+    // Wut.
+    res.status(409);
+    res.send({
+      id: 'AUTH_ENTRY_EXISTS',
+      message: 'Entry with the name already exists.'
+    });
+    return;
+  }
+  const name = req.selEntryName.toLowerCase();
+  let { title, brief, description, tags, type, script, requiresRoot } =
+    req.body;
+  if (title == null || title === '') title = name;
+  if (!Array.isArray(tags) && typeof tags === 'string') tags = tags.split(',');
+  tags = tags.map(name => name.toLowerCase());
+  // Since this requires quite a lot of SQL queries, Use transaction to prevent
+  // conflictions.
+  sequelize.transaction(transaction =>
+    // Find existing tags first.
+    Tag.findAll({
+      where: {
+        name: {
+          $in: tags
+        }
+      }, transaction
+    })
+    .then(tagObjs => {
+      // Remove tag with existing ID from the array.
+      tagObjs.forEach(tagObj => tags.splice(tags.indexOf(tagObj.name), 1));
+      // Then, bulk create missing tags
+      if (tags.length > 0) {
+        return Tag.bulkCreate(tags.map(tagName => ({
+          name: tagName
+          // TODO And other default values
+        })), { transaction })
+        // Since bulkCreate doesn't return created objects, we have to fetch
+        // them again. Which is pretty awkward though.
+        .then(() => Tag.findAll({
+          where: {
+            name: {
+              $in: tags
+            }
+          }, transaction
+        }))
+        // Then, concat new tags to original tags array.
+        .then(newTagObjs => {
+          tagObjs = tagObjs.concat(newTagObjs);
+          return tagObjs;
+        });
+      }
+      return tagObjs;
+    })
+    // Then create new entry with given data.
+    .then(tagObjs => {
+      return Entry.create({
+        name, title, brief, description, type, script, requiresRoot,
+        authorId: req.selUser.id
+      }, { transaction })
+      // Then set the tags data and we're done.
+      .then(entry => {
+        return entry.setTags(tagObjs, { transaction })
+        .then(() => entry);
+      })
+    })
+    // Re-retrieve entry object with tags and user
+    .then(entry => Entry.findOne({
+      where: {
+        id: entry.id
+      },
+      include: buildEntryGet({}).include,
+      transaction
+    }))
+  )
+  .then(entry => {
+    res.json(entry);
+  })
+  .catch(err => {
+    console.log(err.stack);
+    res.status(500);
+    res.json(err);
+  });
 });
 
 /**
- * @api {put} /entries/:author/:name Create an entry
+ * @api {put} /entries/:author/:name Edit an entry
  * @apiGroup Entry
  * @apiName EditEntry
- * @apiParam (Parameter) {String} author The author of the entry
- * @apiParam (Parameter) {String} name The name of the entry
- * @apiDescription Returns the edited entry.
+ * @apiParam (Parameter) {String} author The author of the entry.
+ * @apiParam (Parameter) {String} name The name of the entry. (aka slug)
+ * @apiParam (Body) {String} title The title of the entry.
+ * @apiParam (Body) {String} brief Brief description. (Usually one line)
+ * @apiParam (Body) {String} description Detailed description. Accepts markdown.
+ * @apiParam (Body) {String[]} tags The tags name of the entry.
+ * @apiParam (Body) {Enum(script,collection)} type The type of the entry.
+ * @apiParam (Body) {String} [script] The script data of the entry.
+ * @apiParam (Body) {Boolean} [requiresRoot] Whether if this requires root.
+ * @apiDescription Edits and returns the entry.
  */
-entryRouter.put('/', authRequired, adminRequired, (req, res) => {
+entryRouter.put('/', authRequired, checkModifiable, (req, res) => {
   res.sendStatus(501);
 });
 
@@ -167,6 +321,6 @@ entryRouter.put('/', authRequired, adminRequired, (req, res) => {
  * @apiParam (Parameter) {String} name The name of the entry
  * @apiDescription Returns 200 OK.
  */
-entryRouter.delete('/', authRequired, adminRequired, (req, res) => {
+entryRouter.delete('/', authRequired, checkModifiable, (req, res) => {
   res.sendStatus(501);
 });

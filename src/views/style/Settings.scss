@@ -83,6 +83,7 @@ $break-small: 500pt;
       //border-bottom: 1px solid #ccc;
     }
     .authMethod {
+      border-bottom: 1px solid #ccc;
       display: table;
       width: 100%;
       &>h2 {
@@ -98,6 +99,9 @@ $break-small: 500pt;
         display: table-cell;
         min-width: 8em;
         vertical-align: middle;
+      }
+      &:last-child {
+        border-bottom: none;
       }
     }
     &>.content {
