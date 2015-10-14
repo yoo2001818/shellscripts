@@ -1,10 +1,17 @@
 import './style/EntryView.scss';
 
 import React, { Component, PropTypes } from 'react';
+import marked from 'marked';
 
 import EntryMiniCard from '../components/EntryMiniCard.js';
 
 export default class EntryView extends Component {
+  getDescription() {
+    const { entry } = this.props;
+    return {
+      __html: marked(entry.description, { sanitize: true })
+    };
+  }
   render() {
     const { entry } = this.props;
     return (
@@ -12,7 +19,7 @@ export default class EntryView extends Component {
         <div className='header'>
           <EntryMiniCard entry={entry} />
           <div className='description'>
-            <p>{entry.description}</p>
+            <p dangerouslySetInnerHTML={this.getDescription()} />
           </div>
         </div>
         <pre className='script'>

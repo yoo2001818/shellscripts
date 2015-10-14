@@ -21,6 +21,7 @@
     "history": "^1.12.4",
     "html-webpack-plugin": "^1.6.2",
     "lodash": "^3.10.0",
+    "marked": "^0.3.5",
     "morgan": "^1.6.1",
     "multer": "^1.0.6",
     "normalizr": "^1.1.0",
