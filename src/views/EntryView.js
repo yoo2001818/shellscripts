@@ -19,7 +19,7 @@ export default class EntryView extends Component {
         <div className='header'>
           <EntryMiniCard entry={entry} />
           <div className='description'>
-            <p dangerouslySetInnerHTML={this.getDescription()} />
+            <span dangerouslySetInnerHTML={this.getDescription()} />
           </div>
         </div>
         <pre className='script'>

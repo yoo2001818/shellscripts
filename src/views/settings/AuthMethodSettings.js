@@ -7,6 +7,7 @@ import { oAuthSignUp, methodDelete, methodFetch }
 // import translate from '../../lang/index.js';
 import Translated from '../../components/ui/Translated.js';
 import LoadingOverlay from '../../components/ui/LoadingOverlay.js';
+import LocalMethodAddForm from '../../components/forms/LocalMethodAddForm.js';
 // import LabelInput from '../../components/LabelInput.js';
 
 class AuthMethodSettings extends Component {
@@ -31,6 +32,7 @@ class AuthMethodSettings extends Component {
         return (
           <div className='authMethod' key={provider.identifier}>
             <h2>{provider.name}</h2>
+            <span className='spacing'> </span>
             <div className='actions'>
               { methodEnabledCount > 1 ? (
                 <button className='red-button'
@@ -47,9 +49,22 @@ class AuthMethodSettings extends Component {
           </div>
         );
       } else {
+        // Treat local auth method differently
+        if (provider.identifier === 'local') {
+          return (
+            <div className='authMethod' key={provider.identifer}>
+              <h2>{provider.name}</h2>
+              <span className='spacing'> </span>
+              <div className='actions form'>
+                <LocalMethodAddForm />
+              </div>
+            </div>
+          )
+        }
         return (
           <div className='authMethod' key={provider.identifier}>
             <h2>{provider.name}</h2>
+            <span className='spacing'> </span>
             <div className='actions'>
               <button
                 onClick={this.handleOAuth.bind(this, provider.identifier)}

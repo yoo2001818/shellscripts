@@ -52,6 +52,7 @@
   "tags": "Tags",
   "seperatedByComma": "Tags are seperated by comma.",
   "acceptsMarkdown": "You can use Markdown in here.",
+  "passwordCheck": "Verify password",
   "AUTH_INVALID_USERNAME": "Invalid username",
   "AUTH_INVALID_PASSWORD": "Invalid password",
   "AUTH_USERNAME_POLICY": "Username should only contain alphanumberic characters.",
