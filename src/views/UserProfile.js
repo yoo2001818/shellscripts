@@ -14,6 +14,10 @@ class UserProfile extends Component {
       editing: false
     };
   }
+  canEdit() {
+    const { user, session, sessionUser } = this.props;
+    return session.login === user.login || (sessionUser && sessionUser.isAdmin);
+  }
   handleStartEdit() {
     this.setState({
       editing: true
@@ -28,7 +32,7 @@ class UserProfile extends Component {
     let { editing } = this.state;
     const { user, session } = this.props;
     // Editing should be immediately stopped if user signs out
-    if (session.login !== user.login) editing = false;
+    if (!this.canEdit()) editing = false;
     // TODO This is a mess. We should seperate editing page / viewing page -_-
     const card = editing ? (
       <UserProfileEditForm initialValues={user} user={user}
@@ -59,7 +63,7 @@ class UserProfile extends Component {
             {user.bio}
           </p>
         </div>
-        { !editing && session.login === user.login ? (
+        { !editing && this.canEdit() ? (
           <div className='edit'>
             <button onClick={this.handleStartEdit.bind(this)}>
               <i className="fa fa-pencil"></i>
@@ -84,9 +88,15 @@ class UserProfile extends Component {
 
 UserProfile.propTypes = {
   user: PropTypes.object,
-  session: PropTypes.object
+  session: PropTypes.object,
+  sessionUser: PropTypes.object
 };
 
 export default connect(
-  store => ({session: store.session})
+  state => {
+    const { session, entities: { users } } = state;
+    return {
+      sessionUser: users[session.login], session
+    };
+  }
 )(UserProfile);

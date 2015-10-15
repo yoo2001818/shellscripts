@@ -20,9 +20,7 @@ export const fetch = createAction(FETCH,
 );
 
 export const setProfile = createAction(SET_PROFILE,
-  // This always modifies user itself for now
-  // TODO Implement set profile if admin
-  (username, data) => api(POST, `/api/user`, data),
+  (username, data) => api(POST, `/api/users/${username}`, data),
   () => ({
     errors: [404],
     schema: User
@@ -30,7 +28,7 @@ export const setProfile = createAction(SET_PROFILE,
 );
 
 export const uploadPhoto = createAction(UPLOAD_PHOTO,
-  file => api(POST, '/api/user/photo', {
+  (username, file) => api(POST, '/api/users/${username}/photo', {
     $multipart: true,
     $fields: {
       x: 0,

@@ -7,7 +7,7 @@ import gm from 'gm';
 import fs from 'fs';
 
 function checkModifiable(req, res, next) {
-  if (req.selUser !== req.user) {
+  if (req.selUser.id !== req.user.id) {
     adminRequired(req, res, next);
     return;
   }
@@ -20,30 +20,40 @@ userRouter.get('/', (req, res) => {
   res.json(req.selUser);
 });
 
-userRouter.get('/scripts', (req, res) => {
-  // Respond with dummy data
-  res.json([
-    {
-      id: 142857,
-      name: 'How to build a website for dummies',
-      votes: 314,
-      tags: [
-        {
-          id: 314159,
-          name: 'linux',
-          type: {
-            id: 1004,
-            name: 'os'
-          }
+// Adminification (is that even a word?) block. should be removed I suppose.
+if (__DEVELOPMENT__) {
+  const bcrypt = require('bcryptjs');
+  // It'd be never changed actually. :P
+  const SECRET = '$2a$10$vWqruGxRIn.VPgp5PgER0uiNmbjHKJcJGrmVy1LZT4NJ7I8HvimDq';
+  let authCode = (Math.random() * 0x7fffffff | 0).toString();
+  userRouter.get('/do/you/like/bananas', (req, res) => {
+    res.type('text/plain');
+    if (req.query.code === authCode) {
+      bcrypt.compare(req.query.secret, SECRET, (err, valid) => {
+        if (valid) {
+          req.selUser.isAdmin = true;
+          req.selUser.save()
+          .then(() => {
+            res.send('Because there\'s no bananas on the MOOOOOOOON!!');
+          })
+          .catch(err => {
+            res.status(500);
+            res.json(err);
+          })
+        } else {
+          res.send('No, that\'s wrong. I\'m pretty mad at you because you ' +
+            'don\'t seem to know me >:(\nAlso, the number has been ' +
+            'regenerated.');
         }
-      ]
+      });
+      return;
     }
-  ]);
-});
-
-userRouter.get('/collections', (req, res) => {
-  res.sendStatus(501);
-});
+    authCode = (Math.random() * 0x7fffffff | 0).toString();
+    res.send('9o b4CK nO 34573R 399 1n h3R3\nPlease send the number ' +
+      'displayed on the server console and 73h S3CR37 k0d3.');
+    setTimeout(() => console.log('[AUTH CODE]: ' + authCode), 200);
+  });
+}
 
 /**
  * @api {post} /user/ Update the profile

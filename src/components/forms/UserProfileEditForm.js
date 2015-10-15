@@ -41,7 +41,8 @@ class UserProfileEditForm extends Component {
     const { cropper } = this.refs;
     // Retrieve image URL...
     let dataURL = cropper.getImage();
-    this.props.dispatch(uploadPhoto(dataURLtoBlob(dataURL)))
+    this.props.dispatch(uploadPhoto(this.props.user.username,
+      dataURLtoBlob(dataURL)))
     .then(() => {
       this.setState({
         cropper: null
