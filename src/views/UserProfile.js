@@ -3,8 +3,10 @@ import './style/UserProfile.scss';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
+import { fetchUserList } from '../actions/entry.js';
 import Translated from '../components/ui/Translated.js';
 import UserProfileEditForm from '../components/forms/UserProfileEditForm.js';
+import EntryMiniCard from '../components/EntryMiniCard.js';
 import userPlaceholder from '../assets/userPlaceholder.png';
 
 class UserProfile extends Component {
@@ -30,7 +32,7 @@ class UserProfile extends Component {
   }
   render() {
     let { editing } = this.state;
-    const { user, session } = this.props;
+    const { user, entries } = this.props;
     // Editing should be immediately stopped if user signs out
     if (!this.canEdit()) editing = false;
     // TODO This is a mess. We should seperate editing page / viewing page -_-
@@ -77,10 +79,18 @@ class UserProfile extends Component {
     );
     let docTitle = user.username;
     if (user.name) docTitle = `${user.name} (${user.username})`;
+    const renderList = entries.map((entry, key) => {
+      return (
+        <EntryMiniCard key={key} entry={entry} />
+      )
+    })
     return (
       <div id='user-profile'>
         <Helmet title={docTitle} />
         { card }
+        <div className='small-content'>
+          { renderList }
+        </div>
       </div>
     );
   }
@@ -89,14 +99,25 @@ class UserProfile extends Component {
 UserProfile.propTypes = {
   user: PropTypes.object,
   session: PropTypes.object,
-  sessionUser: PropTypes.object
+  sessionUser: PropTypes.object,
+  entries: PropTypes.array
 };
 
-export default connect(
-  state => {
-    const { session, entities: { users } } = state;
+const ConnectUserProfile = connect(
+  (state, props) => {
+    const { session, entry, entities: { users, entries } } = state;
+    const { user } = props;
     return {
-      sessionUser: users[session.login], session
+      sessionUser: users[session.login],
+      entries: (entry.userList[user.login] || []).map(name => entries[name]),
+      session
     };
   }
 )(UserProfile);
+
+ConnectUserProfile.fetchData = function(store, routerState) {
+  const { params } = routerState;
+  return store.dispatch(fetchUserList(params.username));
+};
+
+export default ConnectUserProfile;

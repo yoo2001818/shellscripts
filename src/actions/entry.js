@@ -4,6 +4,7 @@ import { api, GET, POST } from '../middleware/api.js';
 import { Entry } from '../schema/index.js';
 
 export const FETCH_LIST = 'ENTRY_FETCH_LIST';
+export const FETCH_USER_LIST = 'ENTRY_FETCH_USER_LIST';
 export const FETCH = 'ENTRY_FETCH';
 export const CREATE = 'ENTRY_POST';
 
@@ -11,6 +12,14 @@ export const fetchList = createAction(FETCH_LIST,
   () => api(GET, '/api/entries/'),
   () => ({
     schema: arrayOf(Entry)
+  })
+);
+
+export const fetchUserList = createAction(FETCH_USER_LIST,
+  (username) => api(GET, `/api/entries/${username}`),
+  (username) => ({
+    schema: arrayOf(Entry),
+    username
   })
 );
 

@@ -14,7 +14,7 @@ class Index extends Component {
       )
     })
     return (
-      <div>
+      <div className='small-content'>
         <h1>
           <Translated name='hello'>{'World'}</Translated>
         </h1>
