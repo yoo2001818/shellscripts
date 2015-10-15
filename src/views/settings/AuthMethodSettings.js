@@ -8,6 +8,7 @@ import { oAuthSignUp, methodDelete, methodFetch }
 import Translated from '../../components/ui/Translated.js';
 import LoadingOverlay from '../../components/ui/LoadingOverlay.js';
 import LocalMethodAddForm from '../../components/forms/LocalMethodAddForm.js';
+import LocalMethodEditForm from '../../components/forms/LocalMethodEditForm.js';
 // import LabelInput from '../../components/LabelInput.js';
 
 class AuthMethodSettings extends Component {
@@ -29,6 +30,18 @@ class AuthMethodSettings extends Component {
       (sum, element) => sum + (element.inUse ? 1 : 0), 0);
     const methodTags = methods.map(provider => {
       if (provider.inUse) {
+        // Treat local auth method differently
+        if (provider.identifier === 'local') {
+          return (
+            <div className='authMethod' key={provider.identifer}>
+              <h2>{provider.name}</h2>
+              <span className='spacing'> </span>
+              <div className='actions form'>
+                <LocalMethodEditForm canDelete={methodEnabledCount > 1} />
+              </div>
+            </div>
+          )
+        }
         return (
           <div className='authMethod' key={provider.identifier}>
             <h2>{provider.name}</h2>

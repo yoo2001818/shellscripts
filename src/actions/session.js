@@ -1,7 +1,7 @@
 // Session related actions come here
 import { createAction } from 'redux-actions';
 import { User } from '../schema/index.js';
-import { api, GET, POST, DELETE } from '../middleware/api.js';
+import { api, GET, PUT, POST, DELETE } from '../middleware/api.js';
 
 export const FETCH = 'SESSION_FETCH';
 export const LOGIN = 'SESSION_LOGIN';
@@ -9,6 +9,7 @@ export const LOGOUT = 'SESSION_LOGOUT';
 export const SIGNUP_FINALIZE = 'SESSION_SIGNUP_FINALIZE';
 export const LOCAL_SIGNUP = 'SESSION_LOCAL_SIGNUP';
 export const OAUTH_SIGNUP = 'SESSION_OAUTH_SIGNUP';
+export const LOCAL_CHANGE_PASSWORD = 'SESSION_LOCAL_CHANGE_PASSWORD';
 export const METHOD_DELETE = 'SESSION_METHOD_DELETE';
 export const METHOD_FETCH = 'SESSION_METHOD_FETCH';
 export const CHECK_USERNAME = 'SESSION_CHECK_USERNAME';
@@ -39,7 +40,8 @@ export const signUpFinalize = createAction(SIGNUP_FINALIZE,
 export const localSignUp = createAction(LOCAL_SIGNUP,
   credentials => api(POST, '/api/session/local/register', credentials),
   (_, meta) => Object.assign({}, meta, {
-    schema: User
+    schema: User,
+    method: 'local'
   }));
 export const oAuthSignUp = createAction(OAUTH_SIGNUP,
   // Some weird trick
@@ -60,6 +62,10 @@ export const oAuthSignUp = createAction(OAUTH_SIGNUP,
       resolve();
     }
   }));
+export const localChangePassword = createAction(LOCAL_CHANGE_PASSWORD,
+  credentials => api(PUT, '/api/session/local', credentials),
+  (_, meta) => meta
+);
 export const methodFetch = createAction(METHOD_FETCH,
   () => api(GET, '/api/session/methods', {}));
 export const methodDelete = createAction(METHOD_DELETE,

@@ -180,3 +180,41 @@ export function register(req, credentials, done) {
   )
   .then(() => done(), err => done(err));
 }
+
+export function changePassword(req, body, done) {
+  const { oldPassword, password } = body;
+  const { user } = req;
+  // Get passport of the user
+  user.getPassports({
+    where: {
+      type: 'local'
+    }
+  })
+  .then(passports => {
+    if (passports.length <= 0) {
+      throw {
+        id: 'AUTH_METHOD_NOT_FOUND',
+        message: 'Specified authentication method is not found.',
+        code: 404
+      };
+    }
+    const passport = passports[0];
+    // Validate password first
+    return validatePassword(passport, oldPassword)
+    .then(isValid => {
+      if (!isValid) {
+        throw {
+          id: 'AUTH_INVALID_PASSWORD',
+          message: 'Invalid password.',
+          code: 401
+        };
+      }
+    })
+    .then(() => generatePassword(password))
+    .then(hash => {
+      passport.data = hash;
+      return passport.save();
+    });
+  })
+  .then(() => done(), err => done(err));
+}

@@ -1,6 +1,6 @@
 import Express from 'express';
 import passport from './lib/passport.js';
-import { register } from './lib/auth/local.js';
+import { register, changePassword } from './lib/auth/local.js';
 import strategies from './lib/auth/strategy.js';
 import authRequired from './lib/authRequired.js';
 import { Passport } from '../db/index.js';
@@ -487,7 +487,7 @@ router.post('/session/local/password', (req, res) => {
  * @apiGroup Session
  * @apiName PasswordChangeLocal
  * @apiParam (Body) {String} oldPassword The old password.
- * @apiPassword (Body) {String} password The new password to use.
+ * @apiParam (Body) {String} password The new password to use.
  * @apiDescription Changes the password of the user.
  *
  *   This requires the user to be signed in. Otherwise, it'll return
@@ -519,7 +519,19 @@ router.post('/session/local/password', (req, res) => {
  *   }
  */
 router.put('/session/local/', authRequired, (req, res) => {
-  res.sendStatus(501);
+  changePassword(req, req.body, (err) => {
+    if (err && err.code) {
+      res.status(err.code);
+      res.send(err);
+      return;
+    }
+    if (err) {
+      res.status(500);
+      res.send(err.message);
+      return;
+    }
+    res.send({});
+  });
 });
 
 /**

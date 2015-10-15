@@ -5,30 +5,59 @@ import { reduxForm } from 'redux-form';
 import Translated from '../ui/Translated.js';
 import ErrorInput from '../ui/ErrorInput.js';
 import translate from '../../lang/index.js';
-import { localSignUp } from '../../actions/session.js';
+import { localChangePassword, methodDelete } from '../../actions/session.js';
 
 class LocalMethodAddForm extends Component {
+  handleDelete(e) {
+    this.props.dispatch(methodDelete('local'));
+    e.preventDefault();
+  }
   handleSubmit(data) {
-    this.props.dispatch(localSignUp(Object.assign({}, data, {
-      username: this.props.user.username,
-      email: this.props.user.email
-    })));
+    return this.props.dispatch(localChangePassword(data, {
+      errors: [401]
+    }))
+    .then(result => {
+      if (result.error) {
+        const error = result.payload.body;
+        if (error.id === 'AUTH_INVALID_PASSWORD') {
+          this.props.fields.oldPassword.handleChange('');
+          throw {oldPassword: error};
+        }
+        throw {_error: error.message};
+      } else {
+        this.props.resetForm();
+      }
+    })
   }
   render() {
     const __ = translate(this.props.lang.lang);
-    const { fields: { password, passwordCheck }, handleSubmit } = this.props;
+    const { fields: { oldPassword, password, passwordCheck },
+      handleSubmit, canDelete } = this.props;
     return (
       <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
-        <div className='content flow'>
-          <ErrorInput placeholder={__('password')} type='password'
+        <div className='content'>
+          <ErrorInput placeholder={__('oldPassword')} type='password'
+            {...oldPassword} />
+          <ErrorInput placeholder={__('newPassword')} type='password'
             {...password} />
           <ErrorInput placeholder={__('passwordCheck')} type='password'
             {...passwordCheck} />
         </div>
         <div className='footer right'>
           <button>
-            <Translated name='register' />
+            <Translated name='change' />
           </button>
+          { canDelete ? (
+            <button className='red-button'
+              onClick={this.handleDelete.bind(this)}
+            >
+              <Translated name='unregister' />
+            </button>
+          ) : (
+            <button disabled>
+              <Translated name='unregister' />
+            </button>
+          )}
         </div>
       </form>
     );
@@ -41,7 +70,9 @@ LocalMethodAddForm.propTypes = {
   lang: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
-  invalid: PropTypes.bool
+  invalid: PropTypes.bool,
+  resetForm: PropTypes.func.isRequired,
+  canDelete: PropTypes.bool
 };
 
 function validateFrom(data) {
@@ -64,7 +95,7 @@ export default connect(
     return { form, lang, user };
   }
 )(reduxForm({
-  form: 'localMethodAdd',
-  fields: ['password', 'passwordCheck'],
+  form: 'localMethodEdit',
+  fields: ['oldPassword', 'password', 'passwordCheck'],
   validate: validateFrom
 })(LocalMethodAddForm));
