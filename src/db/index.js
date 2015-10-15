@@ -29,7 +29,8 @@ export const User = sequelize.define('user', {
     type: Sequelize.STRING,
     unique: true,
     validate: {
-      is: /^[a-zA-Z0-9]+$/
+      is: /^[a-zA-Z0-9]+$/,
+      len: [1, 32]
     }
   },
   email: {
@@ -48,13 +49,26 @@ export const User = sequelize.define('user', {
     allowNull: false,
     defaultValue: false
   },
-  name: Sequelize.STRING,
-  bio: Sequelize.TEXT,
+  name: {
+    type: Sequelize.STRING,
+    validate: {
+      len: [0, 64]
+    }
+  },
+  bio: {
+    type: Sequelize.TEXT,
+    validate: {
+      // I think 280 characters are enough.
+      len: [0, 280]
+    }
+  },
   photo: Sequelize.STRING,
   website: {
     type: Sequelize.STRING,
     validate: {
-      isURL: true
+      isURL: true,
+      // Don't think this is necessary though
+      len: [0, 256]
     }
   }
 }, {
@@ -88,7 +102,8 @@ export const TagType = sequelize.define('tagType', {
     allowNull: false,
     unique: true,
     validate: {
-      is: /^([a-z0-9][a-z0-9\-]+[a-z0-9]|[a-z0-9]+)$/
+      is: /^([a-z0-9][a-z0-9\-]+[a-z0-9]|[a-z0-9]+)$/,
+      len: [1, 32]
     }
   },
   description: Sequelize.TEXT
@@ -118,7 +133,8 @@ export const Tag = sequelize.define('tag', {
     allowNull: false,
     unique: true,
     validate: {
-      is: /^([a-z0-9][a-z0-9\-]+[a-z0-9]|[a-z0-9]+)$/
+      is: /^([a-z0-9][a-z0-9\-]+[a-z0-9]|[a-z0-9]+)$/,
+      len: [1, 32]
     }
   },
   description: Sequelize.TEXT
@@ -146,11 +162,23 @@ export const Entry = sequelize.define('entry', {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
-      is: /^([a-z0-9][a-z0-9\-]+[a-z0-9]|[a-z0-9]+)$/
+      is: /^([a-z0-9][a-z0-9\-]+[a-z0-9]|[a-z0-9]+)$/,
+      len: [1, 48]
     }
   },
-  title: Sequelize.STRING,
-  brief: Sequelize.TEXT,
+  title: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      len: [0, 150]
+    }
+  },
+  brief: {
+    type: Sequelize.TEXT,
+    validate: {
+      len: [0, 400]
+    }
+  },
   description: Sequelize.TEXT,
   type: {
     type: Sequelize.ENUM('script', 'collection'),

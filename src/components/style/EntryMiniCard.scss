@@ -48,11 +48,20 @@
     margin: 0.4em 0;
     list-style-type: none;
     &>li {
+      max-width: 100%;
       padding: 0.4em;
       display: inline-block;
       border: 1px solid #ccc;
       border-radius: 0.3em;
       font-size: 0.9em;
+      box-sizing: border-box;
+      .tooltip {
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
   }
 }

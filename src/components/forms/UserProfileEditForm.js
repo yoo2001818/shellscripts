@@ -1,13 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import { isEmail, isURL } from 'validator';
+import { isEmail, isURL, isLength } from 'validator';
 import Dropzone from 'react-dropzone';
 import AvatarEditor from 'react-avatar-editor';
 
 import DialogOverlay from '../ui/DialogOverlay.js';
 import Translated from '../ui/Translated.js';
 import ErrorInput from '../ui/ErrorInput.js';
+import ErrorShow from '../ui/ErrorShow.js';
 import translate from '../../lang/index.js';
 import Overlay from '../ui/Overlay.js';
 import userPlaceholder from '../../assets/userPlaceholder.png';
@@ -100,8 +101,8 @@ class UserProfileEditForm extends Component {
           </div>
           <div className='content'>
             <div className='identity'>
-              <input className='realname' type='text'
-                placeholder={__('name')} {...fields.name}/>
+              <ErrorInput className='realname' type='text'
+                placeholder={__('name')} noSuccess {...fields.name}/>
               <p className='username'>{user.username}</p>
             </div>
             <div className='contact'>
@@ -117,7 +118,10 @@ class UserProfileEditForm extends Component {
               <ErrorInput className='website' type='text'
                 placeholder={__('website')} {...fields.website}/>
             </div>
-            <textarea className='bio' placeholder={__('bio')} {...fields.bio}/>
+            <ErrorShow {...fields.bio}>
+              <textarea className='bio' placeholder={__('bio')}
+                {...fields.bio}/>
+            </ErrorShow>
           </div>
           <div className='edit'>
             <button>
@@ -177,6 +181,16 @@ function validateForm(data) {
   }
   if (data.website && !isURL(data.website)) {
     errors.website = true;
+  }
+  if (!isLength(data.name, 0, 64)) {
+    errors.name = {
+      id: 'FIELD_TOO_LONG'
+    };
+  }
+  if (!isLength(data.bio, 0, 280)) {
+    errors.bio = {
+      id: 'FIELD_TOO_LONG'
+    };
   }
   return errors;
 }

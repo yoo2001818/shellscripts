@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import { isEmail, isAlphanumeric } from 'validator';
+import { isEmail, isAlphanumeric, isLength } from 'validator';
 
 import Translated from '../ui/Translated.js';
 import ErrorInput from '../ui/ErrorInput.js';
@@ -51,6 +51,11 @@ function validateFrom(data) {
   if (!isAlphanumeric(data.username)) {
     errors.username = {
       id: 'AUTH_USERNAME_POLICY'
+    };
+  }
+  if (!isLength(data.username, 0, 32)) {
+    errors.username = {
+      id: 'FIELD_TOO_LONG'
     };
   }
   if (!isEmail(data.email)) {

@@ -60,10 +60,11 @@
   "confirmMethodDeleteDescription": "정말 $1 인증 수단을 제거하시겠습니까?",
   "yes": "네",
   "no": "아니요",
+  "FIELD_TOO_LONG": "길이가 너무 깁니다",
   "AUTH_INVALID_USERNAME": "올바른 사용자 이름이 아닙니다",
   "AUTH_INVALID_PASSWORD": "비밀번호가 틀립니다",
   "AUTH_USERNAME_POLICY": "사용자 이름은 알파벳과 숫자로만 구성되어야 합니다",
   "AUTH_USERNAME_EXISTS": "해당 사용자 이름이 이미 존재합니다",
   "AUTH_PASSWORD_POLICY": "비밀번호는 6글자 이상이어야 합니다",
-  "ENTRY_NAME_POLICY": "알파벳과 숫자, -로만 구성되어야 합니다"
+  "ENTRY_NAME_POLICY": "소문자와 숫자, -로만 구성되어야 합니다"
 }

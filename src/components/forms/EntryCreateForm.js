@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
+import { isLength, matches } from 'validator';
 import { create } from '../../actions/entry.js';
 
 import Translated from '../ui/Translated.js';
@@ -54,10 +55,11 @@ class EntryCreateForm extends Component {
             <ErrorInput placeholder={__('name')} {...name} />
           </LabelInput>
           <LabelInput label={__('title')}>
-            <input placeholder={__('title')} {...title} />
+            <ErrorInput placeholder={__('title')} noSuccess {...title} />
           </LabelInput>
           <LabelInput label={__('briefDescription')}>
-            <input placeholder={__('briefDescription')} {...brief} />
+            <ErrorInput placeholder={__('briefDescription')} noSuccess
+              {...brief} />
           </LabelInput>
           <LabelInput label={__('tags')}>
             <ErrorInput placeholder={__('tags')} {...tags} />
@@ -105,8 +107,35 @@ EntryCreateForm.contextTypes = {
   history: PropTypes.any
 };
 
-function validateFrom() {
+// TODO I hope this validation is universal - so I don't have to write it twice.
+function validateFrom(data) {
   const errors = {};
+  if (!data.name) {
+    errors.name = true;
+  } else if (!matches(data.name, /^([a-z0-9][a-z0-9\-]+[a-z0-9]|[a-z0-9]+)$/)) {
+    errors.name = {
+      id: 'ENTRY_NAME_POLICY'
+    };
+  } else if (!isLength(data.name, 1, 48)) {
+    errors.name = {
+      id: 'FIELD_TOO_LONG'
+    }
+  }
+  if (!data.title) {
+    errors.title = true;
+  } else if (!isLength(data.title, 0, 150)) {
+    errors.title = {
+      id: 'FIELD_TOO_LONG'
+    }
+  }
+  if (!data.brief) {
+    errors.brief = true;
+  } else if (!isLength(data.brief, 0, 400)) {
+    errors.brief = {
+      id: 'FIELD_TOO_LONG'
+    }
+  }
+  // TODO some kind of autocomplete or something for tags.
   /* errors.name = {
     id: 'ENTRY_NAME_POLICY'
   }; */
