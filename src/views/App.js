@@ -5,6 +5,7 @@ import Helmet from 'react-helmet';
 import { load } from '../actions/session.js';
 import ProgressBar from '../components/ui/ProgressBar.js';
 import ErrorOverlay from '../components/ui/ErrorOverlay.js';
+import Modal from '../components/Modal.js';
 import Header from '../components/Header.js';
 import Footer from '../components/Footer.js';
 
@@ -28,6 +29,7 @@ export default class App extends Component {
           {this.props.children}
         </div>
         <Footer />
+        <Modal />
         <ErrorOverlay />
         <ProgressBar />
       </div>

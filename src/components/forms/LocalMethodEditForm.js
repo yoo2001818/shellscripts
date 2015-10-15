@@ -5,11 +5,12 @@ import { reduxForm } from 'redux-form';
 import Translated from '../ui/Translated.js';
 import ErrorInput from '../ui/ErrorInput.js';
 import translate from '../../lang/index.js';
-import { localChangePassword, methodDelete } from '../../actions/session.js';
+import { localChangePassword, confirmMethodDelete }
+  from '../../actions/session.js';
 
 class LocalMethodAddForm extends Component {
   handleDelete(e) {
-    this.props.dispatch(methodDelete('local'));
+    this.props.dispatch(confirmMethodDelete('local'));
     e.preventDefault();
   }
   handleSubmit(data) {

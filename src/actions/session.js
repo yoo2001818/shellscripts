@@ -2,6 +2,7 @@
 import { createAction } from 'redux-actions';
 import { User } from '../schema/index.js';
 import { api, GET, PUT, POST, DELETE } from '../middleware/api.js';
+import { open } from './modal.js';
 
 export const FETCH = 'SESSION_FETCH';
 export const LOGIN = 'SESSION_LOGIN';
@@ -81,6 +82,31 @@ export const checkUsername = createAction(CHECK_USERNAME,
   }));
 export const checkEmail = createAction(CHECK_EMAIL,
   email => api(POST, '/api/user/email', { email }));
+
+export function confirmMethodDelete(method) {
+  return (dispatch, getState) => {
+    const methods = getState().session.method;
+    dispatch(open({
+      title: 'confirmMethodDelete',
+      body: {
+        translated: 'confirmMethodDeleteDescription',
+        props: [
+          methods[method].name
+        ]
+      },
+      choices: [
+        {
+          name: 'yes',
+          type: 'red-button',
+          action: methodDelete(method)
+        },
+        {
+          name: 'no'
+        }
+      ]
+    }));
+  };
+}
 
 export function load() {
   return (dispatch, getState) => {

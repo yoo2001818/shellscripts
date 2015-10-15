@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { oAuthSignUp, methodDelete, methodFetch }
+import { oAuthSignUp, confirmMethodDelete, methodFetch }
   from '../../actions/session.js';
 // import translate from '../../lang/index.js';
 import Translated from '../../components/ui/Translated.js';
@@ -13,7 +13,7 @@ import LocalMethodEditForm from '../../components/forms/LocalMethodEditForm.js';
 
 class AuthMethodSettings extends Component {
   handleDelete(provider, e) {
-    this.props.methodDelete(provider);
+    this.props.confirmMethodDelete(provider);
     e.preventDefault();
   }
   handleOAuth(provider, e) {
@@ -110,7 +110,7 @@ AuthMethodSettings.propTypes = {
   lang: PropTypes.object,
   method: PropTypes.object,
   oAuthSignUp: PropTypes.func,
-  methodDelete: PropTypes.func,
+  confirmMethodDelete: PropTypes.func,
   loading: PropTypes.bool
 };
 
@@ -120,7 +120,7 @@ export const ConnectAuthMethodSettings = connect(
     method: store.session.method,
     loading: store.session.load.loading
   }),
-  { oAuthSignUp, methodDelete }
+  { oAuthSignUp, confirmMethodDelete }
 )(AuthMethodSettings);
 
 ConnectAuthMethodSettings.fetchData = function(store) {
