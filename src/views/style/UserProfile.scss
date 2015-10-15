@@ -2,10 +2,13 @@ $break-small: 500pt;
 
 #user-profile {
   .card {
-    text-align: center;
-    padding: 0.5em;
+    text-align: left;
+    padding: 0.5em 0;
     margin-top: 1em;
     position: relative;
+    @media screen and (max-width: $break-small) {
+      text-align: center;
+    }
     &, &>form {
       &>.photo, &>.content {
         display: inline-block;
@@ -45,10 +48,11 @@ $break-small: 500pt;
           }
         }
       }
-      margin: 0 0.5em;
+      margin: 0;
     }
     &>.content, &>form>.content {
       padding: 0 0.5em;
+      margin: 0 0.5em;
       margin-top: 0.5em;
       max-width: 18em;
       width: 100%;
@@ -71,6 +75,9 @@ $break-small: 500pt;
           font-size: 1.7em;
           margin-bottom: 0.1em;
           font-weight: bold;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
         }
         .username {
           color: #666;
@@ -97,7 +104,10 @@ $break-small: 500pt;
       }
       .bio {
         font-size: 0.9em;
+        line-height: 1.1em;
         white-space: pre-line;
+        max-height: 5.5em;
+        overflow-y: auto;
       }
     }
     .edit {

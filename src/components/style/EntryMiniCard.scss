@@ -8,6 +8,9 @@
     font-size: 1.8em;
     font-weight: normal;
     margin: 0.4em 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     &>.fa {
       color: #444;
       padding-right: 0.3em;
@@ -27,12 +30,8 @@
     }
   }
   &>.permalink {
-    float: right;
-    display: inline-block;
-    line-height: 2.5rem;
-    vertical-align: middle;
     font-size: 0.9em;
-    max-width: 20em;
+    text-align: right;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

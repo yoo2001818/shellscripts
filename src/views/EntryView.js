@@ -17,7 +17,7 @@ export default class EntryView extends Component {
     return (
       <div id='entry-view'>
         <div className='header'>
-          <EntryMiniCard entry={entry} />
+          <EntryMiniCard entry={entry} showFull={true} />
           <div className='description'>
             <span dangerouslySetInnerHTML={this.getDescription()} />
           </div>

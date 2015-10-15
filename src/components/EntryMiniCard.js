@@ -6,10 +6,11 @@ import { Link } from 'react-router';
 
 import UserMiniCard from './UserMiniCard.js';
 import ToolTip from './ui/ToolTip.js';
+import sliceEllipsis from '../utils/sliceEllipsis.js';
 
 class EntryMiniCard extends Component {
   render() {
-    const { entry } = this.props;
+    const { entry, hideUser, showFull } = this.props;
     const { author, tags } = entry;
     const permalink = `${author.username}/${entry.name}`;
     return (
@@ -19,15 +20,14 @@ class EntryMiniCard extends Component {
             {entry.title}
           </Link>
         </h1>
-        <div className='permalink'>
-          <Link to={'/' + permalink}>
-            {permalink}
-          </Link>
-        </div>
-        <div className='author'>
-          <UserMiniCard user={author} hideUsername={true} />
-        </div>
-        <p className='brief'>{entry.brief}</p>
+        { !hideUser ? (
+          <div className='author'>
+            <UserMiniCard user={author} hideUsername={true} />
+          </div>
+        ) : false }
+        <p className='brief'>
+          {showFull ? entry.brief : sliceEllipsis(entry.brief, 140)}
+        </p>
         <ul className='tags'>
           {
             tags.map((tag, id) => (
@@ -39,6 +39,11 @@ class EntryMiniCard extends Component {
             ))
           }
         </ul>
+        <div className='permalink'>
+          <Link to={'/' + permalink}>
+            {permalink}
+          </Link>
+        </div>
       </div>
     );
   }
@@ -46,7 +51,9 @@ class EntryMiniCard extends Component {
 
 EntryMiniCard.propTypes = {
   entry: PropTypes.object.isRequired,
-  showLink: PropTypes.bool
+  showLink: PropTypes.bool,
+  hideUser: PropTypes.bool,
+  showFull: PropTypes.bool
 };
 
 export default connect(

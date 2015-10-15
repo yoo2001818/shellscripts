@@ -81,13 +81,15 @@ class UserProfile extends Component {
     if (user.name) docTitle = `${user.name} (${user.username})`;
     const renderList = entries.map((entry, key) => {
       return (
-        <EntryMiniCard key={key} entry={entry} />
+        <EntryMiniCard key={key} entry={entry} hideUser={true} />
       )
     })
     return (
       <div id='user-profile'>
         <Helmet title={docTitle} />
-        { card }
+        <div className='small-content'>
+          { card }
+        </div>
         <div className='small-content'>
           { renderList }
         </div>
