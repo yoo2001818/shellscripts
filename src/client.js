@@ -12,6 +12,10 @@ import routes from './views/routes.js';
 import prefetch from './utils/prefetch.js';
 import { superagentClient } from './utils/apiClient.js';
 
+import developerText from 'raw!./assets/developer.txt';
+
+console.log(developerText);
+
 let initialState;
 if (typeof window !== 'undefined') initialState = window.__INITIAL_STATE__;
 

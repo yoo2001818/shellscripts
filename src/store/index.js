@@ -10,7 +10,7 @@ import injectReplaceMiddleware from '../middleware/injectReplace.js';
 import * as reducers from '../reducers';
 
 let logger;
-if (__SERVER__) {
+if (__SERVER__ || !__DEVELOPMENT__) {
   logger = () => next => action => next(action);
 } else {
   logger = createLogger();

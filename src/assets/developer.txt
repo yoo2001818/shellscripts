@@ -1,0 +1,11 @@
+
+  _____ _              _
+ / ____| |            | |
+ | (___| |_ ___  _ __ | |    Or not. Go ahead and do whatever you want to do. :)
+ \___ \| __/ _ \| '_ \| |    This website's source code is a mess though. If
+ ____) | || (_) | |_) |_|    you need help about the code, please visit
+|_____/ \__\___/| .__/(_)    https://github.com/yoo2001818/shellscripts/
+                | |          for source code or issues, etc.
+                |_|          Feel free to send comments or bug reports!
+
+By the way, This fancy 'Stop!' ASCII text was made using figlet.
