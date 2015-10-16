@@ -10,7 +10,7 @@ import InputTip from '../ui/InputTip.js';
 import LabelInput from '../ui/LabelInput.js';
 import ErrorInput from '../ui/ErrorInput.js';
 import ErrorShow from '../ui/ErrorShow.js';
-import AutoExpandTextArea from '../ui/AutoExpandTextArea.js';
+import AutoExpandTextArea from 'react-textarea-autosize';
 import UserMiniCard from '../UserMiniCard.js';
 
 // Ever heard of universal React? :(
@@ -66,7 +66,7 @@ class EntryCreateForm extends Component {
                 <ErrorShow placeholder={__('briefDescription')} noSuccess
                   {...brief}>
                   <AutoExpandTextArea placeholder={__('briefDescription')}
-                    className='dotted' noNewLine {...brief} />
+                    className='dotted noresize' noNewLine {...brief} />
                 </ErrorShow>
               </div>
               <ul className='tags'>
