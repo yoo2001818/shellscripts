@@ -7,7 +7,7 @@ import userPlaceholder from '../assets/userPlaceholder.png';
 
 export default class UserMiniCard extends Component {
   render() {
-    const { user, hideUsername } = this.props;
+    const { user, hideUsername, hideName } = this.props;
     // Why are we using div tag instead of span?
     // Double clicking selects everything including near span tags.
     // display: inline-block doesn't.
@@ -17,9 +17,11 @@ export default class UserMiniCard extends Component {
           <div className='photo'>
             <img src={user.photo || userPlaceholder} />
           </div>
-          <div className='name'>
-            {user.name}
-          </div>
+          { !hideName ? (
+            <div className='name'>
+              {user.name}
+            </div>
+          ) : false }
           { !hideUsername ? (
             <div className='username'>
               {user.username}
@@ -33,5 +35,6 @@ export default class UserMiniCard extends Component {
 
 UserMiniCard.propTypes = {
   user: PropTypes.object.isRequired,
-  hideUsername: PropTypes.bool
+  hideUsername: PropTypes.bool,
+  hideName: PropTypes.bool
 };

@@ -126,4 +126,15 @@ input, textarea {
   &.code {
     font-family: Droid Sans Mono, NanumGothicCoding, 나눔고딕코딩, monospace;
   }
+  &.dotted {
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px dashed #ccc;
+  }
+  &.noresize {
+    resize: none;
+  }
+  &.right {
+    text-align: right;
+  }
 }

@@ -15,16 +15,18 @@ class EntryMiniCard extends Component {
     const permalink = `${author.username}/${entry.name}`;
     return (
       <div className='entry-mini-card'>
-        <h1 className='title'>
-          <Link to={'/' + permalink}>
-            {entry.title}
-          </Link>
-        </h1>
-        { !hideUser ? (
-          <div className='author'>
-            <UserMiniCard user={author} hideUsername={true} />
-          </div>
-        ) : false }
+        <div className='head'>
+          { !hideUser ? (
+            <div className='author'>
+              <UserMiniCard user={author} hideUsername={true} />
+            </div>
+          ) : false }
+          <h1 className='title'>
+            <Link to={'/' + permalink}>
+              {entry.title}
+            </Link>
+          </h1>
+        </div>
         <p className='brief'>
           {showFull ? entry.brief : sliceEllipsis(entry.brief, 140)}
         </p>

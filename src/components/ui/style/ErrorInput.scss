@@ -18,7 +18,10 @@
       &>.field {
         display: block;
         position: relative;
-          &>.indicator {
+        input {
+          padding-right: 2em;
+        }
+        &>.indicator {
           position: absolute;
           top: 50%;
     	    transform: translateY(-50%);

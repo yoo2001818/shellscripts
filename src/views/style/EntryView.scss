@@ -1,4 +1,4 @@
-#entry-view {
+.entry-view {
   margin: 0 auto;
   &>.header {
     max-width: 45em;
@@ -6,14 +6,17 @@
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 0.3em;
+    box-shadow: 0 3px 6px -1px rgba(0, 0, 0, 0.5);
     &>.entry-mini-card {
       border: none;
       border-radius: 0;
+      margin: 0;
+      box-shadow: none;
+      border-bottom: 1px solid #ccc;
     }
     &>.description {
       clear: both;
-      border-top: 1px solid #ccc;
-      padding: 0 0.6em;
+      margin: 1.5em;
     }
   }
   &>.script {
@@ -25,5 +28,6 @@
     padding: 0.6rem 0.8rem;
     overflow: auto;
     font-size: 0.95em;
+    box-shadow: 0 3px 6px -1px rgba(0, 0, 0, 0.5);
   }
 }

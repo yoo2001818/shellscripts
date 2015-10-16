@@ -5,22 +5,24 @@ import EntryCreateForm from '../components/forms/EntryCreateForm.js';
 
 class EntryCreate extends Component {
   render() {
-    const { username } = this.props;
+    const { user } = this.props;
     return (
       <div id='entry-create'>
-        <EntryCreateForm
-          initialValues={{ username }}/>
+        <EntryCreateForm author={user}
+          initialValues={{ username: user.username }}/>
       </div>
     );
   }
 }
 
 EntryCreate.propTypes = {
-  username: PropTypes.string
+  user: PropTypes.object
 };
 
 export default connect(
-  store => ({
-    username: store.session.login
-  })
+  state => {
+    const { session, entities: { users }, lang } = state;
+    const user = users[session.login];
+    return { user };
+  }
 )(EntryCreate);

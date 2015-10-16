@@ -15,7 +15,7 @@ export default class EntryView extends Component {
   render() {
     const { entry } = this.props;
     return (
-      <div id='entry-view'>
+      <div id='entry-view' className='entry-view small-content'>
         <div className='header'>
           <EntryMiniCard entry={entry} showFull={true} />
           <div className='description'>
