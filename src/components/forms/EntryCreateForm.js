@@ -47,7 +47,8 @@ class EntryCreateForm extends Component {
   render() {
     const __ = translate(this.props.lang.lang);
     const { fields: { name, title, brief, description, tags, script },
-      handleSubmit, invalid, author } = this.props;
+      handleSubmit, invalid, author, modifying } = this.props;
+    const permalink = `${author.username}/${name.value}`;
     return (
       <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
         <div className='entry-create-form small-content form entry-view'>
@@ -76,8 +77,12 @@ class EntryCreateForm extends Component {
                 </InputTip>
               </ul>
               <div className='permalink'>
-                <ErrorInput placeholder={__('link')}
-                  {...name} className='right dotted' />
+                { modifying ? (
+                  permalink
+                ) : (
+                  <ErrorInput placeholder={__('link')}
+                    {...name} className='right dotted' />
+                )}
               </div>
             </div>
             <div className='description'>
@@ -119,7 +124,8 @@ EntryCreateForm.propTypes = {
   lang: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   invalid: PropTypes.bool,
-  author: PropTypes.object
+  author: PropTypes.object,
+  modifying: PropTypes.bool
 };
 
 EntryCreateForm.contextTypes = {

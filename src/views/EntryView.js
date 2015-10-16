@@ -1,8 +1,10 @@
 import './style/EntryView.scss';
 
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import marked from 'marked';
 
+import Translated from '../components/ui/Translated.js';
 import EntryMiniCard from '../components/EntryMiniCard.js';
 
 export default class EntryView extends Component {
@@ -18,6 +20,20 @@ export default class EntryView extends Component {
       <div id='entry-view' className='entry-view small-content'>
         <div className='header'>
           <EntryMiniCard entry={entry} showFull={true} />
+          <div className='actions'>
+            <button className='red-button'>
+              <i className='fa fa-times' />
+              <span className='description'>
+                <Translated name='delete' />
+              </span>
+            </button>
+            <button>
+              <i className='fa fa-pencil' />
+              <span className='description'>
+                <Translated name='edit' />
+              </span>
+            </button>
+          </div>
           <div className='description'>
             <span dangerouslySetInnerHTML={this.getDescription()} />
           </div>

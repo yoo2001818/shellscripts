@@ -14,6 +14,17 @@
       box-shadow: none;
       border-bottom: 1px solid #ccc;
     }
+    &>.actions {
+      text-align: right;
+      button {
+        display: inline-block;
+        width: auto;
+        margin: 0.4em 0.4em;
+      }
+      .description {
+        margin-left: 0.5em;
+      }
+    }
     &>.description {
       clear: both;
       margin: 1.5em;

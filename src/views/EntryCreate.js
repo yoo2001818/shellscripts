@@ -8,8 +8,11 @@ class EntryCreate extends Component {
     const { user } = this.props;
     return (
       <div id='entry-create'>
-        <EntryCreateForm author={user}
-          initialValues={{ username: user.username }}/>
+        <EntryCreateForm author={user} initialValues={{
+          // This is to avoid React bug #2533
+          // https://github.com/facebook/react/issues/2533
+          brief: '', description: '', script: ''
+        }}/>
       </div>
     );
   }
@@ -21,7 +24,7 @@ EntryCreate.propTypes = {
 
 export default connect(
   state => {
-    const { session, entities: { users }, lang } = state;
+    const { session, entities: { users } } = state;
     const user = users[session.login];
     return { user };
   }

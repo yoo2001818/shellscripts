@@ -14,6 +14,7 @@ import AccountSettings from './settings/AccountSettings.js';
 import AuthMethodSettings from './settings/AuthMethodSettings.js';
 import Entry from './Entry.js';
 import EntryView from './EntryView.js';
+import EntryEdit from './EntryEdit.js';
 import EntryCreate from './EntryCreate.js';
 
 export const routes = (
@@ -30,6 +31,7 @@ export const routes = (
     <Route path='new' component={EntryCreate} />
     <Route path=':username/:entryname' component={Entry}>
       <IndexRoute component={EntryView} />
+      <Route path='edit' component={EntryEdit} />
     </Route>
     <Route path=':username' component={User}>
       <IndexRoute component={UserProfile} />
