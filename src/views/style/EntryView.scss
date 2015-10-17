@@ -16,6 +16,8 @@
     }
     &>.actions {
       text-align: right;
+      padding: 0.5em;
+      border-top: 1px solid #ccc;
       button {
         display: inline-block;
         width: auto;
