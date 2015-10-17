@@ -8,7 +8,8 @@ class EntryEdit extends Component {
     const { author, entry } = this.props;
     return (
       <div id='entry-edit'>
-        <EntryCreateForm author={author} initialValues={entry} modifying />
+        <EntryCreateForm author={author}
+          initialValues={entry} modifying />
       </div>
     );
   }

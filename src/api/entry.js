@@ -350,7 +350,92 @@ entryRouter.post('/', authRequired, checkModifiable, (req, res) => {
  * @apiDescription Edits and returns the entry.
  */
 entryRouter.put('/', authRequired, checkModifiable, (req, res) => {
-  res.sendStatus(501);
+  if (req.selEntry == null) {
+    // Not found
+    res.status(404);
+    res.json({
+      id: 'ENTRY_NOT_FOUND',
+      message: 'Specified entry is not found.'
+    });
+    return;
+  }
+  // TODO This code is copied from entry create part. Prehaps I can merge them?
+  let { title, brief, description, tags, type, script, requiresRoot } =
+    req.body;
+  if (title == null || title === '') title = name;
+  if (!Array.isArray(tags) && typeof tags === 'string') tags = tags.split(',');
+  tags = tags.map(name => name.toLowerCase());
+  // Since this requires quite a lot of SQL queries, Use transaction to prevent
+  // conflictions.
+  sequelize.transaction(transaction =>
+    // Find existing tags first.
+    Tag.findAll({
+      where: {
+        name: {
+          $in: tags
+        }
+      }, transaction
+    })
+    .then(tagObjs => {
+      // Remove tag with existing ID from the array.
+      tagObjs.forEach(tagObj => tags.splice(tags.indexOf(tagObj.name), 1));
+      // Then, bulk create missing tags
+      if (tags.length > 0) {
+        return Tag.bulkCreate(tags.map(tagName => ({
+          name: tagName
+          // TODO And other default values
+        })), { transaction })
+        // Since bulkCreate doesn't return created objects, we have to fetch
+        // them again. Which is pretty awkward though.
+        .then(() => Tag.findAll({
+          where: {
+            name: {
+              $in: tags
+            }
+          }, transaction
+        }))
+        // Then, concat new tags to original tags array.
+        .then(newTagObjs => {
+          tagObjs = tagObjs.concat(newTagObjs);
+          return tagObjs;
+        });
+      }
+      return tagObjs;
+    })
+    // Then modify the entry with given data.
+    .then(tagObjs => {
+      return req.selEntry.update({
+        title, brief, description, type, script, requiresRoot
+      }, { transaction })
+      // Then set the tags data and we're done.
+      .then(entry => {
+        return entry.setTags(tagObjs, { transaction })
+        .then(() => entry);
+      })
+    })
+    // Re-retrieve entry object with tags and user
+    .then(entry => Entry.findOne({
+      where: {
+        id: entry.id
+      },
+      include: buildEntryGet({}).include,
+      transaction
+    }))
+  )
+  .then(entry => {
+    let displayEntry = entry.toJSON();
+    Object.assign(displayEntry, {
+      tags: displayEntry.tags.map(tag => Object.assign({}, tag, {
+        entryTag: undefined
+      }))
+    });
+    res.json(displayEntry);
+  })
+  .catch(err => {
+    console.log(err.stack);
+    res.status(500);
+    res.json(err);
+  });
 });
 
 /**
@@ -362,5 +447,25 @@ entryRouter.put('/', authRequired, checkModifiable, (req, res) => {
  * @apiDescription Returns 200 OK.
  */
 entryRouter.delete('/', authRequired, checkModifiable, (req, res) => {
-  res.sendStatus(501);
+  if (req.selEntry == null) {
+    // Not found
+    res.status(404);
+    res.json({
+      id: 'ENTRY_NOT_FOUND',
+      message: 'Specified entry is not found.'
+    });
+    return;
+  }
+  // Delete the entry. :P
+  req.selEntry.destroy()
+  .then(() => {
+    res.json(Object.assign({}, req.selEntry.toJSON(), {
+      deleted: true
+    }));
+  })
+  .catch(err => {
+    console.log(err.stack);
+    res.status(500);
+    res.json(err);
+  });
 });

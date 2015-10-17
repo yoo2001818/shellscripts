@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { isLength, matches } from 'validator';
-import { create } from '../../actions/entry.js';
+import { create, edit } from '../../actions/entry.js';
 
 import Translated from '../ui/Translated.js';
 import translate from '../../lang/index.js';
@@ -35,7 +35,9 @@ if (__CLIENT__) {
 class EntryCreateForm extends Component {
   handleSubmit(data) {
     console.log(data);
-    this.props.dispatch(create(data))
+    let doAction = create;
+    if (this.props.modifying) doAction = edit;
+    this.props.dispatch(doAction(data))
     .then(action => {
       console.log(action);
       if (!action.payload.result) return;
@@ -171,7 +173,7 @@ export default connect(
   store => ({form: store.form, lang: store.lang})
 )(reduxForm({
   form: 'entryCreate',
-  fields: ['name', 'username', 'title', 'brief', 'description', 'tags',
+  fields: ['name', 'author', 'title', 'brief', 'description', 'tags',
     'script', 'requiresRoot'],
   validate: validateFrom
 })(EntryCreateForm));

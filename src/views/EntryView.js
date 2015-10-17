@@ -5,10 +5,15 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import marked from 'marked';
 
+import { confirmEntryDelete } from '../actions/entry.js';
 import Translated from '../components/ui/Translated.js';
 import EntryMiniCard from '../components/EntryMiniCard.js';
 
 class EntryView extends Component {
+  handleDelete(e) {
+    this.props.confirmEntryDelete(this.props.entry);
+    e.preventDefault();
+  }
   canEdit() {
     const { author, session, sessionUser } = this.props;
     return session.login === author.login ||
@@ -40,7 +45,9 @@ class EntryView extends Component {
                   </span>
                 </button>
               </Link>
-              <button className='red-button'>
+              <button className='red-button'
+                onClick={this.handleDelete.bind(this)}
+              >
                 <i className='fa fa-times' />
                 <span className='description'>
                   <Translated name='delete' />
@@ -63,7 +70,8 @@ EntryView.propTypes = {
   entry: PropTypes.object,
   author: PropTypes.object,
   session: PropTypes.object,
-  sessionUser: PropTypes.object
+  sessionUser: PropTypes.object,
+  confirmEntryDelete : PropTypes.func
 };
 
 export default connect(
@@ -75,5 +83,6 @@ export default connect(
       session,
       author: users[entry.author]
     };
-  }
+  },
+  { confirmEntryDelete }
 )(EntryView);

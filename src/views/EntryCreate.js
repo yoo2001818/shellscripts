@@ -11,7 +11,7 @@ class EntryCreate extends Component {
         <EntryCreateForm author={user} initialValues={{
           // This is to avoid React bug #2533
           // https://github.com/facebook/react/issues/2533
-          brief: '', description: '', script: ''
+          brief: '', description: '', script: '', author: user.username
         }}/>
       </div>
     );
