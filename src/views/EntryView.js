@@ -28,6 +28,12 @@ class EntryView extends Component {
   render() {
     const { entry, author } = this.props;
     const editPath = `/${author.username}/${entry.name}/edit`;
+    if (entry.deleted) {
+      const { history } = this.context;
+      // Redirect to index?
+      history.replaceState(null, '/');
+      return false;
+    }
     return (
       <div id='entry-view' className='entry-view small-content'>
         <div className='header'>
@@ -72,6 +78,10 @@ EntryView.propTypes = {
   session: PropTypes.object,
   sessionUser: PropTypes.object,
   confirmEntryDelete : PropTypes.func
+};
+
+EntryView.contextTypes = {
+  history: PropTypes.any
 };
 
 export default connect(

@@ -14,7 +14,11 @@ import { superagentClient } from './utils/apiClient.js';
 
 import developerText from 'raw!./assets/developer.txt';
 
-console.log(developerText);
+if (console.info) {
+  console.info(developerText);
+} else {
+  console.log(developerText);
+}
 
 let initialState;
 if (typeof window !== 'undefined') initialState = window.__INITIAL_STATE__;

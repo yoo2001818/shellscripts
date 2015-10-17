@@ -13,6 +13,7 @@ class EntryMiniCard extends Component {
     const { entry, hideUser, showFull } = this.props;
     const { author, tags } = entry;
     const permalink = `${author.username}/${entry.name}`;
+    if (entry.deleted) return false;
     return (
       <div className='entry-mini-card'>
         <div className='head'>
