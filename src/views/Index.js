@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { loadList, loadListMore } from '../actions/entry.js';
 import { connect } from 'react-redux';
+import InfiniteScroll from '../components/ui/InfiniteScroll.js';
 import Translated from '../components/ui/Translated.js';
-import LoadingOverlay from '../components/ui/LoadingOverlay.js';
 import EntryMiniCard from '../components/EntryMiniCard.js';
 import Helmet from 'react-helmet';
 
@@ -29,11 +29,17 @@ class Index extends Component {
         <h1>
           <Translated name='hello'>{'World'}</Translated>
         </h1>
-        {renderList}
-        { list.lastIndex !== 1 ? (
-          <button onClick={this.handleLoad.bind(this)}>Load More</button>
-        ) : false }
-        <LoadingOverlay loading={list.load.loading} />
+        <InfiniteScroll
+          loadMore={this.handleLoad.bind(this)}
+          hasMore={list.lastIndex !== 1}
+          loader={(
+            <div className='loading'>
+              <i className="fa fa-refresh fa-spin"></i>
+            </div>
+          )}
+        >
+          {renderList}
+        </InfiniteScroll>
       </div>
     );
   }

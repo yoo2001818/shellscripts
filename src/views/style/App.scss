@@ -38,6 +38,11 @@ html {
 .small-content {
   margin: 0 auto;
   max-width: 40em;
+  & > .loading {
+    text-align: center;
+    font-size: 2em;
+    padding: 1.5rem;
+  }
 }
 
 .ace_editor {
