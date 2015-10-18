@@ -4,14 +4,15 @@ import { loadFilter } from './load.js';
 const loadReducer = loadFilter(SessionActions);
 
 export default function session(state = {
-  load: {
-    completed: 0, total: 0, loading: false
-  },
+  load: undefined,
   loaded: false,
   login: null,
   method: null
 }, action) {
   const load = loadReducer(state.load, action);
+  const newState = Object.assign({}, state, {
+    load
+  });
   let { method } = state;
   const { type, payload, meta, error } = action;
   let login;
@@ -22,27 +23,24 @@ export default function session(state = {
     if (error && payload.status !== 401) {
       return Object.assign({}, state, {error: true, loaded: true});
     }
-    return Object.assign({}, state, {
+    return Object.assign({}, newState, {
       loaded: true,
-      load,
       login: error ? null : login
     });
   case SessionActions.LOGIN:
     if (error) return state;
-    return Object.assign({}, state, {
-      load,
+    return Object.assign({}, newState, {
       login
     });
   case SessionActions.SIGNUP_FINALIZE:
     if (error) return state;
-    return Object.assign({}, state, {
-      load,
+    return Object.assign({}, newState, {
       login
     });
   case SessionActions.LOCAL_SIGNUP:
     if (error) return state;
-    return Object.assign({}, state, {
-      load, login, method: Object.assign({}, state.method, {
+    return Object.assign({}, newState, {
+      login, method: Object.assign({}, state.method, {
         [meta.method]: Object.assign({}, state.method[meta.method], {
           inUse: true
         })
@@ -53,20 +51,18 @@ export default function session(state = {
     return { load, loaded: true, method, login: null };
   case SessionActions.METHOD_FETCH:
     if (error) return state;
-    return Object.assign({}, state, {
-      load, method: payload.body
+    return Object.assign({}, newState, {
+      method: payload.body
     });
   case SessionActions.METHOD_DELETE:
     if (error) return state;
-    return Object.assign({}, state, {
-      load, method: Object.assign({}, state.method, {
+    return Object.assign({}, newState, {
+      method: Object.assign({}, state.method, {
         [meta.method]: Object.assign({}, state.method[meta.method], {
           inUse: false
         })
       })
     });
   }
-  return Object.assign({}, state, {
-    load
-  });
+  return newState;
 }

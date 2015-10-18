@@ -60,7 +60,7 @@ function buildEntryGet(options) {
     where,
     include,
     // TODO currently it's hardcoded. should be changed
-    limit: 3,
+    limit: 20,
     order: [
       ['id', 'DESC']
     ],

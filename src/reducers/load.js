@@ -2,16 +2,21 @@ import actionKeys from '../utils/actionKeys.js';
 import * as LoadActions from '../actions/load.js';
 
 export default function load(state = {
-  completed: 0, total: 0, loading: false
+  completed: 0, total: 0, loading: false,
+  updatedAt: 0
 }, action, handleErrors = true) {
   const { type } = action;
-  let { completed, total, loading, error } = state;
+  let { completed, total, loading, error, updatedAt } = state;
   switch (type) {
   case LoadActions.LOAD:
+    if (!loading && (new Date().valueOf() - updatedAt) > 500) {
+      completed = 0;
+      total = 0;
+    }
     total++;
     loading = true;
     return {
-      completed, total, loading, error
+      completed, total, loading, error, updatedAt
     };
   case LoadActions.COMPLETE:
     const subAction = action.payload;
@@ -32,16 +37,17 @@ export default function load(state = {
     }
     completed++;
     if (completed >= total) {
-      completed = 0;
-      total = 0;
+      /* completed = 0;
+      total = 0; */
+      updatedAt = new Date().valueOf();
       loading = false;
     }
     return {
-      completed, total, loading, error
+      completed, total, loading, error, updatedAt
     };
   case LoadActions.ERROR_DISMISS:
     return {
-      completed, total, loading
+      completed, total, loading, updatedAt
     };
   }
   return state;

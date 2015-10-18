@@ -4,9 +4,7 @@ import { loadFilter } from './load.js';
 const loadReducer = loadFilter(SearchActions);
 
 export default function search(state = {
-  load: {
-    completed: 0, total: 0, loading: false
-  },
+  load: undefined,
   result: null,
   query: '',
   tempQuery: ''

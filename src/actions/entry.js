@@ -83,7 +83,7 @@ export function loadListMore() {
   return (dispatch, getState) => {
     const { entry: { list } } = getState();
     // If it's already loading, cancel it.
-    if (list.load.loading) return Promise.resolve();
+    if (list.load && list.load.loading) return Promise.resolve();
     return dispatch(fetchList(list.lastIndex));
   };
 }
