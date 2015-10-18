@@ -18,20 +18,22 @@ function wrapURL(url) {
 
 // superagent client
 export function superagentClient(req) {
-  return (type, endpoint, options) => {
+  return (type, endpoint, options = {}) => {
     return new Promise((resolve, reject) => {
       const request = superagent(type, wrapURL(endpoint));
-      if (!options || !options.$multipart) {
-        request.send(options);
-      } else {
-        // Multipart support
-        for (let key in options.$fields) {
-          request.field(key, options.$fields[key]);
+      if (options.files) {
+        for (let key in options.files) {
+          request.attach(key, options.files[key]);
         }
-        for (let key in options.$files) {
-          request.attach(key, options.$files[key]);
+        for (let key in options.body) {
+          request.field(key, options.body[key]);
+        }
+      } else {
+        if (options.body) {
+          request.send(options.body);
         }
       }
+      request.query(options.query);
       if (__SERVER__) {
         if (req.get('cookie')) request.set('cookie', req.get('cookie'));
         request.query({server: 'true'});

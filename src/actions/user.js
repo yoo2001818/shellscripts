@@ -20,7 +20,9 @@ export const fetch = createAction(FETCH,
 );
 
 export const setProfile = createAction(SET_PROFILE,
-  (username, data) => api(POST, `/api/users/${username}`, data),
+  (username, data) => api(POST, `/api/users/${username}`, {
+    body: data
+  }),
   () => ({
     errors: [404],
     schema: User
@@ -29,13 +31,12 @@ export const setProfile = createAction(SET_PROFILE,
 
 export const uploadPhoto = createAction(UPLOAD_PHOTO,
   (username, file) => api(POST, '/api/users/${username}/photo', {
-    $multipart: true,
-    $fields: {
+    body: {
       x: 0,
       y: 0,
       size: 1000
     },
-    $files: {
+    files: {
       photo: file
     }
   }),

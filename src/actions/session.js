@@ -23,7 +23,9 @@ export const fetch = createAction(FETCH,
     schema: User
   }));
 export const login = createAction(LOGIN,
-  credentials => api(POST, '/api/session/local', credentials),
+  credentials => api(POST, '/api/session/local', {
+    body: credentials
+  }),
   (_, meta) => Object.assign({}, meta, {
     schema: User
   }));
@@ -34,12 +36,16 @@ export const logout = createAction(LOGOUT,
 // stored in 'session' reducer now. Well I think I should put current user to
 // users table, and put user's ID in here.
 export const signUpFinalize = createAction(SIGNUP_FINALIZE,
-  data => api(POST, '/api/user/finalize', data),
+  data => api(POST, '/api/user/finalize', {
+    body: data
+  }),
   (_, meta) => Object.assign({}, meta, {
     schema: User
   }));
 export const localSignUp = createAction(LOCAL_SIGNUP,
-  credentials => api(POST, '/api/session/local/register', credentials),
+  credentials => api(POST, '/api/session/local/register', {
+    body: credentials
+  }),
   (_, meta) => Object.assign({}, meta, {
     schema: User,
     method: 'local'
@@ -64,11 +70,13 @@ export const oAuthSignUp = createAction(OAUTH_SIGNUP,
     }
   }));
 export const localChangePassword = createAction(LOCAL_CHANGE_PASSWORD,
-  credentials => api(PUT, '/api/session/local', credentials),
+  credentials => api(PUT, '/api/session/local', {
+    body: credentials
+  }),
   (_, meta) => meta
 );
 export const methodFetch = createAction(METHOD_FETCH,
-  () => api(GET, '/api/session/methods', {}));
+  () => api(GET, '/api/session/methods'));
 export const methodDelete = createAction(METHOD_DELETE,
   method => api(DELETE, `/api/session/${method}`),
   method => ({
@@ -81,7 +89,9 @@ export const checkUsername = createAction(CHECK_USERNAME,
     silent: true
   }));
 export const checkEmail = createAction(CHECK_EMAIL,
-  email => api(POST, '/api/user/email', { email }));
+  email => api(POST, '/api/user/email', {
+    body: { email }
+  }));
 
 export function confirmMethodDelete(method) {
   return (dispatch, getState) => {

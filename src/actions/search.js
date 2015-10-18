@@ -7,7 +7,9 @@ export const SET_QUERY = 'SEARCH_SET_QUERY';
 export const SET_TEMP_QUERY = 'SEARCH_SET_TEMP_QUERY';
 
 export const fetch = createAction(FETCH,
-  () => api(GET, '/api/search', {}));
+  query => api(GET, '/api/search', {
+    query
+  }));
 export const forceSetQuery = createAction(SET_QUERY);
 export const setTempQuery = createAction(SET_TEMP_QUERY);
 
