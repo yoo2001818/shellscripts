@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { loadList, loadListMore } from '../actions/entry.js';
 import { connect } from 'react-redux';
 import Translated from '../components/ui/Translated.js';
+import LoadingOverlay from '../components/ui/LoadingOverlay.js';
 import EntryMiniCard from '../components/EntryMiniCard.js';
 import Helmet from 'react-helmet';
 
@@ -18,7 +19,7 @@ class Index extends Component {
       )
     })
     return (
-      <div className='small-content'>
+      <div className='small-content container'>
         <Helmet meta={[
           {
             name: 'robots',
@@ -32,6 +33,7 @@ class Index extends Component {
         { list.lastIndex !== 1 ? (
           <button onClick={this.handleLoad.bind(this)}>Load More</button>
         ) : false }
+        <LoadingOverlay loading={list.load.loading} />
       </div>
     );
   }
