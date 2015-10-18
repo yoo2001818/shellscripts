@@ -60,7 +60,7 @@ function buildEntryGet(options) {
     where,
     include,
     // TODO currently it's hardcoded. should be changed
-    limit: 20,
+    limit: 3,
     order: [
       ['id', 'DESC']
     ],
@@ -360,6 +360,7 @@ entryRouter.put('/', authRequired, checkModifiable, (req, res) => {
     return;
   }
   // TODO This code is copied from entry create part. Prehaps I can merge them?
+  const name = req.selEntryName.toLowerCase();
   let { title, brief, description, tags, type, script, requiresRoot } =
     req.body;
   if (title == null || title === '') title = name;

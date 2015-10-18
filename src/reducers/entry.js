@@ -1,27 +1,24 @@
 import * as EntryActions from '../actions/entry.js';
+import pagination from './pagination.js';
 
-// TODO pagination
+const listPagination = pagination(EntryActions.FETCH_LIST, 'entries');
 
 export default function entry(state = {
-  list: [],
-  userList: {},
-  lastUpdated: 0
+  list: undefined,
+  userList: {}
 }, action) {
+  let newState = Object.assign({}, state, {
+    list: listPagination(state.list, action)
+  });
   const { type, meta, payload, error } = action;
   switch (type) {
-  case EntryActions.FETCH_LIST:
-    if (error) return state;
-    return Object.assign({}, state, {
-      list: payload.result,
-      lastUpdated: new Date().valueOf()
-    });
   case EntryActions.FETCH_USER_LIST:
     if (error) return state;
-    return Object.assign({}, state, {
+    return Object.assign({}, newState, {
       userList: Object.assign({}, state.userList, {
         [meta.username.toLowerCase()]: payload.result
       })
     });
   }
-  return state;
+  return newState;
 }

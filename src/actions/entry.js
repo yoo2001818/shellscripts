@@ -12,9 +12,12 @@ export const EDIT_ENTRY = 'ENTRY_EDIT';
 export const DELETE_ENTRY = 'ENTRY_DELETE';
 
 export const fetchList = createAction(FETCH_LIST,
-  () => api(GET, '/api/entries/'),
-  () => ({
-    schema: arrayOf(Entry)
+  lastIndex => api(GET, '/api/entries/', {
+    query: { lastIndex }
+  }),
+  (lastIndex, reset) => ({
+    schema: arrayOf(Entry),
+    lastIndex, reset
   })
 );
 
@@ -69,16 +72,18 @@ export const deleteEntry = createAction(DELETE_ENTRY,
   })
 );
 
-export function loadList() {
+export function loadList(last) {
+  return (dispatch) => {
+    // This is 'refetch'.
+    return dispatch(fetchList(last, true));
+  };
+}
+
+export function loadListMore() {
   return (dispatch, getState) => {
-    const { entry: { lastUpdated } } = getState();
-    const currentTime = new Date().valueOf();
-    // Will use previous information for 5s
-    if (currentTime - lastUpdated < 5000) {
-      return Promise.resolve();
-    }
+    const { entry: { list } } = getState();
     // Otherwise, refetch.
-    return dispatch(fetchList());
+    return dispatch(fetchList(list.lastIndex));
   };
 }
 
