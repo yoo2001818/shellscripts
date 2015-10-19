@@ -8,7 +8,12 @@ import Helmet from 'react-helmet';
 
 class Index extends Component {
   handleLoad() {
-    this.props.loadListMore();
+    return this.props.loadListMore()
+    .then(action => {
+      if (!action) return;
+      if (action.error) throw action;
+      return action;
+    });
   }
   render() {
     const { entry: { list }, entities } = this.props;
@@ -36,6 +41,11 @@ class Index extends Component {
             <div className='loading'>
               <i className="fa fa-refresh fa-spin"></i>
             </div>
+          )}
+          errorRetry={(
+            <button onClick={this.handleLoad.bind(this)}>
+              <Translated name='retry' />
+            </button>
           )}
         >
           {renderList}
