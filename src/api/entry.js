@@ -45,6 +45,13 @@ function buildEntryGet(options) {
     }) : undefined,
     attributes: ['username', 'name', 'photo']
   });
+  /*
+  include.push({
+    model: User,
+    as: 'starredUsers',
+    attributes: ['username']
+  });
+  */
   if (userId != null) where.authorId = userId;
   if (type != null) {
     where.type = type;
@@ -62,10 +69,14 @@ function buildEntryGet(options) {
     // TODO currently it's hardcoded. should be changed
     limit: 20,
     order: [
+      [{
+        model: Tag,
+        as: 'tags'
+      }, 'name'],
       ['id', 'DESC']
     ],
     attributes: {
-      exclude: ['userId', 'author']
+      exclude: ['userId', 'author', 'script', 'description', 'requiresRoot']
     }
   };
 }
@@ -193,7 +204,11 @@ authorRouter.use('/:name', (req, res, next) => {
     ],
     attributes: {
       exclude: ['userId', 'author']
-    }
+    },
+    order: [[{
+      model: Tag,
+      as: 'tags'
+    }, 'name']]
   })
   .then(entry => {
     req.selEntryName = name;
@@ -227,6 +242,35 @@ entryRouter.get('/', (req, res) => {
     }))
   });
   res.json(entry);
+});
+
+/**
+ * @api {get} /entries/:author/:name/raw Get raw script file of the entry
+ * @apiGroup Entry
+ * @apiName EntryGetRawScript
+ * @apiParam (Parameter) {String} author The author of the entry
+ * @apiParam (Parameter) {String} name The name of the entry
+ * @apiDescription Returns the script of the entry as a downloadable format.
+ */
+entryRouter.get('/raw', (req, res) => {
+  if (req.selEntry == null) {
+    // Not found
+    res.status(404);
+    res.json({
+      id: 'ENTRY_NOT_FOUND',
+      message: 'Specified entry is not found.'
+    });
+    return;
+  }
+  const { author, name } = req.selEntry;
+  res.attachment(author.username + '_' + name + '.sh');
+  // TODO Put sitename in a config file?
+  const footer = `\n\n# http://localhost:8000/${author.username}/${name}`;
+  if (req.selEntry.type === 'script') {
+    res.send(req.selEntry.script + footer);
+  } else {
+    // 'Bake' various scripts into a single file.
+  }
 });
 
 /**
@@ -469,4 +513,63 @@ entryRouter.delete('/', authRequired, checkModifiable, (req, res) => {
     res.status(500);
     res.json(err);
   });
+});
+
+/**
+ * @api {post} /entries/:author/:name/stars Star the entry
+ * @apiGroup Entry
+ * @apiName StarEntry
+ * @apiParam (Parameter) {String} author The author of the entry
+ * @apiParam (Parameter) {String} name The name of the entry
+ * @apiDescription Gives a star to the entry.
+ *
+ *   This will fail if the user already gave a star to the entry.
+ *   If that happens, this'll return 409 Conflict.
+ */
+entryRouter.post('/stars', authRequired, (req, res) => {
+  res.sendStatus(501);
+});
+
+/**
+ * @api {delete} /entries/:author/:name/stars Unstar the entry
+ * @apiGroup Entry
+ * @apiName UntarEntry
+ * @apiParam (Parameter) {String} author The author of the entry
+ * @apiParam (Parameter) {String} name The name of the entry
+ * @apiDescription Unstars the entry.
+ *
+ *   This will fail if the user hasn't given a star yet.
+ *   If that happens, this'll return 404 Not Found.
+ */
+entryRouter.delete('/stars', authRequired, (req, res) => {
+  res.sendStatus(501);
+});
+/**
+ * @api {get} /entries/:author/:name/stars Get users starred the entry
+ * @apiGroup Entry
+ * @apiName EntryUserStarred
+ * @apiParam (Parameter) {String} author The author of the entry
+ * @apiParam (Parameter) {String} name The name of the entry
+ * @apiDescription Returns the full list of users who has starred the entry.
+ */
+entryRouter.get('/stars', authRequired, (req, res) => {
+  if (req.selEntry == null) {
+    // Not found
+    res.status(404);
+    res.json({
+      id: 'ENTRY_NOT_FOUND',
+      message: 'Specified entry is not found.'
+    });
+    return;
+  }
+  // TODO pagination?
+  req.selEntry.getStarredUsers()
+  .then(users => {
+    res.json(users);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500);
+    res.json(err);
+  })
 });

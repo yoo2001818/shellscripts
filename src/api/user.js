@@ -317,6 +317,18 @@ userRouter.delete('/', checkModifiable, (req, res) => {
   res.sendStatus(501);
 });
 
+/**
+ * @api {get} /users/:username/starred Get entries starred by the user
+ * @apiGroup User
+ * @apiName UserStarredEntry
+ * @apiParam (Parameter) {String} username The username of the user
+ * @apiDescription Returns the full list of entries starred by the user.
+ */
+userRouter.get('/starred', (req, res) => {
+  // TODO pagination?
+  res.sendStatus(501);
+});
+
 export const router = new Express.Router();
 export default router;
 

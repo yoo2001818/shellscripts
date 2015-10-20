@@ -185,7 +185,14 @@ export const Entry = sequelize.define('entry', {
     allowNull: false
   },
   script: Sequelize.TEXT,
-  requiresRoot: Sequelize.BOOLEAN
+  requiresRoot: Sequelize.BOOLEAN,
+  // Sure, using association and COUNT function would be cleaner,
+  // but that's too costful. We have to iterate full array just to count the
+  // stars? That's too much.
+  stars: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
+  }
 }, {
   hooks: {
     beforeValidate: entry => {
@@ -204,11 +211,27 @@ export const Entry = sequelize.define('entry', {
   }
 });
 
+export const Comment = sequelize.define('comment', {
+  description: Sequelize.TEXT
+});
+
+export const EntryLink = sequelize.define('entryLink', {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  }
+});
+
+// TODO notifications, reports etc
+
 Passport.belongsTo(User);
 User.hasMany(Passport);
 User.hasMany(Entry, {as: 'entries'});
 // Uh... why do I need this?
 User.hasMany(Tag, {as: 'tags'});
+User.hasMany(Comment);
+User.belongsToMany(Entry, {through: 'starredEntry', as: 'starredEntries'});
 
 TagType.hasMany(Tag, {as: 'tags'});
 Tag.belongsTo(User, {as: 'author'});
@@ -217,5 +240,15 @@ Tag.belongsToMany(Entry, {through: 'entryTag', as: 'entries'});
 
 Entry.belongsTo(User, {as: 'author'});
 Entry.belongsToMany(Tag, {through: 'entryTag', as: 'tags'});
+Entry.belongsToMany(User, {through: 'starredEntry', as: 'starredUsers'});
+Entry.hasMany(Comment);
+// This is pretty tricky - http://stackoverflow.com/a/25634978/3317669
+Entry.belongsToMany(Entry, {as: 'children', foreignKey: 'parentEntryId',
+  through: 'EntryLink'});
+Entry.belongsToMany(Entry, {as: 'parents', foreignKey: 'entryId',
+  through: 'EntryLink'});
+
+Comment.belongsTo(Entry);
+Comment.belongsTo(User, {as: 'author'});
 
 sequelize.sync();
