@@ -22,10 +22,12 @@ export const fetchList = createAction(FETCH_LIST,
 );
 
 export const fetchUserList = createAction(FETCH_USER_LIST,
-  (username) => api(GET, `/api/entries/${username}`),
-  (username) => ({
+  (username, lastIndex) => api(GET, `/api/entries/${username}`, {
+    query: { lastIndex }
+  }),
+  (username, lastIndex, reset) => ({
     schema: arrayOf(Entry),
-    username
+    lastIndex, reset, name: username.toLowerCase()
   })
 );
 
@@ -86,6 +88,22 @@ export function loadListMore() {
     if (list.load && list.load.loading) return Promise.resolve();
     return dispatch(fetchList(list.lastIndex));
   };
+}
+
+export function loadUserList(username, last) {
+  return (dispatch) => {
+    return dispatch(fetchUserList(username, last, true));
+  }
+}
+
+export function loadUserListMore(username) {
+  return (dispatch, getState) => {
+    const { entry: { userList } } = getState();
+    const list = userList[username];
+    // If it's already loading, cancel it.
+    if (list && list.load && list.load.loading) return Promise.resolve();
+    return dispatch(fetchUserList(username, list && list.lastIndex));
+  }
 }
 
 export function load(username, name) {

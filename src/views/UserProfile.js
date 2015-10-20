@@ -3,10 +3,11 @@ import './style/UserProfile.scss';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import { fetchUserList } from '../actions/entry.js';
+import { loadUserList, loadUserListMore } from '../actions/entry.js';
 import Translated from '../components/ui/Translated.js';
 import UserProfileEditForm from '../components/forms/UserProfileEditForm.js';
 import EntryMiniCard from '../components/EntryMiniCard.js';
+import InfiniteScroll from '../components/ui/InfiniteScroll.js';
 import userPlaceholder from '../assets/userPlaceholder.png';
 
 class UserProfile extends Component {
@@ -30,9 +31,17 @@ class UserProfile extends Component {
       editing: false
     });
   }
+  handleLoadList() {
+    return this.props.loadUserListMore(this.props.user.username)
+    .then(action => {
+      if (!action) return;
+      if (action.error) throw action;
+      return action;
+    });
+  }
   render() {
     let { editing } = this.state;
-    const { user, entries } = this.props;
+    const { user, list, entries } = this.props;
     // Editing should be immediately stopped if user signs out
     if (!this.canEdit()) editing = false;
     // TODO This is a mess. We should seperate editing page / viewing page -_-
@@ -79,7 +88,7 @@ class UserProfile extends Component {
     );
     let docTitle = user.username;
     if (user.name) docTitle = `${user.name} (${user.username})`;
-    const renderList = entries.map((entry, key) => {
+    const renderList = list.ids.map(id => entries[id]).map((entry, key) => {
       return (
         <EntryMiniCard key={key} entry={entry} hideUser={true} />
       )
@@ -91,7 +100,22 @@ class UserProfile extends Component {
           { card }
         </div>
         <div className='small-content'>
-          { renderList }
+          <InfiniteScroll
+            loadMore={this.handleLoadList.bind(this)}
+            hasMore={list.lastIndex !== 1}
+            loader={(
+              <div className='loading'>
+                <i className="fa fa-refresh fa-spin"></i>
+              </div>
+            )}
+            errorRetry={(
+              <button onClick={this.handleLoadList.bind(this)}>
+                <Translated name='retry' />
+              </button>
+            )}
+          >
+            { renderList }
+          </InfiniteScroll>
         </div>
       </div>
     );
@@ -102,7 +126,9 @@ UserProfile.propTypes = {
   user: PropTypes.object,
   session: PropTypes.object,
   sessionUser: PropTypes.object,
-  entries: PropTypes.array
+  entries: PropTypes.object,
+  list: PropTypes.object,
+  loadUserListMore: PropTypes.func.isRequired
 };
 
 const ConnectUserProfile = connect(
@@ -111,15 +137,16 @@ const ConnectUserProfile = connect(
     const { user } = props;
     return {
       sessionUser: users[session.login],
-      entries: (entry.userList[user.login] || []).map(name => entries[name]),
-      session
+      list: entry.userList[user.login],
+      entries, session
     };
-  }
+  },
+  { loadUserListMore }
 )(UserProfile);
 
 ConnectUserProfile.fetchData = function(store, routerState) {
   const { params } = routerState;
-  return store.dispatch(fetchUserList(params.username));
+  return store.dispatch(loadUserList(params.username));
 };
 
 export default ConnectUserProfile;

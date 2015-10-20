@@ -64,6 +64,7 @@
   "no": "No",
   "link": "Link",
   "delete": "Delete",
+  "retry": "Retry",
   "FIELD_TOO_LONG": "Value is too long",
   "AUTH_INVALID_USERNAME": "Invalid username",
   "AUTH_INVALID_PASSWORD": "Invalid password",

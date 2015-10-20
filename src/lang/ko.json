@@ -64,6 +64,7 @@
   "no": "아니요",
   "link": "주소",
   "delete": "삭제",
+  "retry": "다시 시도",
   "FIELD_TOO_LONG": "길이가 너무 깁니다",
   "AUTH_INVALID_USERNAME": "올바른 사용자 이름이 아닙니다",
   "AUTH_INVALID_PASSWORD": "비밀번호가 틀립니다",
