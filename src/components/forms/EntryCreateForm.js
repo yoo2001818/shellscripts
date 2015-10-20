@@ -98,16 +98,14 @@ class EntryCreateForm extends Component {
             </div>
           </div>
           <div className='script'>
-            <LabelInput label={__('script')}>
-              <AceEditor
-                 mode='sh'
-                 theme='solarized_light'
-                 height='15em'
-                 width='100%'
-                 fontSize={16}
-                 {...script}
-                 />
-            </LabelInput>
+            <AceEditor
+               mode='sh'
+               theme='solarized_light'
+               height='15em'
+               width='100%'
+               fontSize={16}
+               {...script}
+               />
           </div>
           <div className='footer'>
             <button disabled={invalid}>

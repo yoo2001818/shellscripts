@@ -1,9 +1,11 @@
 import './style/EntryView.scss';
+import 'highlight.js/styles/solarized_light.css';
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import marked from 'marked';
+import Highlight from 'react-highlight';
 
 import { confirmEntryDelete } from '../actions/entry.js';
 import Translated from '../components/ui/Translated.js';
@@ -63,9 +65,9 @@ class EntryView extends Component {
           ) : false }
         </div>
         <pre className='script'>
-          <code>
+          <Highlight className='language-bash'>
             {this.props.entry.script}
-          </code>
+          </Highlight>
         </pre>
       </div>
     );
