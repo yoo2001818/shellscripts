@@ -379,7 +379,7 @@ router.delete('/session/:method', authRequired, (req, res) => {
     })
     .then(() => {
       res.send({});
-    })
+    });
   });
 });
 

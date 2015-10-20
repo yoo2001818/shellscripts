@@ -39,7 +39,7 @@ if (__DEVELOPMENT__) {
           .catch(err => {
             res.status(500);
             res.json(err);
-          })
+          });
         } else {
           res.send('No, that\'s wrong. I\'m pretty mad at you because you ' +
             'don\'t seem to know me >:(\nAlso, the number has been ' +

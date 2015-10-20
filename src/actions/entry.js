@@ -93,7 +93,7 @@ export function loadListMore() {
 export function loadUserList(username, last) {
   return (dispatch) => {
     return dispatch(fetchUserList(username, last, true));
-  }
+  };
 }
 
 export function loadUserListMore(username) {
@@ -103,7 +103,7 @@ export function loadUserListMore(username) {
     // If it's already loading, cancel it.
     if (list && list.load && list.load.loading) return Promise.resolve();
     return dispatch(fetchUserList(username, list && list.lastIndex));
-  }
+  };
 }
 
 export function load(username, name) {

@@ -28,7 +28,7 @@ class LocalMethodAddForm extends Component {
       } else {
         this.props.resetForm();
       }
-    })
+    });
   }
   render() {
     const __ = translate(this.props.lang.lang);

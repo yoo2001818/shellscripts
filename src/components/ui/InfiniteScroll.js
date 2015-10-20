@@ -96,4 +96,4 @@ InfiniteScroll.propTypes = {
   hasMore: PropTypes.bool,
   threshold: PropTypes.number,
   loadMore: PropTypes.func
-}
+};

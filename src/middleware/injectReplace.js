@@ -18,6 +18,6 @@ export const injectReplaceMiddleware = () => next => action => {
       entities: meta.replace
     })
   }));
-}
+};
 
 export default injectReplaceMiddleware;

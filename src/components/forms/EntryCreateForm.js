@@ -29,7 +29,7 @@ if (__CLIENT__) {
         <textarea {...this.props} />
       );
     }
-  }
+  };
 }
 
 class EntryCreateForm extends Component {
@@ -146,21 +146,21 @@ function validateFrom(data) {
   } else if (!isLength(data.name, 1, 48)) {
     errors.name = {
       id: 'FIELD_TOO_LONG'
-    }
+    };
   }
   if (!data.title) {
     errors.title = true;
   } else if (!isLength(data.title, 0, 150)) {
     errors.title = {
       id: 'FIELD_TOO_LONG'
-    }
+    };
   }
   if (!data.brief) {
     errors.brief = true;
   } else if (!isLength(data.brief, 0, 400)) {
     errors.brief = {
       id: 'FIELD_TOO_LONG'
-    }
+    };
   }
   // TODO some kind of autocomplete or something for tags.
   /* errors.name = {

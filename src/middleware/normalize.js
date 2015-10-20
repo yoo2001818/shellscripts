@@ -15,6 +15,6 @@ export const normalizeMiddleware = store => next => action => {
       schema: undefined
     })
   }));
-}
+};
 
 export default normalizeMiddleware;

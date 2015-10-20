@@ -214,7 +214,7 @@ authorRouter.use('/:name', (req, res, next) => {
     req.selEntryName = name;
     req.selEntry = entry;
     next();
-  })
+  });
 }, entryRouter);
 
 /**
@@ -351,7 +351,7 @@ entryRouter.post('/', authRequired, checkModifiable, (req, res) => {
       .then(entry => {
         return entry.setTags(tagObjs, { transaction })
         .then(() => entry);
-      })
+      });
     })
     // Re-retrieve entry object with tags and user
     .then(entry => Entry.findOne({
@@ -456,7 +456,7 @@ entryRouter.put('/', authRequired, checkModifiable, (req, res) => {
       .then(entry => {
         return entry.setTags(tagObjs, { transaction })
         .then(() => entry);
-      })
+      });
     })
     // Re-retrieve entry object with tags and user
     .then(entry => Entry.findOne({
@@ -571,5 +571,5 @@ entryRouter.get('/stars', authRequired, (req, res) => {
     console.log(err);
     res.status(500);
     res.json(err);
-  })
+  });
 });

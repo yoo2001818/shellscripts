@@ -92,7 +92,7 @@ class UserProfile extends Component {
       list.ids.map(id => entries[id]).map((entry, key) => {
         return (
           <EntryMiniCard key={key} entry={entry} hideUser={true} />
-        )
+        );
       })) || [];
     return (
       <div id='user-profile'>

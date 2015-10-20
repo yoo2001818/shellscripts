@@ -21,8 +21,8 @@ class Index extends Component {
     const renderList = entries.map((entry, key) => {
       return (
         <EntryMiniCard key={key} entry={entry} />
-      )
-    })
+      );
+    });
     return (
       <div className='small-content container'>
         <Helmet meta={[

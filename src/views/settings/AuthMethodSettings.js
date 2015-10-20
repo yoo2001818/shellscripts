@@ -40,7 +40,7 @@ class AuthMethodSettings extends Component {
                 <LocalMethodEditForm canDelete={methodEnabledCount > 1} />
               </div>
             </div>
-          )
+          );
         }
         return (
           <div className='authMethod' key={provider.identifier}>
@@ -72,7 +72,7 @@ class AuthMethodSettings extends Component {
                 <LocalMethodAddForm />
               </div>
             </div>
-          )
+          );
         }
         return (
           <div className='authMethod' key={provider.identifier}>
@@ -125,6 +125,6 @@ export const ConnectAuthMethodSettings = connect(
 
 ConnectAuthMethodSettings.fetchData = function(store) {
   return store.dispatch(methodFetch());
-}
+};
 
 export default ConnectAuthMethodSettings;

@@ -36,5 +36,5 @@ export default function pagination(actionType, entityType) {
     default:
       return newState;
     }
-  }
+  };
 }

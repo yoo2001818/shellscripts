@@ -12,7 +12,7 @@ export const User = new Schema('users', {
 
 export const Entry = new Schema('entries', {
   idAttribute: entity => {
-    return entity.author.username.toLowerCase() + '/' + entity.name
+    return entity.author.username.toLowerCase() + '/' + entity.name;
   }
 });
 
@@ -31,7 +31,7 @@ User.define({
 Entry.define({
   author: User,
   tags: arrayOf(Tag)
-})
+});
 
 Tag.define({
   author: User,
