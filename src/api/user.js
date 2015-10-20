@@ -326,7 +326,28 @@ userRouter.delete('/', checkModifiable, (req, res) => {
  */
 userRouter.get('/starred', (req, res) => {
   // TODO pagination?
-  res.sendStatus(501);
+  req.selUser.getStarredEntries({
+    attributes: {
+      exclude: ['userId', 'author', 'script', 'description', 'requiresRoot']
+    }
+  })
+  .then(entries => {
+    res.json(entries.map(entry => {
+      let displayEntry = entry.toJSON();
+      Object.assign(displayEntry, {
+        tags: displayEntry.tags.map(tag => Object.assign({}, tag, {
+          entryTag: undefined
+        })),
+        starredEntry: undefined
+      });
+      return displayEntry;
+    }));
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500);
+    res.json(err);
+  });
 });
 
 export const router = new Express.Router();

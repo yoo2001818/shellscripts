@@ -527,7 +527,51 @@ entryRouter.delete('/', authRequired, checkModifiable, (req, res) => {
  *   If that happens, this'll return 409 Conflict.
  */
 entryRouter.post('/stars', authRequired, (req, res) => {
-  res.sendStatus(501);
+  if (req.selEntry == null) {
+    // Not found
+    res.status(404);
+    res.json({
+      id: 'ENTRY_NOT_FOUND',
+      message: 'Specified entry is not found.'
+    });
+    return;
+  }
+  req.selEntry.hasStarredUser(req.user)
+  .then(result => {
+    if (result) {
+      res.status(409);
+      res.json({
+        id: 'ENTRY_ALREADY_STARRED',
+        message: 'You already have starred the entry.'
+      });
+      return;
+    }
+    return req.selEntry.addStarredUser(req.user)
+    .then(() => {
+      return req.selEntry.update({
+        stars: req.selEntry.stars + 1
+      })
+      .then(() => {
+        return req.selEntry.getStarredUsers({
+          attributes: ['username', 'name', 'photo']
+        })
+        .then(users => {
+          res.json(users.map(entry => {
+            let displayEntry = entry.toJSON();
+            Object.assign(displayEntry, {
+              starredEntry: undefined
+            });
+            return displayEntry;
+          }));
+        });
+      });
+    });
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500);
+    res.json(err);
+  });
 });
 
 /**
@@ -542,7 +586,51 @@ entryRouter.post('/stars', authRequired, (req, res) => {
  *   If that happens, this'll return 404 Not Found.
  */
 entryRouter.delete('/stars', authRequired, (req, res) => {
-  res.sendStatus(501);
+  if (req.selEntry == null) {
+    // Not found
+    res.status(404);
+    res.json({
+      id: 'ENTRY_NOT_FOUND',
+      message: 'Specified entry is not found.'
+    });
+    return;
+  }
+  req.selEntry.hasStarredUser(req.user)
+  .then(result => {
+    if (!result) {
+      res.status(404);
+      res.json({
+        id: 'ENTRY_NOT_STARRED',
+        message: 'You haven\'t starred the entry.'
+      });
+      return;
+    }
+    return req.selEntry.removeStarredUser(req.user)
+    .then(() => {
+      return req.selEntry.update({
+        stars: req.selEntry.stars - 1
+      })
+      .then(() => {
+        return req.selEntry.getStarredUsers({
+          attributes: ['username', 'name', 'photo']
+        })
+        .then(users => {
+          res.json(users.map(entry => {
+            let displayEntry = entry.toJSON();
+            Object.assign(displayEntry, {
+              starredEntry: undefined
+            });
+            return displayEntry;
+          }));
+        });
+      });
+    });
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500);
+    res.json(err);
+  });
 });
 /**
  * @api {get} /entries/:author/:name/stars Get users starred the entry
@@ -563,9 +651,17 @@ entryRouter.get('/stars', authRequired, (req, res) => {
     return;
   }
   // TODO pagination?
-  req.selEntry.getStarredUsers()
+  req.selEntry.getStarredUsers({
+    attributes: ['username', 'name', 'photo']
+  })
   .then(users => {
-    res.json(users);
+    res.json(users.map(entry => {
+      let displayEntry = entry.toJSON();
+      Object.assign(displayEntry, {
+        starredEntry: undefined
+      });
+      return displayEntry;
+    }));
   })
   .catch(err => {
     console.log(err);
