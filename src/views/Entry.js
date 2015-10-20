@@ -9,7 +9,8 @@ class Entry extends Component {
     const { params: { username, entryname }, entries } = this.props;
     const entry = entries[username.toLowerCase() + '/' +
       entryname.toLowerCase()];
-    if (entry) {
+    // Wait until fully loaded
+    if (entry && entry.description) {
       // Inject entry
       return cloneElement(this.props.children, { entry });
     } else if (entry === null) {

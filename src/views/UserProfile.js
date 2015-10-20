@@ -88,11 +88,12 @@ class UserProfile extends Component {
     );
     let docTitle = user.username;
     if (user.name) docTitle = `${user.name} (${user.username})`;
-    const renderList = list.ids.map(id => entries[id]).map((entry, key) => {
-      return (
-        <EntryMiniCard key={key} entry={entry} hideUser={true} />
-      )
-    })
+    const renderList = (list && list.ids &&
+      list.ids.map(id => entries[id]).map((entry, key) => {
+        return (
+          <EntryMiniCard key={key} entry={entry} hideUser={true} />
+        )
+      })) || [];
     return (
       <div id='user-profile'>
         <Helmet title={docTitle} />
@@ -102,7 +103,7 @@ class UserProfile extends Component {
         <div className='small-content'>
           <InfiniteScroll
             loadMore={this.handleLoadList.bind(this)}
-            hasMore={list.lastIndex !== 1}
+            hasMore={list && list.lastIndex !== 1}
             loader={(
               <div className='loading'>
                 <i className="fa fa-refresh fa-spin"></i>

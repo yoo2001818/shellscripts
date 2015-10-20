@@ -30,7 +30,7 @@ export const setProfile = createAction(SET_PROFILE,
 );
 
 export const uploadPhoto = createAction(UPLOAD_PHOTO,
-  (username, file) => api(POST, '/api/users/${username}/photo', {
+  (username, file) => api(POST, `/api/users/${username}/photo`, {
     body: {
       x: 0,
       y: 0,
