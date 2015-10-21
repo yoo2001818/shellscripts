@@ -551,33 +551,36 @@ entryRouter.post('/stars', authRequired, (req, res) => {
     });
     return;
   }
-  req.selEntry.hasStarredUser(req.user)
-  .then(result => {
-    if (result) {
-      res.status(409);
-      res.json({
-        id: 'ENTRY_ALREADY_STARRED',
-        message: 'You already have starred the entry.'
-      });
-      return;
-    }
-    return req.selEntry.addStarredUser(req.user)
-    .then(() => {
-      return req.selEntry.update({
-        stars: req.selEntry.stars + 1
-      })
+  sequelize.transaction(transaction =>
+    req.selEntry.hasStarredUser(req.user, { transaction })
+    .then(result => {
+      if (result) {
+        res.status(409);
+        res.json({
+          id: 'ENTRY_ALREADY_STARRED',
+          message: 'You already have starred the entry.'
+        });
+        return;
+      }
+      return req.selEntry.addStarredUser(req.user, { transaction })
       .then(() => {
-        return req.selEntry.getStarredUsers({
-          attributes: ['username', 'name', 'photo']
-        })
+        return req.selEntry.update({
+          stars: req.selEntry.stars + 1
+        }, { transaction })
         .then(() => {
-          res.json(Object.assign({}, req.selEntry.toJSON(), {
-            voted: true
-          }));
+          return req.selEntry.getStarredUsers({
+            attributes: ['username', 'name', 'photo'],
+            transaction
+          })
+          .then(() => {
+            res.json(Object.assign({}, req.selEntry.toJSON(), {
+              voted: true
+            }));
+          });
         });
       });
-    });
-  })
+    })
+  )
   .catch(err => {
     console.log(err);
     res.status(500);
@@ -606,36 +609,39 @@ entryRouter.delete('/stars', authRequired, (req, res) => {
     });
     return;
   }
-  req.selEntry.hasStarredUser(req.user)
-  .then(result => {
-    if (!result) {
-      res.status(404);
-      res.json({
-        id: 'ENTRY_NOT_STARRED',
-        message: 'You haven\'t starred the entry.'
-      });
-      return;
-    }
-    return req.selEntry.removeStarredUser(req.user)
-    .then(() => {
-      return req.selEntry.update({
-        stars: req.selEntry.stars - 1
-      })
+  sequelize.transaction(transaction =>
+    req.selEntry.hasStarredUser(req.user, { transaction })
+    .then(result => {
+      if (!result) {
+        res.status(404);
+        res.json({
+          id: 'ENTRY_NOT_STARRED',
+          message: 'You haven\'t starred the entry.'
+        });
+        return;
+      }
+      return req.selEntry.removeStarredUser(req.user, { transaction })
       .then(() => {
-        return req.selEntry.getStarredUsers({
-          attributes: ['username', 'name', 'photo']
-        })
+        return req.selEntry.update({
+          stars: req.selEntry.stars - 1
+        }, { transaction })
         .then(() => {
-          res.json(Object.assign({}, req.selEntry.toJSON(), {
-            voted: false,
-            tags: undefined,
-            description: undefined,
-            script: undefined
-          }));
+          return req.selEntry.getStarredUsers({
+            attributes: ['username', 'name', 'photo'],
+            transaction
+          })
+          .then(() => {
+            res.json(Object.assign({}, req.selEntry.toJSON(), {
+              voted: false,
+              tags: undefined,
+              description: undefined,
+              script: undefined
+            }));
+          });
         });
       });
-    });
-  })
+    })
+  )
   .catch(err => {
     console.log(err);
     res.status(500);
