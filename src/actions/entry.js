@@ -10,6 +10,8 @@ export const FETCH = 'ENTRY_FETCH';
 export const CREATE = 'ENTRY_CREATE';
 export const EDIT_ENTRY = 'ENTRY_EDIT';
 export const DELETE_ENTRY = 'ENTRY_DELETE';
+export const STAR = 'ENTRY_STAR';
+export const UNSTAR = 'ENTRY_UNSTAR';
 
 export const fetchList = createAction(FETCH_LIST,
   lastIndex => api(GET, '/api/entries/', {
@@ -69,6 +71,20 @@ export const edit = createAction(EDIT_ENTRY,
 
 export const deleteEntry = createAction(DELETE_ENTRY,
   (data) => api(DELETE, `/api/entries/${data.author}/${data.name}`),
+  () => ({
+    schema: Entry
+  })
+);
+
+export const star = createAction(STAR,
+  (username, name) => api(POST, `/api/entries/${username}/${name}/stars`),
+  () => ({
+    schema: Entry
+  })
+);
+
+export const unstar = createAction(UNSTAR,
+  (username, name) => api(DELETE, `/api/entries/${username}/${name}/stars`),
   () => ({
     schema: Entry
   })

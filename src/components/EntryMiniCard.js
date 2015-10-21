@@ -4,19 +4,48 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
+import { star, unstar } from '../actions/entry.js';
+
 import UserMiniCard from './UserMiniCard.js';
 import ToolTip from './ui/ToolTip.js';
+import Translated from './ui/Translated.js';
 import sliceEllipsis from '../utils/sliceEllipsis.js';
 
 class EntryMiniCard extends Component {
+  handleToggleStar() {
+    const { entry, star, unstar } = this.props;
+    const { author } = entry;
+    if (entry.voted) {
+      return unstar(author.username, entry.name);
+    }
+    return star(author.username, entry.name);
+  }
   render() {
-    const { entry, hideUser, showFull } = this.props;
+    const { entry, hideUser, showFull, starable } = this.props;
     const { author, tags } = entry;
     const permalink = `${author.username}/${entry.name}`;
     if (entry.deleted) return false;
     return (
       <div className='entry-mini-card'>
         <div className='head'>
+          {starable ? (
+            <div className='status'>
+              <button className='action'
+                onClick={this.handleToggleStar.bind(this)}
+              >
+                <i className='fa fa-star' />
+                <Translated name={entry.voted ? 'unstar' : 'star'} />
+              </button>
+              <div className='state'>
+                {entry.stars}
+              </div>
+            </div>
+          ) : (
+            <div className='status'>
+              <i className='fa fa-star' />
+              {entry.stars}
+            </div>
+          )}
           { !hideUser ? (
             <div className='author'>
               <UserMiniCard user={author} hideUsername={true} />
@@ -56,7 +85,10 @@ EntryMiniCard.propTypes = {
   entry: PropTypes.object.isRequired,
   showLink: PropTypes.bool,
   hideUser: PropTypes.bool,
-  showFull: PropTypes.bool
+  showFull: PropTypes.bool,
+  starable: PropTypes.bool,
+  star: PropTypes.func,
+  unstar: PropTypes.func
 };
 
 export default connect(
@@ -69,5 +101,6 @@ export default connect(
         tags: entry.tags.map(id => tags[id])
       })
     };
-  }
+  },
+  { star, unstar }
 )(EntryMiniCard);

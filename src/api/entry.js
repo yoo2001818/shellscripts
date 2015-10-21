@@ -241,7 +241,22 @@ entryRouter.get('/', (req, res) => {
       entryTag: undefined
     }))
   });
-  res.json(entry);
+  if (req.user) {
+    req.selEntry.hasStarredUser(req.user)
+    .then(result => {
+      Object.assign(entry, {
+        voted: result
+      });
+      res.json(entry);
+    })
+    .catch(err => {
+      res.status(500);
+      console.log(err);
+      res.json(err);
+    });
+  } else {
+    res.json(entry);
+  }
 });
 
 /**
@@ -555,13 +570,9 @@ entryRouter.post('/stars', authRequired, (req, res) => {
         return req.selEntry.getStarredUsers({
           attributes: ['username', 'name', 'photo']
         })
-        .then(users => {
-          res.json(users.map(entry => {
-            let displayEntry = entry.toJSON();
-            Object.assign(displayEntry, {
-              starredEntry: undefined
-            });
-            return displayEntry;
+        .then(() => {
+          res.json(Object.assign({}, req.selEntry.toJSON(), {
+            voted: true
           }));
         });
       });
@@ -614,13 +625,12 @@ entryRouter.delete('/stars', authRequired, (req, res) => {
         return req.selEntry.getStarredUsers({
           attributes: ['username', 'name', 'photo']
         })
-        .then(users => {
-          res.json(users.map(entry => {
-            let displayEntry = entry.toJSON();
-            Object.assign(displayEntry, {
-              starredEntry: undefined
-            });
-            return displayEntry;
+        .then(() => {
+          res.json(Object.assign({}, req.selEntry.toJSON(), {
+            voted: false,
+            tags: undefined,
+            description: undefined,
+            script: undefined
           }));
         });
       });

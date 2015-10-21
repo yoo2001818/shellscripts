@@ -7,6 +7,42 @@
   box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.5);
   &>.head {
     width: 100%;
+    &>.status {
+      float: right;
+      color: #666;
+      vertical-align: middle;
+      font-size: 0.9em;
+      .fa {
+        margin-right: 0.3em;
+      }
+      button {
+        margin: 0;
+        display: inline-block;
+        width: auto;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        vertical-align: middle;
+        height: 2.2em;
+        line-height: 2.2em;
+        padding: 0 0.6em;
+      }
+      &>.state {
+        box-sizing: border-box;
+        border-radius: 0.2em;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        font-size: 1em;
+        color: #555;
+        background-color: #FFFFFF;
+        display: inline-block;
+        line-height: 2.2em;
+        padding: 0 0.8em;
+        border: 1px solid #94BDEB;
+        border-left: none;
+        height: 2.2em;
+        vertical-align: middle;
+      }
+    }
     &>.title {
       display: inline-block;
       vertical-align: middle;

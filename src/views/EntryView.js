@@ -28,7 +28,7 @@ class EntryView extends Component {
     };
   }
   render() {
-    const { entry, author } = this.props;
+    const { entry, author, session } = this.props;
     const editPath = `/${author.username}/${entry.name}/edit`;
     if (entry.deleted) {
       const { history } = this.context;
@@ -39,7 +39,8 @@ class EntryView extends Component {
     return (
       <div id='entry-view' className='entry-view small-content'>
         <div className='header'>
-          <EntryMiniCard entry={entry} showFull={true} />
+          <EntryMiniCard entry={entry} showFull={true}
+            starable={session.login} />
           <div className='description'>
             <span dangerouslySetInnerHTML={this.getDescription()} />
           </div>
