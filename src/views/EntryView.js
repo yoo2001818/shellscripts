@@ -1,11 +1,12 @@
 import './style/EntryView.scss';
 import 'highlight.js/styles/solarized_light.css';
+import 'highlight.js/lib/languages/bash.js';
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import marked from 'marked';
-import Highlight from 'react-highlight';
+import Highlight from 'react-highlight/lib/optimized';
 
 import { confirmEntryDelete } from '../actions/entry.js';
 import Translated from '../components/ui/Translated.js';
@@ -40,7 +41,7 @@ class EntryView extends Component {
       <div id='entry-view' className='entry-view small-content'>
         <div className='header'>
           <EntryMiniCard entry={entry} showFull={true}
-            starable={session.login} />
+            starable={!!session.login} />
           <div className='description'>
             <span dangerouslySetInnerHTML={this.getDescription()} />
           </div>
@@ -66,7 +67,7 @@ class EntryView extends Component {
           ) : false }
         </div>
         <pre className='script'>
-          <Highlight className='language-bash'>
+          <Highlight className='language-bash' languages={['bash']}>
             {this.props.entry.script}
           </Highlight>
         </pre>
