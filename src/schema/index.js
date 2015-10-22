@@ -24,6 +24,10 @@ export const TagType = new Schema('tagTypes', {
   idAttribute: 'name'
 });
 
+export const Comment = new Schema('comments', {
+  idAttribute: 'id'
+});
+
 User.define({
   entries: arrayOf(Entry)
 });
@@ -41,4 +45,8 @@ Tag.define({
 
 TagType.define({
   tags: arrayOf(Tag)
+});
+
+Comment.define({
+  author: User
 });

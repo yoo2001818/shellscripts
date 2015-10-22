@@ -4,7 +4,7 @@
   border-radius: 0.3em;
   text-align: left;
   margin: 1em 0;
-  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 2px -1px rgba(0, 0, 0, 0.5);
   &>.head {
     width: 100%;
     &>.status {
@@ -130,6 +130,7 @@
       display: inline-block;
       border: 1px solid #ccc;
       border-radius: 0.3em;
+      margin: 0.1em;
       font-size: 0.9em;
       box-sizing: border-box;
       .tooltip {

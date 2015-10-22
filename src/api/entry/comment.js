@@ -30,7 +30,7 @@ router.get('/comments', (req, res) => {
   // However, req.user isn't required in here.
   let query = {
     limit: 20,
-    order: [['id', 'DESC']],
+    order: [['id', 'AESC']],
     include: [{
       model: User,
       as: 'author',
@@ -41,7 +41,7 @@ router.get('/comments', (req, res) => {
   if (req.query.lastIndex) {
     query.where = {
       id: {
-        $lt: req.query.lastIndex
+        $gt: req.query.lastIndex
       }
     };
   }
@@ -195,7 +195,9 @@ router.put('/comments/:id', checkModifiable, (req, res) => {
 router.delete('/comments/:id', checkModifiable, (req, res) => {
   req.comment.destroy()
   .then(() => {
-    res.json({});
+    res.json(Object.assign({}, req.comment.toJSON(), {
+      deleted: true
+    }));
   })
   .catch(err => {
     console.log(err);
