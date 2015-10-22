@@ -93,6 +93,13 @@ A tag type, such as 'distribution', 'language', 'arch'.
 ### Tag name convention
 `^[a-zA-Z0-9_-.]+$`
 
+## Comment
+A comment written in a entry.
+
+- body - Text
+- author - User
+- entry - Entry
+
 # API
 Shellscripts use REST API for data access. Even web frontend servers make API
 calls due to the nature of universal app.

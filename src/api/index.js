@@ -5,7 +5,7 @@ import { User } from '../db/index.js';
 import session from './session.js';
 import user from './user.js';
 import tag from './tag.js';
-import entry from './entry.js';
+import entry from './entry/index.js';
 import tagtype from './tagtype.js';
 
 export const router = new Express.Router();
