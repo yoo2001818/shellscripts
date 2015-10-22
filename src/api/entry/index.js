@@ -83,6 +83,12 @@ function buildEntryGet(options) {
   };
 }
 
+/**
+ * @apiDefine EntryGet
+ * @apiParam (Parameter) {String} author The author of the entry
+ * @apiParam (Parameter) {String} name The name of the entry
+ */
+
 export const router = new Express.Router();
 export default router;
 
@@ -223,8 +229,7 @@ authorRouter.use('/:name', (req, res, next) => {
  * @api {get} /entries/:author/:name Get specified entry
  * @apiGroup Entry
  * @apiName GetEntryByName
- * @apiParam (Parameter) {String} author The author of the entry
- * @apiParam (Parameter) {String} name The name of the entry
+ * @apiUse EntryGet
  * @apiDescription Returns the entry.
  */
 entryRouter.get('/', (req, res) => {
@@ -265,8 +270,7 @@ entryRouter.get('/', (req, res) => {
  * @api {get} /entries/:author/:name/raw Get raw script file of the entry
  * @apiGroup Entry
  * @apiName EntryGetRawScript
- * @apiParam (Parameter) {String} author The author of the entry
- * @apiParam (Parameter) {String} name The name of the entry
+ * @apiUse EntryGet
  * @apiDescription Returns the script of the entry as a downloadable format.
  */
 entryRouter.get('/raw', (req, res) => {
@@ -294,8 +298,7 @@ entryRouter.get('/raw', (req, res) => {
  * @api {post} /entries/:author/:name Create an entry
  * @apiGroup Entry
  * @apiName CreateEntry
- * @apiParam (Parameter) {String} author The author of the entry.
- * @apiParam (Parameter) {String} name The name of the entry. (aka slug)
+ * @apiUse EntryGet
  * @apiParam (Body) {String} title The title of the entry.
  * @apiParam (Body) {String} brief Brief description. (Usually one line)
  * @apiParam (Body) {String} description Detailed description. Accepts markdown.
@@ -304,6 +307,7 @@ entryRouter.get('/raw', (req, res) => {
  * @apiParam (Body) {String} [script] The script data of the entry.
  * @apiParam (Body) {Boolean} [requiresRoot] Whether if this requires root.
  * @apiDescription Creates and returns a new entry.
+ * @apiUse AuthRequired
  */
 entryRouter.post('/', authRequired, checkModifiable, (req, res) => {
   if (req.selEntry != null) {
@@ -400,8 +404,7 @@ entryRouter.post('/', authRequired, checkModifiable, (req, res) => {
  * @api {put} /entries/:author/:name Edit an entry
  * @apiGroup Entry
  * @apiName EditEntry
- * @apiParam (Parameter) {String} author The author of the entry.
- * @apiParam (Parameter) {String} name The name of the entry. (aka slug)
+ * @apiUse EntryGet
  * @apiParam (Body) {String} title The title of the entry.
  * @apiParam (Body) {String} brief Brief description. (Usually one line)
  * @apiParam (Body) {String} description Detailed description. Accepts markdown.
@@ -410,6 +413,9 @@ entryRouter.post('/', authRequired, checkModifiable, (req, res) => {
  * @apiParam (Body) {String} [script] The script data of the entry.
  * @apiParam (Body) {Boolean} [requiresRoot] Whether if this requires root.
  * @apiDescription Edits and returns the entry.
+ * @apiUse AuthRequired
+ * @apiUse modifiable
+ * @apiPermission modifiable
  */
 entryRouter.put('/', authRequired, checkModifiable, (req, res) => {
   if (req.selEntry == null) {
@@ -506,9 +512,11 @@ entryRouter.put('/', authRequired, checkModifiable, (req, res) => {
  * @api {post} /entries/:author/:name Delete an entry
  * @apiGroup Entry
  * @apiName DeleteEntry
- * @apiParam (Parameter) {String} author The author of the entry
- * @apiParam (Parameter) {String} name The name of the entry
+ * @apiUse EntryGet
  * @apiDescription Returns 200 OK.
+ * @apiUse AuthRequired
+ * @apiUse modifiable
+ * @apiPermission modifiable
  */
 entryRouter.delete('/', authRequired, checkModifiable, (req, res) => {
   if (req.selEntry == null) {
@@ -535,3 +543,4 @@ entryRouter.delete('/', authRequired, checkModifiable, (req, res) => {
 });
 
 entryRouter.use(starRouter);
+entryRouter.use(commentRouter);

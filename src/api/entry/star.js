@@ -7,14 +7,14 @@ export default router;
 
 /**
  * @api {post} /entries/:author/:name/stars Star the entry
- * @apiGroup Entry
+ * @apiGroup Entry/Star
  * @apiName StarEntry
- * @apiParam (Parameter) {String} author The author of the entry
- * @apiParam (Parameter) {String} name The name of the entry
+ * @apiUse EntryGet
  * @apiDescription Gives a star to the entry.
  *
  *   This will fail if the user already gave a star to the entry.
  *   If that happens, this'll return 409 Conflict.
+ * @apiUse AuthRequired
  */
 router.post('/stars', authRequired, (req, res) => {
   if (req.selEntry == null) {
@@ -59,14 +59,14 @@ router.post('/stars', authRequired, (req, res) => {
 
 /**
  * @api {delete} /entries/:author/:name/stars Unstar the entry
- * @apiGroup Entry
+ * @apiGroup Entry/Star
  * @apiName UntarEntry
- * @apiParam (Parameter) {String} author The author of the entry
- * @apiParam (Parameter) {String} name The name of the entry
+ * @apiUse EntryGet
  * @apiDescription Unstars the entry.
  *
  *   This will fail if the user hasn't given a star yet.
  *   If that happens, this'll return 404 Not Found.
+ * @apiUse AuthRequired
  */
 router.delete('/stars', authRequired, (req, res) => {
   if (req.selEntry == null) {
@@ -113,10 +113,9 @@ router.delete('/stars', authRequired, (req, res) => {
 });
 /**
  * @api {get} /entries/:author/:name/stars Get users starred the entry
- * @apiGroup Entry
+ * @apiGroup Entry/Star
  * @apiName EntryUserStarred
- * @apiParam (Parameter) {String} author The author of the entry
- * @apiParam (Parameter) {String} name The name of the entry
+ * @apiUse EntryGet
  * @apiDescription Returns the full list of users who has starred the entry.
  */
 router.get('/stars', authRequired, (req, res) => {

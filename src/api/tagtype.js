@@ -34,6 +34,7 @@ router.get('/tag-types', (req, res) => {
  *
  *   This will require an admin privilege. If user isn't admin, this will
  *   return 403 Forbidden.
+ * @apiUse AuthRequired
  */
 router.post('/tag-types', authRequired, adminRequired, (req, res) => {
   res.sendStatus(501);
@@ -59,6 +60,7 @@ router.get('/tag-types/:name', (req, res) => {
  *
  *   This will require an admin privilege. If user isn't admin, this will
  *   return 403 Forbidden.
+ * @apiUse AuthRequired
  */
 router.put('/tag-types/:name', authRequired, adminRequired, (req, res) => {
   res.sendStatus(501);
@@ -73,6 +75,7 @@ router.put('/tag-types/:name', authRequired, adminRequired, (req, res) => {
  *
  *   This will require an admin privilege. If user isn't admin, this will
  *   return 403 Forbidden.
+ * @apiUse AuthRequired
  */
 router.delete('/tag-types/:name', authRequired, adminRequired, (req, res) => {
   res.sendStatus(501);

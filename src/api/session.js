@@ -5,6 +5,27 @@ import strategies from './lib/auth/strategy.js';
 import authRequired from './lib/authRequired.js';
 import { Passport } from '../db/index.js';
 
+/**
+ * @apiDefine AuthRequired
+ * @apiErrorExample {json} If user hasn't signed in:
+ *   HTTP/1.1 401 Unauthorized
+ *   {
+ *     "id": "AUTH_NOT_SIGNED_IN",
+ *     "message": "Not signed in"
+ *   }
+ */
+
+/**
+ * @apiDefine modifiable Modifiable
+ *   The user is the owner of the document, or the user is an admin.
+ * @apiErrorExample {json} If user doesn't have permission:
+ *   HTTP/1.1 403 Forbidden
+ *   {
+ *     "id": "AUTH_FORBIDDEN",
+ *     "message": "You need admin privilege to run this command."
+ *   }
+ */
+
 function validateAuthRequest(req, res, next) {
   const { method } = req.params;
   const strategy = strategies[method];
@@ -84,12 +105,7 @@ export default router;
  *     "username": "Username",
  *     "email": "Email"
  *   }
- * @apiErrorExample {json} If user hasn't signed in:
- *   HTTP/1.1 401 Unauthorized
- *   {
- *     "id": "AUTH_NOT_SIGNED_IN",
- *     "message": "Not signed in"
- *   }
+ * @apiUse AuthRequired
  */
 router.get('/session/', authRequired, (req, res) => {
   res.json(req.user);
@@ -499,12 +515,7 @@ router.post('/session/local/password', (req, res) => {
  *   If password doesn't match the policy, it will return 400 Bad Request.
  *   If changing the password succeeds, it'll return 200 OK.
  *
- * @apiErrorExample {json} If user hasn't signed in:
- *   HTTP/1.1 401 Unauthorized
- *   {
- *     "id": "AUTH_NOT_SIGNED_IN",
- *     "message": "Not signed in"
- *   }
+ * @apiUse AuthRequired
  * @apiErrorExample {json} If oldPassword doesn't match:
  *   HTTP/1.1 401 Unauthorized
  *   {
@@ -547,12 +558,7 @@ router.put('/session/local/', authRequired, (req, res) => {
  * @apiSuccessExample {json} If sign out was successful:
  *   HTTP/1.1 200 OK
  *   {}
- * @apiErrorExample {json} If user hasn't signed in:
- *   HTTP/1.1 401 Unauthorized
- *   {
- *     "id": "AUTH_NOT_SIGNED_IN",
- *     "message": "Not signed in"
- *   }
+ * @apiUse AuthRequired
  */
 router.delete('/session/', authRequired, (req, res) => {
   req.logout();

@@ -35,6 +35,7 @@ router.get('/tags/', (req, res) => {
  * @apiParam (Body) {String} name
  * @apiParam (Body) {String} [description]
  * @apiParam (Body) {Integer} [type]
+ * @apiUse AuthRequired
  */
 router.post('/tags/', authRequired, (req, res) => {
   const {name, description, type} = req.body;
@@ -73,6 +74,7 @@ router.get('/tags/:name', (req, res) => {
  * @apiParam (Parameter) {String} name
  * @apiParam (Body) {String} [description]
  * @apiParam (Body) {Integer} [type]
+ * @apiUse AuthRequired
  */
 router.put('/tags/:name', (req, res) => {
   res.sendStatus(501);

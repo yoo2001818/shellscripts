@@ -31,12 +31,10 @@ html {
   padding: 0 0.5em;
 }
 
-.loading {
+.loading.content {
   font-size: 2rem;
   text-align: center;
-  &.content {
-    padding: 1.5rem;
-  }
+  padding: 1.5rem;
 }
 
 .container {

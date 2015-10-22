@@ -72,12 +72,9 @@ if (__DEVELOPMENT__) {
  *     "username": "Username",
  *     "email": "Email"
  *   }
- * @apiErrorExample {json} If user hasn't signed in:
- *   HTTP/1.1 401 Unauthorized
- *   {
- *     "id": "AUTH_NOT_SIGNED_IN",
- *     "message": "Not signed in"
- *   }
+ * @apiUse AuthRequired
+ * @apiUse modifiable
+ * @apiPermission modifiable
  * @apiErrorExample {json} If email conflicts:
  *   HTTP/1.1 409 Conflict
  *   {
@@ -117,12 +114,9 @@ userRouter.post('/', checkModifiable, (req, res) => {
  *     "username": "Username",
  *     "email": "Email"
  *   }
- * @apiErrorExample {json} If user hasn't signed in:
- *   HTTP/1.1 401 Unauthorized
- *   {
- *     "id": "AUTH_NOT_SIGNED_IN",
- *     "message": "Not signed in"
- *   }
+ * @apiUse AuthRequired
+ * @apiUse modifiable
+ * @apiPermission modifiable
  * @apiErrorExample {json} If photo is invalid:
  *   HTTP/1.1 400
  *   {
@@ -220,12 +214,9 @@ userRouter.post('/photo', checkModifiable, upload.single('photo'),
  *     "username": "Username",
  *     "email": "Email"
  *   }
- * @apiErrorExample {json} If user hasn't signed in:
- *   HTTP/1.1 401 Unauthorized
- *   {
- *     "id": "AUTH_NOT_SIGNED_IN",
- *     "message": "Not signed in"
- *   }
+ * @apiUse AuthRequired
+ * @apiUse modifiable
+ * @apiPermission modifiable
  * @apiErrorExample {json} If signing up is already done:
  *   HTTP/1.1 403 Forbidden
  *   {
@@ -461,12 +452,7 @@ router.use('/users/:username', (req, res, next) => {
  *     "username": "Username",
  *     "email": "Email"
  *   }
- * @apiErrorExample {json} If user hasn't signed in:
- *   HTTP/1.1 401 Unauthorized
- *   {
- *     "id": "AUTH_NOT_SIGNED_IN",
- *     "message": "Not signed in"
- *   }
+ * @apiUse AuthRequired
  */
 router.use('/user/', authRequired, (req, res, next) => {
   req.selUser = req.user;
