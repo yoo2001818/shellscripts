@@ -71,11 +71,11 @@ function buildEntryGet(options) {
     // TODO currently it's hardcoded. should be changed
     limit: 20,
     order: [
+      ['id', 'DESC'],
       [{
         model: Tag,
         as: 'tags'
-      }, 'name'],
-      ['id', 'DESC']
+      }, 'name']
     ],
     attributes: {
       exclude: ['userId', 'author', 'script', 'description', 'requiresRoot']
