@@ -374,6 +374,7 @@ entryRouter.post('/', authRequired, checkModifiable, (req, res) => {
         id: entry.id
       },
       include: buildEntryGet({}).include,
+      order: buildEntryGet({}).order,
       transaction
     }))
   )
@@ -479,6 +480,7 @@ entryRouter.put('/', authRequired, checkModifiable, (req, res) => {
         id: entry.id
       },
       include: buildEntryGet({}).include,
+      order: buildEntryGet({}).order,
       transaction
     }))
   )
@@ -568,15 +570,9 @@ entryRouter.post('/stars', authRequired, (req, res) => {
           stars: req.selEntry.stars + 1
         }, { transaction })
         .then(() => {
-          return req.selEntry.getStarredUsers({
-            attributes: ['username', 'name', 'photo'],
-            transaction
-          })
-          .then(() => {
-            res.json(Object.assign({}, req.selEntry.toJSON(), {
-              voted: true
-            }));
-          });
+          res.json(Object.assign({}, req.selEntry.toJSON(), {
+            voted: true
+          }));
         });
       });
     })
@@ -626,18 +622,12 @@ entryRouter.delete('/stars', authRequired, (req, res) => {
           stars: req.selEntry.stars - 1
         }, { transaction })
         .then(() => {
-          return req.selEntry.getStarredUsers({
-            attributes: ['username', 'name', 'photo'],
-            transaction
-          })
-          .then(() => {
-            res.json(Object.assign({}, req.selEntry.toJSON(), {
-              voted: false,
-              tags: undefined,
-              description: undefined,
-              script: undefined
-            }));
-          });
+          res.json(Object.assign({}, req.selEntry.toJSON(), {
+            voted: false,
+            tags: undefined,
+            description: undefined,
+            script: undefined
+          }));
         });
       });
     })

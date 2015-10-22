@@ -11,6 +11,7 @@ import Highlight from 'react-highlight/lib/optimized';
 import { confirmEntryDelete } from '../actions/entry.js';
 import Translated from '../components/ui/Translated.js';
 import EntryMiniCard from '../components/EntryMiniCard.js';
+import LoadingOverlay from '../components/ui/LoadingOverlay.js';
 
 class EntryView extends Component {
   handleDelete(e) {
@@ -29,7 +30,7 @@ class EntryView extends Component {
     };
   }
   render() {
-    const { entry, author, session } = this.props;
+    const { entry, author, session, entryLoading } = this.props;
     const editPath = `/${author.username}/${entry.name}/edit`;
     if (entry.deleted) {
       const { history } = this.context;
@@ -65,6 +66,7 @@ class EntryView extends Component {
               </button>
             </div>
           ) : false }
+          <LoadingOverlay loading={entryLoading} />
         </div>
         <pre className='script'>
           <Highlight className='language-bash' languages={['bash']}>
@@ -81,7 +83,8 @@ EntryView.propTypes = {
   author: PropTypes.object,
   session: PropTypes.object,
   sessionUser: PropTypes.object,
-  confirmEntryDelete : PropTypes.func
+  confirmEntryDelete: PropTypes.func,
+  entryLoading: PropTypes.bool
 };
 
 EntryView.contextTypes = {
@@ -95,7 +98,8 @@ export default connect(
     return {
       sessionUser: users[session.login],
       session,
-      author: users[entry.author]
+      author: users[entry.author],
+      entryLoading: state.entry.load.loading
     };
   },
   { confirmEntryDelete }

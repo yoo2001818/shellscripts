@@ -38,7 +38,7 @@ class Index extends Component {
           loadMore={this.handleLoad.bind(this)}
           hasMore={list.lastIndex !== 1}
           loader={(
-            <div className='loading'>
+            <div className='loading content'>
               <i className="fa fa-refresh fa-spin"></i>
             </div>
           )}

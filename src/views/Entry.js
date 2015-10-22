@@ -20,7 +20,7 @@ class Entry extends Component {
       // Loading! :P
       return (
         <div id='entry'>
-          <div className='loading'>
+          <div className='loading content'>
             <i className="fa fa-refresh fa-spin"></i>
           </div>
         </div>

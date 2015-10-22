@@ -10,6 +10,7 @@ import InputTip from '../ui/InputTip.js';
 import LabelInput from '../ui/LabelInput.js';
 import ErrorInput from '../ui/ErrorInput.js';
 import ErrorShow from '../ui/ErrorShow.js';
+import LoadingOverlay from '../ui/LoadingOverlay.js';
 import AutoExpandTextArea from 'react-textarea-autosize';
 import UserMiniCard from '../UserMiniCard.js';
 
@@ -49,11 +50,13 @@ class EntryCreateForm extends Component {
   render() {
     const __ = translate(this.props.lang.lang);
     const { fields: { name, title, brief, description, tags, script },
-      handleSubmit, invalid, author, modifying } = this.props;
+      handleSubmit, invalid, author, modifying, entryLoading } = this.props;
     const permalink = `${author.username}/${name.value}`;
     return (
       <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
-        <div className='entry-create-form small-content form entry-view'>
+        <div
+          className='entry-create-form small-content form entry-view container'
+        >
           <div className='header'>
             <div className='entry-mini-card'>
               <div className='head tabular'>
@@ -112,6 +115,7 @@ class EntryCreateForm extends Component {
               <Translated name='save' />
             </button>
           </div>
+          <LoadingOverlay loading={entryLoading} />
         </div>
       </form>
     );
@@ -125,7 +129,8 @@ EntryCreateForm.propTypes = {
   dispatch: PropTypes.func.isRequired,
   invalid: PropTypes.bool,
   author: PropTypes.object,
-  modifying: PropTypes.bool
+  modifying: PropTypes.bool,
+  entryLoading: PropTypes.bool
 };
 
 EntryCreateForm.contextTypes = {
@@ -168,7 +173,11 @@ function validateFrom(data) {
 }
 
 export default connect(
-  store => ({form: store.form, lang: store.lang})
+  store => ({
+    form: store.form,
+    lang: store.lang,
+    entryLoading: store.entry.load.loading
+  })
 )(reduxForm({
   form: 'entryCreate',
   fields: ['name', 'author', 'title', 'brief', 'description', 'tags',
