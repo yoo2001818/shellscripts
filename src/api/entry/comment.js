@@ -30,7 +30,7 @@ router.get('/comments', (req, res) => {
   // However, req.user isn't required in here.
   let query = {
     limit: 20,
-    order: [['id', 'AESC']],
+    order: [['id', 'ASC']],
     include: [{
       model: User,
       as: 'author',

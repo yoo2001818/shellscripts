@@ -55,9 +55,9 @@ class EntryCreateForm extends Component {
     return (
       <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
         <div
-          className='entry-create-form small-content form entry-view container'
+          className='entry-create-form form entry-view container'
         >
-          <div className='header'>
+          <div className='header small-content'>
             <div className='entry-mini-card'>
               <div className='head tabular'>
                 <div className='author'>
@@ -104,7 +104,7 @@ class EntryCreateForm extends Component {
             <AceEditor
                mode='sh'
                theme='solarized_light'
-               height='15em'
+               height='40em'
                width='100%'
                fontSize={16}
                {...script}

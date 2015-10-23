@@ -12,19 +12,20 @@ export const DELETE_COMMENT = 'COMMENT_DELETE';
 
 export const fetchList = createAction(FETCH_LIST,
   (entry, lastIndex) =>
-    api(GET, '/api/entries/${entry.author.username}/${entry.name}/comments', {
+    api(GET, `/api/entries/${entry.author}/${entry.name}/comments`, {
       query: { lastIndex }
     }),
   (entry, lastIndex, reset) => ({
     schema: arrayOf(Comment),
-    lastIndex, reset, name: `${entry.author.username}/${entry.name}`
+    name: `${entry.author.toLowerCase()}/${entry.name}`,
+    lastIndex, reset
   })
 );
 
 export const fetch = createAction(FETCH,
   (entry, id) =>
     api(GET,
-      `/api/entries/${entry.author.username}/${entry.name}/comments/${id}`),
+      `/api/entries/${entry.author}/${entry.name}/comments/${id}`),
   (entry, id) => ({
     replace: {
       comments: {
@@ -38,7 +39,7 @@ export const fetch = createAction(FETCH,
 
 export const create = createAction(CREATE,
   (entry, data) =>
-    api(POST, `/api/entries/${entry.author.username}/${entry.name}`, {
+    api(POST, `/api/entries/${entry.author}/${entry.name}`, {
       body: data
     }),
   () => ({
@@ -49,7 +50,7 @@ export const create = createAction(CREATE,
 export const edit = createAction(EDIT_COMMENT,
   (entry, data) =>
     api(PUT,
-      `/api/entries/${entry.author.username}/${entry.name}/comments/${data.id}`,
+      `/api/entries/${entry.author}/${entry.name}/comments/${data.id}`,
       {
         body: data
       }),
@@ -61,7 +62,7 @@ export const edit = createAction(EDIT_COMMENT,
 export const deleteComment = createAction(DELETE_COMMENT,
   (entry, id) =>
     api(DELETE,
-      `/api/entries/${entry.author.username}/${entry.name}/comments/${id}`),
+      `/api/entries/${entry.author}/${entry.name}/comments/${id}`),
   () => ({
     schema: Comment
   })
@@ -77,10 +78,10 @@ export function loadList(entry, last) {
 export function loadListMore(entry) {
   return (dispatch, getState) => {
     const { comment: { list } } = getState();
-    const page = list[`${entry.author.username}/${entry.name}`];
+    const page = list[`${entry.author}/${entry.name}`];
     // If it's already loading, cancel it.
     if (page.load && page.load.loading) return Promise.resolve();
-    return dispatch(fetchList(entry, page.firstIndex));
+    return dispatch(fetchList(entry, page.lastIndex));
   };
 }
 

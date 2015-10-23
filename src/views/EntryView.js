@@ -8,9 +8,11 @@ import { Link } from 'react-router';
 import marked from 'marked';
 import Highlight from 'react-highlight/lib/optimized';
 
+import { loadList } from '../actions/comment.js';
 import { confirmEntryDelete } from '../actions/entry.js';
 import Translated from '../components/ui/Translated.js';
 import EntryMiniCard from '../components/EntryMiniCard.js';
+import CommentList from '../components/CommentList.js';
 import LoadingOverlay from '../components/ui/LoadingOverlay.js';
 
 class EntryView extends Component {
@@ -39,8 +41,8 @@ class EntryView extends Component {
       return false;
     }
     return (
-      <div id='entry-view' className='entry-view small-content'>
-        <div className='header'>
+      <div id='entry-view' className='entry-view'>
+        <div className='header small-content'>
           <EntryMiniCard entry={entry} showFull={true}
             starable={!!session.login} />
           <div className='description'>
@@ -73,6 +75,7 @@ class EntryView extends Component {
             {this.props.entry.script}
           </Highlight>
         </pre>
+        <CommentList entry={entry} />
       </div>
     );
   }
@@ -91,7 +94,7 @@ EntryView.contextTypes = {
   history: PropTypes.any
 };
 
-export default connect(
+const ConnectEntryView = connect(
   (state, props) => {
     const { session, entities: { users } } = state;
     const { entry } = props;
@@ -104,3 +107,13 @@ export default connect(
   },
   { confirmEntryDelete }
 )(EntryView);
+
+ConnectEntryView.fetchData = function(store, routerState) {
+  const { params } = routerState;
+  return store.dispatch(loadList({
+    author: params.username,
+    name: params.entryname
+  }));
+};
+
+export default ConnectEntryView;

@@ -1,7 +1,7 @@
 .entry-view {
   margin: 0 auto;
   &>.header {
-    max-width: 45em;
+    max-width: 40em;
     margin: 1.5em auto;
     box-sizing: border-box;
     border: 1px solid #ccc;
@@ -34,14 +34,12 @@
     }
   }
   &>.script {
-    max-width: 45rem;
-    max-height: 40rem;
+    max-width: 40rem;
     margin: 1.5rem auto;
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 0.3rem;
     // padding: 0.6rem 0.8rem;
-    overflow: auto;
     font-size: 0.95em;
     box-shadow: 0 1px 2px -1px rgba(0, 0, 0, 0.5);
     &>pre {
@@ -50,6 +48,9 @@
     .hljs {
       padding: 0.6rem 0.8rem;
       min-height: 10rem;
+      max-width: 100%;
+      max-height: 40rem;
+      overflow: auto;
     }
     .ace_editor {
       margin: 0;
