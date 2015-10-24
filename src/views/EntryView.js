@@ -1,12 +1,22 @@
 import './style/EntryView.scss';
 import 'highlight.js/styles/solarized_light.css';
-import 'highlight.js/lib/languages/bash.js';
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import marked from 'marked';
-import Highlight from 'react-highlight/lib/optimized';
+import highlight from 'highlight.js';
+
+marked.setOptions({
+  highlight: function (code, lang) {
+    if (lang != null && highlight.getLanguage(lang)) {
+      return highlight.highlight(lang, code, false).value;
+    }
+    return highlight.highlightAuto(code).value;
+  }
+});
+
+import Highlight from 'react-highlight';
 
 import { loadList } from '../actions/comment.js';
 import { confirmEntryDelete } from '../actions/entry.js';
@@ -71,7 +81,7 @@ class EntryView extends Component {
           <LoadingOverlay loading={entryLoading} />
         </div>
         <pre className='script'>
-          <Highlight className='language-bash' languages={['bash']}>
+          <Highlight className='lang-bash' languages={['bash']}>
             {this.props.entry.script}
           </Highlight>
         </pre>

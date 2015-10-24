@@ -21,6 +21,7 @@ if (__CLIENT__) {
   // require function.
   AceEditor = require('react-ace');
   require('brace/mode/sh');
+  require('brace/mode/markdown');
   require('brace/theme/solarized_light');
 } else {
   // Server fallback.
@@ -92,8 +93,14 @@ class EntryCreateForm extends Component {
             </div>
             <div className='description'>
               <LabelInput label={__('description')}>
-                <textarea placeholder={__('description')} rows={10}
-                  className='code' {...description} />
+                <AceEditor
+                   mode='markdown'
+                   theme='solarized_light'
+                   height='30em'
+                   width='100%'
+                   fontSize={16}
+                   {...description}
+                   />
                 <InputTip>
                   <Translated name='acceptsMarkdown' />
                 </InputTip>

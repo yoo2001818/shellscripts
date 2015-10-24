@@ -32,6 +32,48 @@
     &>.description {
       clear: both;
       margin: 1.5em;
+      h1, h2, h3, h4, h5, h6 {
+        color: #333;
+      }
+      a {
+        color: #666;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+      pre {
+        box-shadow: 0 1px 2px -1px rgba(0, 0, 0, 0.5);
+        border: 1px solid #ccc;
+        margin: 0;
+        display: block;
+        overflow: auto;
+        max-height: 30rem;
+        padding: 0.5em;
+        border-radius: 0.3rem;
+        background: #FDF6E3 none repeat scroll 0% 0%;
+        color: #657B83;
+        code {
+          display: inline;
+          padding: 0;
+          box-shadow: none;
+          background: none;
+          border-radius: 0;
+          border: none;
+        }
+      }
+      code {
+        display: inline-block;
+        box-shadow: 0 1px 2px -1px rgba(0, 0, 0, 0.5);
+        border: 1px solid #ccc;
+        margin: 0;
+        border-radius: 0.3rem;
+        overflow-x: auto;
+        padding: 0.4em;
+        background: #FDF6E3 none repeat scroll 0% 0%;
+        color: #657B83;
+        vertical-align: middle;
+      }
     }
   }
   &>.script {
@@ -41,7 +83,6 @@
     border: 1px solid #ccc;
     border-radius: 0.3rem;
     // padding: 0.6rem 0.8rem;
-    font-size: 0.95em;
     box-shadow: 0 1px 2px -1px rgba(0, 0, 0, 0.5);
     &>pre {
       margin: 0;

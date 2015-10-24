@@ -18,7 +18,7 @@ function renderPage(html, head, initialState) {
     <!doctype html>
     <html>
       <head>
-        <title>${head.title}</title>
+        ${head.title}
         ${head.meta.toString()}
         <link rel="stylesheet" type="text/css" href="/assets/bundle.css">
       </head>
