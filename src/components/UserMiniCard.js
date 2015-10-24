@@ -19,7 +19,7 @@ export default class UserMiniCard extends Component {
           </div>
           { !hideName ? (
             <div className='name'>
-              {user.name}
+              {user.name || user.username}
             </div>
           ) : false }
           { !hideUsername ? (
