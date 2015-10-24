@@ -223,6 +223,18 @@ export const EntryLink = sequelize.define('entryLink', {
   }
 });
 
+export const Session = sequelize.define('session', {
+  sid: {
+    type: Sequelize.STRING,
+    primaryKey: true
+  },
+  expires: {
+    type: Sequelize.DATE,
+    allowNull: true
+  },
+  data: Sequelize.TEXT
+});
+
 // TODO notifications, reports etc
 
 Passport.belongsTo(User);
@@ -244,9 +256,9 @@ Entry.belongsToMany(User, {through: 'starredEntry', as: 'starredUsers'});
 Entry.hasMany(Comment);
 // This is pretty tricky - http://stackoverflow.com/a/25634978/3317669
 Entry.belongsToMany(Entry, {as: 'children', foreignKey: 'parentEntryId',
-  through: 'EntryLink'});
+  through: 'entryLinks'});
 Entry.belongsToMany(Entry, {as: 'parents', foreignKey: 'entryId',
-  through: 'EntryLink'});
+  through: 'entryLinks'});
 
 Comment.belongsTo(Entry);
 Comment.belongsTo(User, {as: 'author'});

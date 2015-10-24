@@ -7,6 +7,14 @@ module.exports = {
       parser: WebpackIsomorphicTools.url_loader_parser
     }, styles: {
       extensions: ['scss', 'sass', 'css'],
+      filter: function(m, regexp) {
+        var check = regexp.test(m.name);
+        if (m.name.indexOf('./src/') === 0) return check;
+        if (m.name.indexOf('./~/') === 0 && m.name.indexOf('!') === -1) {
+          return check;
+        }
+        return false;
+      },
       naming: function(m) {
         if (m.name == null) return undefined;
         // ./src/~~~

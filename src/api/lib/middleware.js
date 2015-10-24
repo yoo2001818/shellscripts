@@ -5,10 +5,9 @@ import { sequelize } from '../../db/index.js';
 import sequelizeStore from 'connect-session-sequelize';
 const SequelizeStore = sequelizeStore(session.Store);
 const sessionStore = new SequelizeStore({
-  db: sequelize
+  db: sequelize,
+  table: 'session'
 });
-
-sessionStore.sync();
 
 export default function registerMiddlewares(app) {
   app.use(bodyParser.urlencoded({extended: true}));
