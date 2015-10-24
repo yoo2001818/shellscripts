@@ -1,0 +1,45 @@
+.comment-card {
+  padding: 0.5em;
+  border-bottom: 1px solid #ccc;
+  .user-mini-card {
+    height: 100%;
+    .photo {
+      float: left;
+      margin-left: -3em;
+      & > img {
+        margin-right: 0.5em;
+      }
+    }
+    .name {
+      margin-left: 0;
+    }
+  }
+  & > .actions {
+    // WHAT THE ACTUAL F**K.
+    // Well, actions are kinda 'covered' by container div. So we have to
+    // place actions on top in order to interact with it
+    position: relative;
+    z-index: 1;
+    float: right;
+    text-align: right;
+    button {
+      display: inline-block;
+      width: auto;
+      margin: 0.2em 0.2em;
+      padding: 0;
+      border: 0;
+      background: none;
+    }
+    .description {
+      margin-left: 0.5em;
+      display: none;
+    }
+  }
+  & > .container {
+    margin-top: 0.2em;
+    margin-left: 3em;
+    & > .description {
+      white-space: pre-line;
+    }
+  }
+}

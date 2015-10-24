@@ -53,16 +53,8 @@
         border-radius: 0.3rem;
         background: #FDF6E3 none repeat scroll 0% 0%;
         color: #657B83;
-        code {
-          display: inline;
-          padding: 0;
-          box-shadow: none;
-          background: none;
-          border-radius: 0;
-          border: none;
-        }
       }
-      code {
+      &>code, p>code, b>code, i>code, a>code {
         display: inline-block;
         box-shadow: 0 1px 2px -1px rgba(0, 0, 0, 0.5);
         border: 1px solid #ccc;
@@ -84,6 +76,7 @@
     border-radius: 0.3rem;
     // padding: 0.6rem 0.8rem;
     box-shadow: 0 1px 2px -1px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
     &>pre {
       margin: 0;
     }

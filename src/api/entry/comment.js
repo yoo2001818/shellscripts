@@ -36,7 +36,7 @@ router.get('/comments', (req, res) => {
       as: 'author',
       attributes: ['username', 'name', 'photo']
     }],
-    attributes: ['id', 'description']
+    attributes: ['id', 'description', 'createdAt']
   };
   if (req.query.lastIndex) {
     query.where = {

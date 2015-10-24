@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { loadListMore } from '../actions/comment.js';
 import InfiniteScroll from '../components/ui/InfiniteScroll.js';
 import Translated from '../components/ui/Translated.js';
+import CommentCard from './CommentCard.js';
 
 // Calling comment list initially should be done in upper class, since this
 // can't accept 'fetchData'.
@@ -22,7 +23,7 @@ class CommentList extends Component {
     const entries = list.ids.map(id => comments[id]);
     const renderList = entries.map((entry, key) => {
       return (
-        <div key={key}>{entry.description}</div>
+        <CommentCard key={key} comment={entry} />
       );
     });
     return (
