@@ -18,6 +18,7 @@ class CommentList extends Component {
   }
   render() {
     const { list, comments } = this.props;
+    if (list == null) return false;
     const entries = list.ids.map(id => comments[id]);
     const renderList = entries.map((entry, key) => {
       return (
