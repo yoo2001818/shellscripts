@@ -102,6 +102,8 @@ export function loadListMore() {
     const { entry: { list } } = getState();
     // If it's already loading, cancel it.
     if (list.load && list.load.loading) return Promise.resolve();
+    // If list is null, cancel it.
+    if (list.lastIndex == null) return Promise.resolve();
     return dispatch(fetchList(list.lastIndex));
   };
 }
@@ -118,6 +120,8 @@ export function loadUserListMore(username) {
     const list = userList[username];
     // If it's already loading, cancel it.
     if (list && list.load && list.load.loading) return Promise.resolve();
+    // If list is null, cancel it.
+    if (list.lastIndex == null) return Promise.resolve();
     return dispatch(fetchUserList(username, list && list.lastIndex));
   };
 }

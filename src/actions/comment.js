@@ -81,6 +81,8 @@ export function loadListMore(entry) {
     const page = list[`${entry.author}/${entry.name}`];
     // If it's already loading, cancel it.
     if (page.load && page.load.loading) return Promise.resolve();
+    // If list is null, cancel it.
+    if (page.lastIndex == null) return Promise.resolve();
     return dispatch(fetchList(entry, page.lastIndex));
   };
 }
