@@ -69,6 +69,8 @@
   "retry": "다시 시도",
   "star": "별 달기",
   "unstar": "별 뽑기",
+  "post": "올리기",
+  "subject": "내용",
   "FIELD_TOO_LONG": "길이가 너무 깁니다",
   "AUTH_INVALID_USERNAME": "올바른 사용자 이름이 아닙니다",
   "AUTH_INVALID_PASSWORD": "비밀번호가 틀립니다",

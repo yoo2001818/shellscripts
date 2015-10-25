@@ -39,7 +39,7 @@ export const fetch = createAction(FETCH,
 
 export const create = createAction(CREATE,
   (entry, data) =>
-    api(POST, `/api/entries/${entry.author}/${entry.name}`, {
+    api(POST, `/api/entries/${entry.author}/${entry.name}/comments`, {
       body: data
     }),
   () => ({

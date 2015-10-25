@@ -23,8 +23,6 @@ export default function pagination(actionType, entityType) {
       if (payload.result.length === 0) {
         // End of pagination - there's no entities to load.
         return Object.assign({}, newState, {
-          // '1' is always the first - There's nothing to load after 1.
-          lastIndex: 1,
           finished: true
         });
       }

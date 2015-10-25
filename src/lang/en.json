@@ -69,6 +69,8 @@
   "retry": "Retry",
   "star": "Star",
   "unstar": "Unstar",
+  "post": "Post",
+  "subject": "Subject",
   "FIELD_TOO_LONG": "Value is too long",
   "AUTH_INVALID_USERNAME": "Invalid username",
   "AUTH_INVALID_PASSWORD": "Invalid password",

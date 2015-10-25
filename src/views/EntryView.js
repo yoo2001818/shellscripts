@@ -23,6 +23,7 @@ import { confirmEntryDelete } from '../actions/entry.js';
 import Translated from '../components/ui/Translated.js';
 import EntryMiniCard from '../components/EntryMiniCard.js';
 import CommentList from '../components/CommentList.js';
+import CommentForm from '../components/forms/CommentForm.js';
 import LoadingOverlay from '../components/ui/LoadingOverlay.js';
 
 class EntryView extends Component {
@@ -35,6 +36,10 @@ class EntryView extends Component {
     return session.login === author.login ||
       (sessionUser && sessionUser.isAdmin);
   }
+  canComment() {
+    const { session } = this.props;
+    return !!session.login;
+  }
   getDescription() {
     const { entry } = this.props;
     return {
@@ -42,7 +47,7 @@ class EntryView extends Component {
     };
   }
   render() {
-    const { entry, author, session, entryLoading } = this.props;
+    const { entry, author, session, sessionUser, entryLoading } = this.props;
     const editPath = `/${author.username}/${entry.name}/edit`;
     if (entry.deleted) {
       const { history } = this.context;
@@ -86,6 +91,12 @@ class EntryView extends Component {
           </Highlight>
         </pre>
         <CommentList entry={entry} />
+        { this.canComment() ? (
+          <CommentForm
+            author={sessionUser}
+            entry={entry}
+          />
+        ) : false }
       </div>
     );
   }

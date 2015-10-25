@@ -36,7 +36,7 @@ class Index extends Component {
         </h1>
         <InfiniteScroll
           loadMore={this.handleLoad.bind(this)}
-          hasMore={list.lastIndex !== 1}
+          hasMore={!list.finished}
           loader={(
             <div className='loading content'>
               <i className="fa fa-refresh fa-spin"></i>

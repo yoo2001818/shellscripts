@@ -103,7 +103,7 @@ class UserProfile extends Component {
         <div className='small-content'>
           <InfiniteScroll
             loadMore={this.handleLoadList.bind(this)}
-            hasMore={list && list.lastIndex !== 1}
+            hasMore={list && !list.finished}
             loader={(
               <div className='loading content'>
                 <i className="fa fa-refresh fa-spin"></i>

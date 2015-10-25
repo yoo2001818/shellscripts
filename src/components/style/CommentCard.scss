@@ -14,6 +14,22 @@
       margin-left: 0;
     }
   }
+  &.editing {
+    background-color: #F9F9F9;
+    & > .actions {
+      .description {
+        display: inline;
+      }
+    }
+    .user-mini-card {
+      .name, .username {
+        margin-top: 0.4em;
+      }
+    }
+    & > .container {
+      margin-right: 1em;
+    }
+  }
   & > .actions {
     // WHAT THE ACTUAL F**K.
     // Well, actions are kinda 'covered' by container div. So we have to
@@ -40,9 +56,6 @@
     & > .description {
       white-space: pre-line;
       margin-top: 0.2em;
-      textarea {
-        margin: 0;
-      }
     }
   }
 }
