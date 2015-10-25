@@ -25,10 +25,12 @@ var plugins = [
 if (process.env.NODE_ENV !== 'production') {
   entries.push('webpack-hot-middleware/client?overlay=true');
   plugins.push(new webpack.HotModuleReplacementPlugin());
+} else {
+  plugins.push(new webpack.optimize.UglifyJsPlugin());
 }
 
 module.exports = {
-  devtool: 'eval',
+  // devtool: 'eval',
   context: __dirname,
   entry: entries,
   output: {

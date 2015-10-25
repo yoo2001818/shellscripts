@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import values from 'lodash/object/values';
 
 import { oAuthSignUp, confirmMethodDelete, methodFetch }
   from '../../actions/session.js';
@@ -25,7 +25,7 @@ class AuthMethodSettings extends Component {
   }
   render() {
     const { method, loading } = this.props;
-    const methods = _.values(method);
+    const methods = values(method);
     const methodEnabledCount = methods.reduce(
       (sum, element) => sum + (element.inUse ? 1 : 0), 0);
     const methodTags = methods.map(provider => {

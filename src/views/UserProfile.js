@@ -61,7 +61,7 @@ class UserProfile extends Component {
           <div className='contact'>
             <p className='email'>
               <i className="fa fa-envelope-o icon"></i>
-              <a href={`mailto:${user.email}`}>{user.email}</a>
+              <a href={`mailto:${user.email}`} target='_blank'>{user.email}</a>
             </p>
             { user.website ? (
               <p className='website'>

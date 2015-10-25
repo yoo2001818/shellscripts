@@ -3,7 +3,7 @@ import './style/SignUp.scss';
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import values from 'lodash/object/values';
 import Helmet from 'react-helmet';
 
 import translate from '../lang/index.js';
@@ -53,7 +53,7 @@ class Login extends Component {
       methodTags = false;
       hasLocal = true;
     } else {
-      methodTags = _.values(method).map(provider => {
+      methodTags = values(method).map(provider => {
         if (provider.identifier === 'local') {
           hasLocal = true;
           return false;
