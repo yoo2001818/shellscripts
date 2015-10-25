@@ -22,6 +22,8 @@ class LocalLoginForm extends Component {
           throw {password: error};
         }
         throw {_error: error.message};
+      } else {
+        this.context.history.goBack();
       }
     });
   }
@@ -57,6 +59,10 @@ LocalLoginForm.propTypes = {
   lang: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   error: PropTypes.any
+};
+
+LocalLoginForm.contextTypes = {
+  history: PropTypes.object
 };
 
 function validateFrom(data) {

@@ -244,7 +244,7 @@ router.get('/session/:method', validateAuthRequest, (req, res, next) => {
         res.json(error);
         return;
       }
-      if (user.signedUp) res.redirect('/login');
+      if (user.signedUp) res.redirect('/');
       else res.redirect('/signup');
       return;
     });

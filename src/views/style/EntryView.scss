@@ -71,6 +71,7 @@
   &>.script {
     max-width: 40rem;
     margin: 1.5rem auto;
+    margin-bottom: 0.4rem;
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 0.3rem;
@@ -90,6 +91,17 @@
     .ace_editor {
       margin: 0;
       border: none;
+    }
+  }
+  &>.script-download {
+    text-align: right;
+    margin-bottom: 1.5em;
+    a {
+      color: #666;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }

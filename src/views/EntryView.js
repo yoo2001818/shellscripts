@@ -48,6 +48,7 @@ class EntryView extends Component {
   }
   render() {
     const { entry, author, session, sessionUser, entryLoading } = this.props;
+    const rawPath = `/api/entries/${author.username}/${entry.name}/raw`;
     const editPath = `/${author.username}/${entry.name}/edit`;
     if (entry.deleted) {
       const { history } = this.context;
@@ -90,6 +91,11 @@ class EntryView extends Component {
             {this.props.entry.script}
           </Highlight>
         </pre>
+        <div className='script-download'>
+          <a href={rawPath}>
+            <Translated name='downloadRaw' />
+          </a>
+        </div>
         <CommentList entry={entry} />
         { this.canComment() ? (
           <CommentForm

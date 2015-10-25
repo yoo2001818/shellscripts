@@ -12,6 +12,7 @@
   background-color: #BDDFFF;
   opacity: 0;
   transition: opacity 0s linear 0.5s;
+  z-index: 10000;
 }
 
 #loader.enabled {
