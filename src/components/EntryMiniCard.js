@@ -3,6 +3,7 @@ import './style/EntryMiniCard.scss';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import moment from 'moment';
 
 import { star, unstar } from '../actions/entry.js';
 
@@ -71,10 +72,15 @@ class EntryMiniCard extends Component {
             ))
           }
         </ul>
-        <div className='permalink'>
-          <Link to={'/' + permalink}>
-            {permalink}
-          </Link>
+        <div className='footer'>
+          <span className='date'>
+            {moment(entry.createdAt).fromNow()}
+          </span>
+          <span className='permalink'>
+            <Link to={'/' + permalink}>
+              {permalink}
+            </Link>
+          </span>
         </div>
       </div>
     );

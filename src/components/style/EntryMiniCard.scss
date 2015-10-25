@@ -106,18 +106,34 @@
       }
     }
   }
-  &>.permalink {
+  &>.footer {
     font-size: 0.9em;
     text-align: right;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     color: #666;
-    &>a {
+    a {
       color: #666;
       text-decoration: none;
       &:hover {
         text-decoration: underline;
+      }
+    }
+    & > .date {
+      display: inline;
+      margin-right: 0.35em;
+      color: #666;
+      &:after {
+        content: '';
+        display: inline-block;
+        width: 0.2em;
+        height: 0.2em;
+        background-color: #999;
+        border-radius: 0.2em;
+        vertical-align: middle;
+        text-align: center;
+        margin-left: 0.3em;
       }
     }
   }

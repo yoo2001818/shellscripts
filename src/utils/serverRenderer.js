@@ -4,6 +4,7 @@ import { createMemoryHistory } from 'history';
 import { RoutingContext, match } from 'react-router';
 import { Provider } from 'react-redux';
 import Helmet from 'react-helmet';
+import moment from 'moment';
 
 import configureStore from '../store/index.js';
 import routes from '../views/routes.js';
@@ -42,6 +43,7 @@ export default function serverRenderer(req, res) {
   const store = configureStore(undefined, superagentClient(req));
   // TODO should be moved to somewhere else...
   store.dispatch(LangActions.set(req.acceptsLanguages('ko', 'en') || 'en'));
+  moment.locale(store.getState().lang.lang);
   match({ routes, location }, (error, redirectLocation, renderProps) => {
     if (redirectLocation) {
       res.redirect(redirectLocation.pathname + redirectLocation.search);

@@ -2,6 +2,7 @@
   padding: 0.5em;
   border-bottom: 1px solid #ccc;
   .user-mini-card {
+    display: inline;
     height: 100%;
     .photo {
       float: left;
@@ -14,8 +15,26 @@
       margin-left: 0;
     }
   }
+  .date {
+    display: inline;
+    font-size: 0.9em;
+    vertical-align: middle;
+    margin-left: 0.35em;
+    color: #666;
+    &:before {
+      content: '';
+      display: inline-block;
+      width: 0.2em;
+      height: 0.2em;
+      background-color: #999;
+      border-radius: 0.2em;
+      vertical-align: middle;
+      text-align: center;
+      margin-right: 0.3em;
+    }
+  }
   &.editing {
-    background-color: #F9F9F9;
+    // background-color: #F9F9F9;
     & > .actions {
       .description {
         display: inline;
@@ -54,8 +73,9 @@
   & > .container {
     margin-left: 3em;
     & > .description {
+      font-size: 0.9em;
       white-space: pre-line;
-      margin-top: 0.2em;
+      margin-top: 0.4em;
     }
   }
 }

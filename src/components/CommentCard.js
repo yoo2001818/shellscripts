@@ -2,6 +2,7 @@ import './style/CommentCard.scss';
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import { confirmCommentDelete, loadList } from '../actions/comment.js';
 import Translated from './ui/Translated.js';
@@ -76,6 +77,9 @@ class CommentCard extends Component {
         ) : false }
         <div className='container'>
           <UserMiniCard user={author} />
+          <div className='date'>
+            {moment(comment.createdAt).fromNow()}
+          </div>
           <div className='description'>
             {comment.description}
           </div>

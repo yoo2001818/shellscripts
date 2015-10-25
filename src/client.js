@@ -5,6 +5,7 @@ import { render } from 'react-dom';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { createHistory } from 'history';
+import moment from 'moment';
 
 import configureStore from './store/index.js';
 import routes from './views/routes.js';
@@ -28,6 +29,9 @@ let history = createHistory();
 const store = configureStore(initialState, superagentClient());
 
 // TODO language set part
+
+moment.locale(store.getState().lang.lang);
+
 // TODO devTools
 
 function handleUpdate() {
