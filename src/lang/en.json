@@ -60,6 +60,8 @@
   "confirmMethodDeleteDescription": "Are you sure you want to remove $1 authentication method?",
   "confirmEntryDelete": "Delete article",
   "confirmEntryDeleteDescription": "Are you sure you want to delete '$1'?",
+  "confirmCommentDelete": "Delete comment",
+  "confirmCommentDeleteDescription": "Are you sure you want to delete this comment?",
   "yes": "Yes",
   "no": "No",
   "link": "Link",

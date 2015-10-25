@@ -18,12 +18,12 @@ class CommentList extends Component {
     });
   }
   render() {
-    const { list, comments } = this.props;
+    const { list, comments, entry } = this.props;
     if (list == null) return false;
-    const entries = list.ids.map(id => comments[id]);
-    const renderList = entries.map((entry, key) => {
+    const commentEntries = list.ids.map(id => comments[id]);
+    const renderList = commentEntries.map((comment, key) => {
       return (
-        <CommentCard key={key} comment={entry} />
+        <CommentCard key={key} comment={comment} entry={entry} />
       );
     });
     return (

@@ -60,6 +60,8 @@
   "confirmMethodDeleteDescription": "정말 $1 인증 수단을 제거하시겠습니까?",
   "confirmEntryDelete": "게시글 삭제",
   "confirmEntryDeleteDescription": "정말 '$1' 게시글을 삭제하시겠습니까?",
+  "confirmCommentDelete": "댓글 삭제",
+  "confirmCommentDeleteDescription": "정말 이 댓글을 삭제하시겠습니까?",
   "yes": "네",
   "no": "아니요",
   "link": "주소",

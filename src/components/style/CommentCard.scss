@@ -36,10 +36,13 @@
     }
   }
   & > .container {
-    margin-top: 0.2em;
     margin-left: 3em;
     & > .description {
       white-space: pre-line;
+      margin-top: 0.2em;
+      textarea {
+        margin: 0;
+      }
     }
   }
 }

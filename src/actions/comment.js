@@ -93,21 +93,18 @@ export function load(entry, id) {
 }
 
 // TODO to be refactored
-export function confirmEntryDelete(entry) {
+export function confirmCommentDelete(entry, id) {
   return (dispatch) => {
     dispatch(open({
-      title: 'confirmEntryDelete',
+      title: 'confirmCommentDelete',
       body: {
-        translated: 'confirmEntryDeleteDescription',
-        props: [
-          entry.title
-        ]
+        translated: 'confirmCommentDeleteDescription'
       },
       choices: [
         {
           name: 'yes',
           type: 'red-button',
-          action: deleteComment(entry)
+          action: deleteComment(entry, id)
         },
         {
           name: 'no'

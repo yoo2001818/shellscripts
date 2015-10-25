@@ -130,7 +130,9 @@ class UserProfileEditForm extends Component {
                 <Translated name='save' />
               </span>
             </button>
-            <button onClick={this.handleCancelEdit.bind(this)}>
+            <button className='red-button'
+              onClick={this.handleCancelEdit.bind(this)}
+            >
               <i className="fa fa-times"></i>
               <span className='description'>
                 <Translated name='cancel' />
