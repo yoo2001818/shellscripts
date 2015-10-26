@@ -30,18 +30,21 @@ header {
     position: absolute;
     top: 0;
     left: 0;
-    width: 9.5rem;
+    width: 10rem;
     padding-left: 1rem;
     font-size: 1.5em;
     line-height: 2.5rem;
     font-weight: bold;
+    text-align: right;
+    padding-right: 1rem;
+    box-sizing: border-box;
     a:hover {
       text-decoration: none;
     }
   }
   .search-bar {
     padding: 0 1em;
-    margin-left: 9.5em;
+    margin-left: 10em;
     margin-right: 16em;
     height: 2.5rem;
     @media screen and (max-width: $break-small) {

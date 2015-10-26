@@ -101,6 +101,8 @@ export function loadList(last) {
 export function loadListMore() {
   return (dispatch, getState) => {
     const { entry: { list } } = getState();
+    // Uhh what
+    if (list == null) return loadList();
     // If it's already loading, cancel it.
     if (list.load && list.load.loading) return Promise.resolve();
     // If list is null, cancel it.
@@ -119,6 +121,8 @@ export function loadUserListMore(username) {
   return (dispatch, getState) => {
     const { entry: { userList } } = getState();
     const list = userList[username];
+    // Uhh what
+    if (list == null) return loadUserList(username);
     // If it's already loading, cancel it.
     if (list && list.load && list.load.loading) return Promise.resolve();
     // If list is null, cancel it.

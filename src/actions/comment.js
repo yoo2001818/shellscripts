@@ -80,6 +80,8 @@ export function loadListMore(entry) {
   return (dispatch, getState) => {
     const { comment: { list } } = getState();
     const page = list[`${entry.author}/${entry.name}`];
+    // Whaaaat
+    if (page == null) return loadList(entry);
     // If it's already loading, cancel it.
     if (page.load && page.load.loading) return Promise.resolve();
     // If list is null, cancel it.
