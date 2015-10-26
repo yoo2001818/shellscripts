@@ -8,7 +8,7 @@ import Login from './Login.js';
 import Search from './Search.js';
 import SignUp from './SignUp.js';
 import User from './User.js';
-import UserProfile from './UserProfile.js';
+import UserEntries from './userProfile/UserEntries.js';
 import Settings from './Settings.js';
 import AccountSettings from './settings/AccountSettings.js';
 import AuthMethodSettings from './settings/AuthMethodSettings.js';
@@ -29,12 +29,12 @@ export const routes = (
       <Route path='*' component={NotFound} />
     </Route>
     <Route path='new' component={EntryCreate} />
-    <Route path=':username/:entryname' component={Entry}>
-      <IndexRoute component={EntryView} />
-      <Route path='edit' component={EntryEdit} />
-    </Route>
     <Route path=':username' component={User}>
-      <IndexRoute component={UserProfile} />
+      <IndexRoute component={UserEntries} />
+      <Route path=':entryname' component={Entry}>
+        <IndexRoute component={EntryView} />
+        <Route path='edit' component={EntryEdit} />
+      </Route>
     </Route>
     <Route path='*' component={NotFound} />
   </Route>

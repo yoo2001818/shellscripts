@@ -101,6 +101,9 @@ class EntryView extends Component {
           <CommentForm
             author={sessionUser}
             entry={entry}
+            initialValues={{
+              description: ''
+            }}
           />
         ) : false }
       </div>

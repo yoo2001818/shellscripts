@@ -1,14 +1,11 @@
-import './style/UserProfile.scss';
+import '../style/UserProfile.scss';
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import { loadUserList, loadUserListMore } from '../actions/entry.js';
-import Translated from '../components/ui/Translated.js';
-import UserProfileEditForm from '../components/forms/UserProfileEditForm.js';
-import EntryMiniCard from '../components/EntryMiniCard.js';
-import InfiniteScroll from '../components/ui/InfiniteScroll.js';
-import userPlaceholder from '../assets/userPlaceholder.png';
+import Translated from '../../components/ui/Translated.js';
+import UserProfileEditForm from '../../components/forms/UserProfileEditForm.js';
+import userPlaceholder from '../../assets/userPlaceholder.png';
 
 class UserProfile extends Component {
   constructor(props) {
@@ -31,17 +28,9 @@ class UserProfile extends Component {
       editing: false
     });
   }
-  handleLoadList() {
-    return this.props.loadUserListMore(this.props.user.username)
-    .then(action => {
-      if (!action) return;
-      if (action.error) throw action;
-      return action;
-    });
-  }
   render() {
     let { editing } = this.state;
-    const { user, list, entries } = this.props;
+    const { user } = this.props;
     // Editing should be immediately stopped if user signs out
     if (!this.canEdit()) editing = false;
     // TODO This is a mess. We should seperate editing page / viewing page -_-
@@ -86,37 +75,10 @@ class UserProfile extends Component {
         ) : false }
       </div>
     );
-    let docTitle = user.username;
-    if (user.name) docTitle = `${user.name} (${user.username})`;
-    const renderList = (list && list.ids &&
-      list.ids.map(id => entries[id]).map((entry, key) => {
-        return (
-          <EntryMiniCard key={key} entry={entry} hideUser={true} />
-        );
-      })) || [];
     return (
       <div id='user-profile'>
-        <Helmet title={docTitle} />
         <div className='small-content'>
           { card }
-        </div>
-        <div className='small-content'>
-          <InfiniteScroll
-            loadMore={this.handleLoadList.bind(this)}
-            hasMore={list && !list.finished}
-            loader={(
-              <div className='loading content'>
-                <i className="fa fa-refresh fa-spin"></i>
-              </div>
-            )}
-            errorRetry={(
-              <button onClick={this.handleLoadList.bind(this)}>
-                <Translated name='retry' />
-              </button>
-            )}
-          >
-            { renderList }
-          </InfiniteScroll>
         </div>
       </div>
     );
@@ -126,28 +88,17 @@ class UserProfile extends Component {
 UserProfile.propTypes = {
   user: PropTypes.object,
   session: PropTypes.object,
-  sessionUser: PropTypes.object,
-  entries: PropTypes.object,
-  list: PropTypes.object,
-  loadUserListMore: PropTypes.func.isRequired
+  sessionUser: PropTypes.object
 };
 
 const ConnectUserProfile = connect(
-  (state, props) => {
-    const { session, entry, entities: { users, entries } } = state;
-    const { user } = props;
+  (state) => {
+    const { session, entities: { users } } = state;
     return {
       sessionUser: users[session.login],
-      list: entry.userList[user.login],
-      entries, session
+      session
     };
-  },
-  { loadUserListMore }
+  }
 )(UserProfile);
-
-ConnectUserProfile.fetchData = function(store, routerState) {
-  const { params } = routerState;
-  return store.dispatch(loadUserList(params.username));
-};
 
 export default ConnectUserProfile;

@@ -21,6 +21,7 @@ class CommentForm extends Component {
       promise = this.props.dispatch(create(this.props.entry, data))
       .then(action => {
         if (action.error) return;
+        this.props.resetForm();
         this.props.dispatch(loadListMore(this.props.entry));
       });
     }
@@ -81,7 +82,8 @@ CommentForm.propTypes = {
   author: PropTypes.object,
   entry: PropTypes.object,
   editing: PropTypes.number,
-  onComplete: PropTypes.func
+  onComplete: PropTypes.func,
+  resetForm: PropTypes.func
 };
 
 function validateFrom(data) {
