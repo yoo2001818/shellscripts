@@ -12,9 +12,11 @@ export const DELETE_COMMENT = 'COMMENT_DELETE';
 
 export const fetchList = createAction(FETCH_LIST,
   (entry, lastIndex) =>
-    api(GET, `/api/entries/${entry.author}/${entry.name}/comments`, {
-      query: { lastIndex }
-    }),
+    api(GET,
+      `/api/entries/${entry.author.toLowerCase()}/${entry.name}/comments`,
+      {
+        query: { lastIndex }
+      }),
   (entry, lastIndex, reset) => ({
     schema: arrayOf(Comment),
     name: `${entry.author.toLowerCase()}/${entry.name}`,
@@ -26,7 +28,8 @@ export const fetchList = createAction(FETCH_LIST,
 export const fetch = createAction(FETCH,
   (entry, id) =>
     api(GET,
-      `/api/entries/${entry.author}/${entry.name}/comments/${id}`),
+      `/api/entries/${entry.author.toLowerCase()}/${entry.name}/comments/${id}`
+    ),
   (entry, id) => ({
     replace: {
       comments: {
@@ -40,9 +43,11 @@ export const fetch = createAction(FETCH,
 
 export const create = createAction(CREATE,
   (entry, data) =>
-    api(POST, `/api/entries/${entry.author}/${entry.name}/comments`, {
-      body: data
-    }),
+    api(POST,
+      `/api/entries/${entry.author.toLowerCase()}/${entry.name}/comments`,
+      {
+        body: data
+      }),
   () => ({
     schema: Comment
   })
@@ -51,7 +56,7 @@ export const create = createAction(CREATE,
 export const edit = createAction(EDIT_COMMENT,
   (entry, data) =>
     api(PUT,
-      `/api/entries/${entry.author}/${entry.name}/comments/${data.id}`,
+`/api/entries/${entry.author.toLowerCase()}/${entry.name}/comments/${data.id}`,
       {
         body: data
       }),
@@ -63,7 +68,8 @@ export const edit = createAction(EDIT_COMMENT,
 export const deleteComment = createAction(DELETE_COMMENT,
   (entry, id) =>
     api(DELETE,
-      `/api/entries/${entry.author}/${entry.name}/comments/${id}`),
+      `/api/entries/${entry.author.toLowerCase()}/${entry.name}/comments/${id}`
+    ),
   () => ({
     schema: Comment
   })
@@ -79,9 +85,9 @@ export function loadList(entry, last) {
 export function loadListMore(entry) {
   return (dispatch, getState) => {
     const { comment: { list } } = getState();
-    const page = list[`${entry.author}/${entry.name}`];
+    const page = list[`${entry.author.toLowerCase()}/${entry.name}`];
     // Whaaaat
-    if (page == null) return loadList(entry);
+    if (page == null) return dispatch(loadList(entry));
     // If it's already loading, cancel it.
     if (page.load && page.load.loading) return Promise.resolve();
     // If list is null, cancel it.

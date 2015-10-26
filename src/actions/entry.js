@@ -102,7 +102,7 @@ export function loadListMore() {
   return (dispatch, getState) => {
     const { entry: { list } } = getState();
     // Uhh what
-    if (list == null) return loadList();
+    if (list == null) return dispatch(loadList());
     // If it's already loading, cancel it.
     if (list.load && list.load.loading) return Promise.resolve();
     // If list is null, cancel it.
@@ -120,9 +120,9 @@ export function loadUserList(username, last) {
 export function loadUserListMore(username) {
   return (dispatch, getState) => {
     const { entry: { userList } } = getState();
-    const list = userList[username];
+    const list = userList[username.toLowerCase()];
     // Uhh what
-    if (list == null) return loadUserList(username);
+    if (list == null) return dispatch(loadUserList(username));
     // If it's already loading, cancel it.
     if (list && list.load && list.load.loading) return Promise.resolve();
     // If list is null, cancel it.

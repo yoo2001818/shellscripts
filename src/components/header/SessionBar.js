@@ -43,7 +43,7 @@ class SessionBar extends Component {
             <ul>
               <li>
                 <Link to={`/${user.username}`}>
-                  <p className='bold'>{ user.username }</p>
+                  <p className='bold'>{ user.name || user.username }</p>
                   <p className='small right'>
                     <Translated name='viewProfile' />
                   </p>
