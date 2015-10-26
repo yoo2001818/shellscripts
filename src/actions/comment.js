@@ -18,7 +18,8 @@ export const fetchList = createAction(FETCH_LIST,
   (entry, lastIndex, reset) => ({
     schema: arrayOf(Comment),
     name: `${entry.author.toLowerCase()}/${entry.name}`,
-    lastIndex, reset
+    lastIndex, reset,
+    errors: [404]
   })
 );
 

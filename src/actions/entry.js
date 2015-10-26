@@ -29,7 +29,8 @@ export const fetchUserList = createAction(FETCH_USER_LIST,
   }),
   (username, lastIndex, reset) => ({
     schema: arrayOf(Entry),
-    lastIndex, reset, name: username.toLowerCase()
+    lastIndex, reset, name: username.toLowerCase(),
+    errors: [404]
   })
 );
 
