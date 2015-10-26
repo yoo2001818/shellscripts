@@ -32,7 +32,7 @@ class UserEntries extends Component {
     return (
       <div id='user-entries'>
         <Helmet title={docTitle} />
-        <UserProfile user={user} />
+        <UserProfile user={user} selected='entries' />
         <div className='small-content'>
           <InfiniteScroll
             loadMore={this.handleLoadList.bind(this)}

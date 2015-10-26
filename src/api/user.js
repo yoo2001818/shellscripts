@@ -308,20 +308,25 @@ userRouter.delete('/', checkModifiable, (req, res) => {
   res.sendStatus(501);
 });
 
+import { buildEntryGet } from './entry/index.js';
+
 /**
  * @api {get} /users/:username/starred Get entries starred by the user
  * @apiGroup User
  * @apiName UserStarredEntry
  * @apiParam (Parameter) {String} username The username of the user
+ * @apiParam (Query) {String} [title] The entries' title to search
+ * @apiParam (Query) {String[]} [tags] The entries' tags to search
+ * @apiParam (Query) {String} [username] The entries' username to search
+ * @apiParam (Query) {String} [type] The entries' type
+ * @apiParam (Query) {Integer} [lastIndex] The last entry's ID you've seen
  * @apiDescription Returns the full list of entries starred by the user.
+ *
+ *   Pagination is done with 'lastIndex'. Send last entry index you've seen
+ *   and this will send entries starting from there.
  */
 userRouter.get('/starred', (req, res) => {
-  // TODO pagination?
-  req.selUser.getStarredEntries({
-    attributes: {
-      exclude: ['userId', 'author', 'script', 'description', 'requiresRoot']
-    }
-  })
+  req.selUser.getStarredEntries(buildEntryGet(req.query))
   .then(entries => {
     res.json(entries.map(entry => {
       let displayEntry = entry.toJSON();

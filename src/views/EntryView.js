@@ -80,7 +80,7 @@ class EntryView extends Component {
               <button className='red-button'
                 onClick={this.handleDelete.bind(this)}
               >
-                <i className='fa fa-times' />
+                <i className='fa fa-trash' />
                 <span className='description'>
                   <Translated name='delete' />
                 </span>

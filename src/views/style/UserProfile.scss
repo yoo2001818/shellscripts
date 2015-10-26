@@ -141,5 +141,30 @@ $break-small: 500pt;
       }
     }
   }
+  .tabs {
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+    padding-left: 0.6em;
+    .tab-entry {
+      position: relative;
+      top: 1px;
+      display: inline-block;
+      color: #333;
+      text-decoration: none;
+      padding: 0.6em 1.1em;
+      border-top-left-radius: 0.3em;
+      border-top-right-radius: 0.3em;
+      margin: 0 0.2em;
+      border: 1px solid transparent;
+      &.selected, &.selected:hover {
+        border: 1px solid #ccc;
+        border-bottom: 1px solid #fff;
+      }
+      &:hover {
+        border: 1px solid #eee;
+        border-bottom: none;
+      }
+    }
+  }
   text-align: center;
 }

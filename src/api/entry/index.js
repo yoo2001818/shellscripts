@@ -13,7 +13,7 @@ function checkModifiable(req, res, next) {
   next();
 }
 
-function buildEntryGet(options) {
+export function buildEntryGet(options) {
   let { title, tags, username, userId, type, lastIndex } = options;
   const where = {};
   const include = [];

@@ -2,7 +2,8 @@ import '../style/UserProfile.scss';
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import Helmet from 'react-helmet';
+import { Link } from 'react-router';
+import classNames from 'classnames';
 import Translated from '../../components/ui/Translated.js';
 import UserProfileEditForm from '../../components/forms/UserProfileEditForm.js';
 import userPlaceholder from '../../assets/userPlaceholder.png';
@@ -30,7 +31,11 @@ class UserProfile extends Component {
   }
   render() {
     let { editing } = this.state;
-    const { user } = this.props;
+    const { user, selected } = this.props;
+    let website = user.website;
+    if (website && website.indexOf('://') == -1) {
+      website = 'http://' + website;
+    }
     // Editing should be immediately stopped if user signs out
     if (!this.canEdit()) editing = false;
     // TODO This is a mess. We should seperate editing page / viewing page -_-
@@ -55,7 +60,7 @@ class UserProfile extends Component {
             { user.website ? (
               <p className='website'>
                 <i className="fa fa-link icon"></i>
-                <a href={user.website} target='_blank'>{user.website}</a>
+                <a href={website} target='_blank'>{user.website}</a>
               </p>
             ) : false }
           </div>
@@ -80,6 +85,18 @@ class UserProfile extends Component {
         <div className='small-content'>
           { card }
         </div>
+        <div className='small-content tabs'>
+          <Link to={`/${user.username}`}
+            className={classNames('tab-entry', {
+              selected: selected === 'entries'
+            })}
+          >작성한 스크립트</Link>
+          <Link to={`/${user.username}/starred`}
+            className={classNames('tab-entry', {
+              selected: selected === 'starred'
+            })}
+          >별 준 스크립트</Link>
+        </div>
       </div>
     );
   }
@@ -88,7 +105,8 @@ class UserProfile extends Component {
 UserProfile.propTypes = {
   user: PropTypes.object,
   session: PropTypes.object,
-  sessionUser: PropTypes.object
+  sessionUser: PropTypes.object,
+  selected: PropTypes.string
 };
 
 const ConnectUserProfile = connect(

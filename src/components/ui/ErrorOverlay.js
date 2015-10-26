@@ -20,7 +20,7 @@ class ErrorOverlay extends Component {
   handleFocus() {
     const { load: { error } } = this.props;
     if (!error) return;
-    this.refs.dismiss.getDOMNode().focus();
+    this.refs.dismiss.focus();
   }
   render() {
     const __ = translate(this.props.lang.lang);

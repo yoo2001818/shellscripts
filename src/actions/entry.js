@@ -6,6 +6,7 @@ import { open } from './modal.js';
 
 export const FETCH_LIST = 'ENTRY_FETCH_LIST';
 export const FETCH_USER_LIST = 'ENTRY_FETCH_USER_LIST';
+export const FETCH_USER_STARRED_LIST = 'ENTRY_FETCH_USER_STARRED_LIST';
 export const FETCH = 'ENTRY_FETCH';
 export const CREATE = 'ENTRY_CREATE';
 export const EDIT_ENTRY = 'ENTRY_EDIT';
@@ -25,6 +26,17 @@ export const fetchList = createAction(FETCH_LIST,
 
 export const fetchUserList = createAction(FETCH_USER_LIST,
   (username, lastIndex) => api(GET, `/api/entries/${username}`, {
+    query: { lastIndex }
+  }),
+  (username, lastIndex, reset) => ({
+    schema: arrayOf(Entry),
+    lastIndex, reset, name: username.toLowerCase(),
+    errors: [404]
+  })
+);
+
+export const fetchUserStarredList = createAction(FETCH_USER_STARRED_LIST,
+  (username, lastIndex) => api(GET, `/api/users/${username}/starred`, {
     query: { lastIndex }
   }),
   (username, lastIndex, reset) => ({
@@ -128,6 +140,26 @@ export function loadUserListMore(username) {
     // If list is null, cancel it.
     if (list.lastIndex == null) return Promise.resolve();
     return dispatch(fetchUserList(username, list && list.lastIndex));
+  };
+}
+
+export function loadUserStarredList(username, last) {
+  return (dispatch) => {
+    return dispatch(fetchUserStarredList(username, last, true));
+  };
+}
+
+export function loadUserStarredListMore(username) {
+  return (dispatch, getState) => {
+    const { entry: { userStarredList } } = getState();
+    const list = userStarredList[username.toLowerCase()];
+    // Uhh what
+    if (list == null) return dispatch(loadUserStarredList(username));
+    // If it's already loading, cancel it.
+    if (list && list.load && list.load.loading) return Promise.resolve();
+    // If list is null, cancel it.
+    if (list.lastIndex == null) return Promise.resolve();
+    return dispatch(fetchUserStarredList(username, list && list.lastIndex));
   };
 }
 
