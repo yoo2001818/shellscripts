@@ -82,7 +82,7 @@ class EntryCreateForm extends Component {
                   <Translated name='seperatedByComma' />
                 </InputTip>
               </ul>
-              <div className='permalink'>
+              <div className='footer'>
                 { modifying ? (
                   permalink
                 ) : (
@@ -107,16 +107,18 @@ class EntryCreateForm extends Component {
               </LabelInput>
             </div>
           </div>
-          <div className='script'>
-            <AceEditor
-               mode='sh'
-               theme='solarized_light'
-               height='40em'
-               width='100%'
-               fontSize={16}
-               {...script}
-               />
-          </div>
+          <LabelInput label={__('script')}>
+            <div className='script'>
+              <AceEditor
+                mode='sh'
+                theme='solarized_light'
+                height='40em'
+                width='100%'
+                fontSize={16}
+                {...script}
+                />
+            </div>
+          </LabelInput>
           <div className='footer'>
             <button disabled={invalid}>
               <Translated name='save' />

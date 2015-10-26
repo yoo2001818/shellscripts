@@ -76,13 +76,18 @@ export const deleteComment = createAction(DELETE_COMMENT,
 );
 
 export function loadList(entry, last) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const { comment: { list } } = getState();
+    const page = list[`${entry.author.toLowerCase()}/${entry.name}`];
+    if (page != null && new Date().valueOf() - page.loadedAt < 10000) {
+      return Promise.resolve();
+    }
     // This is 'refetch'.
     return dispatch(fetchList(entry, last, true));
   };
 }
 
-export function loadListMore(entry) {
+export function loadListMore(entry, forced = false) {
   return (dispatch, getState) => {
     const { comment: { list } } = getState();
     const page = list[`${entry.author.toLowerCase()}/${entry.name}`];
@@ -91,7 +96,7 @@ export function loadListMore(entry) {
     // If it's already loading, cancel it.
     if (page.load && page.load.loading) return Promise.resolve();
     // If list is null, cancel it.
-    if (page.lastIndex == null) return Promise.resolve();
+    if (!forced && page.lastIndex == null) return Promise.resolve();
     return dispatch(fetchList(entry, page.lastIndex));
   };
 }

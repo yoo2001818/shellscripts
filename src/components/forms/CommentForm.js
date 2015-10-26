@@ -22,7 +22,7 @@ class CommentForm extends Component {
       .then(action => {
         if (action.error) return;
         this.props.resetForm();
-        this.props.dispatch(loadListMore(this.props.entry));
+        this.props.dispatch(loadListMore(this.props.entry, true));
       });
     }
     promise.then(() => {

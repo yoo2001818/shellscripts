@@ -90,12 +90,16 @@ class UserProfile extends Component {
             className={classNames('tab-entry', {
               selected: selected === 'entries'
             })}
-          >작성한 스크립트</Link>
+          >
+            <Translated name='authoredEntries' />
+          </Link>
           <Link to={`/${user.username}/starred`}
             className={classNames('tab-entry', {
               selected: selected === 'starred'
             })}
-          >별 준 스크립트</Link>
+          >
+            <Translated name='starredEntries' />
+          </Link>
         </div>
       </div>
     );

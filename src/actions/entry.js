@@ -104,7 +104,11 @@ export const unstar = createAction(UNSTAR,
 );
 
 export function loadList(last) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const { entry: { list } } = getState();
+    if (list != null && new Date().valueOf() - list.loadedAt < 6000) {
+      return Promise.resolve();
+    }
     // This is 'refetch'.
     return dispatch(fetchList(last, true));
   };
@@ -124,7 +128,12 @@ export function loadListMore() {
 }
 
 export function loadUserList(username, last) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const { entry: { userList } } = getState();
+    const list = userList[username.toLowerCase()];
+    if (list != null && new Date().valueOf() - list.loadedAt < 10000) {
+      return Promise.resolve();
+    }
     return dispatch(fetchUserList(username, last, true));
   };
 }
@@ -144,7 +153,12 @@ export function loadUserListMore(username) {
 }
 
 export function loadUserStarredList(username, last) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const { entry: { userStarredList } } = getState();
+    const list = userStarredList[username.toLowerCase()];
+    if (list != null && new Date().valueOf() - list.loadedAt < 10000) {
+      return Promise.resolve();
+    }
     return dispatch(fetchUserStarredList(username, last, true));
   };
 }
@@ -164,7 +178,14 @@ export function loadUserStarredListMore(username) {
 }
 
 export function load(username, name) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const { entities: { entries } } = getState();
+    const entry = entries[username.toLowerCase() + '/' + name.toLowerCase()];
+    if (entry != null && entry.description !== undefined &&
+      new Date().valueOf() - entry.loadedAt < 20000
+    ) {
+      return Promise.resolve();
+    }
     // Well, always reload... for now.
     return dispatch(fetch(username, name));
   };
