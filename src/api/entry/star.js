@@ -17,15 +17,6 @@ export default router;
  * @apiUse AuthRequired
  */
 router.post('/stars', authRequired, (req, res) => {
-  if (req.selEntry == null) {
-    // Not found
-    res.status(404);
-    res.json({
-      id: 'ENTRY_NOT_FOUND',
-      message: 'Specified entry is not found.'
-    });
-    return;
-  }
   sequelize.transaction(transaction =>
     req.selEntry.hasStarredUser(req.user, { transaction })
     .then(result => {
@@ -69,15 +60,6 @@ router.post('/stars', authRequired, (req, res) => {
  * @apiUse AuthRequired
  */
 router.delete('/stars', authRequired, (req, res) => {
-  if (req.selEntry == null) {
-    // Not found
-    res.status(404);
-    res.json({
-      id: 'ENTRY_NOT_FOUND',
-      message: 'Specified entry is not found.'
-    });
-    return;
-  }
   sequelize.transaction(transaction =>
     req.selEntry.hasStarredUser(req.user, { transaction })
     .then(result => {
@@ -119,15 +101,6 @@ router.delete('/stars', authRequired, (req, res) => {
  * @apiDescription Returns the full list of users who has starred the entry.
  */
 router.get('/stars', authRequired, (req, res) => {
-  if (req.selEntry == null) {
-    // Not found
-    res.status(404);
-    res.json({
-      id: 'ENTRY_NOT_FOUND',
-      message: 'Specified entry is not found.'
-    });
-    return;
-  }
   // TODO pagination?
   req.selEntry.getStarredUsers({
     attributes: ['username', 'name', 'photo']

@@ -226,75 +226,6 @@ authorRouter.use('/:name', (req, res, next) => {
 }, entryRouter);
 
 /**
- * @api {get} /entries/:author/:name Get specified entry
- * @apiGroup Entry
- * @apiName GetEntryByName
- * @apiUse EntryGet
- * @apiDescription Returns the entry.
- */
-entryRouter.get('/', (req, res) => {
-  if (req.selEntry == null) {
-    // Not found
-    res.status(404);
-    res.json({
-      id: 'ENTRY_NOT_FOUND',
-      message: 'Specified entry is not found.'
-    });
-    return;
-  }
-  let entry = req.selEntry.toJSON();
-  Object.assign(entry, {
-    tags: entry.tags.map(tag => Object.assign({}, tag, {
-      entryTag: undefined
-    }))
-  });
-  if (req.user) {
-    req.selEntry.hasStarredUser(req.user)
-    .then(result => {
-      Object.assign(entry, {
-        voted: result
-      });
-      res.json(entry);
-    })
-    .catch(err => {
-      res.status(500);
-      console.log(err);
-      res.json(err);
-    });
-  } else {
-    res.json(entry);
-  }
-});
-
-/**
- * @api {get} /entries/:author/:name/raw Get raw script file of the entry
- * @apiGroup Entry
- * @apiName EntryGetRawScript
- * @apiUse EntryGet
- * @apiDescription Returns the script of the entry as a downloadable format.
- */
-entryRouter.get('/raw', (req, res) => {
-  if (req.selEntry == null) {
-    // Not found
-    res.status(404);
-    res.json({
-      id: 'ENTRY_NOT_FOUND',
-      message: 'Specified entry is not found.'
-    });
-    return;
-  }
-  const { author, name } = req.selEntry;
-  res.attachment(author.username + '_' + name + '.sh');
-  // TODO Put sitename in a config file?
-  const footer = `\n\n# http://localhost:8000/${author.username}/${name}`;
-  if (req.selEntry.type === 'script') {
-    res.send(req.selEntry.script + footer);
-  } else {
-    // 'Bake' various scripts into a single file.
-  }
-});
-
-/**
  * @api {post} /entries/:author/:name Create an entry
  * @apiGroup Entry
  * @apiName CreateEntry
@@ -400,6 +331,71 @@ entryRouter.post('/', authRequired, checkModifiable, (req, res) => {
   });
 });
 
+// Check validity from here
+entryRouter.use((req, res, next) => {
+  if (req.selEntry == null) {
+    // Not found
+    res.status(404);
+    res.json({
+      id: 'ENTRY_NOT_FOUND',
+      message: 'Specified entry is not found.'
+    });
+    return;
+  }
+  next();
+});
+
+/**
+ * @api {get} /entries/:author/:name Get specified entry
+ * @apiGroup Entry
+ * @apiName GetEntryByName
+ * @apiUse EntryGet
+ * @apiDescription Returns the entry.
+ */
+entryRouter.get('/', (req, res) => {
+  let entry = req.selEntry.toJSON();
+  Object.assign(entry, {
+    tags: entry.tags.map(tag => Object.assign({}, tag, {
+      entryTag: undefined
+    }))
+  });
+  if (req.user) {
+    req.selEntry.hasStarredUser(req.user)
+    .then(result => {
+      Object.assign(entry, {
+        voted: result
+      });
+      res.json(entry);
+    })
+    .catch(err => {
+      res.status(500);
+      console.log(err);
+      res.json(err);
+    });
+  } else {
+    res.json(entry);
+  }
+});
+
+/**
+ * @api {get} /entries/:author/:name/raw Get raw script file of the entry
+ * @apiGroup Entry
+ * @apiName EntryGetRawScript
+ * @apiUse EntryGet
+ * @apiDescription Returns the script of the entry as a downloadable format.
+ */
+entryRouter.get('/raw', (req, res) => {
+  const { author, name } = req.selEntry;
+  res.attachment(author.username + '_' + name + '.sh');
+  // TODO Put sitename in a config file?
+  const footer = `\n\n# http://localhost:8000/${author.username}/${name}`;
+  if (req.selEntry.type === 'script') {
+    res.send(req.selEntry.script + footer);
+  } else {
+    // 'Bake' various scripts into a single file.
+  }
+});
+
 /**
  * @api {put} /entries/:author/:name Edit an entry
  * @apiGroup Entry
@@ -418,15 +414,6 @@ entryRouter.post('/', authRequired, checkModifiable, (req, res) => {
  * @apiPermission modifiable
  */
 entryRouter.put('/', authRequired, checkModifiable, (req, res) => {
-  if (req.selEntry == null) {
-    // Not found
-    res.status(404);
-    res.json({
-      id: 'ENTRY_NOT_FOUND',
-      message: 'Specified entry is not found.'
-    });
-    return;
-  }
   // TODO This code is copied from entry create part. Prehaps I can merge them?
   const name = req.selEntryName.toLowerCase();
   let { title, brief, description, tags, type, script, requiresRoot } =
@@ -509,7 +496,7 @@ entryRouter.put('/', authRequired, checkModifiable, (req, res) => {
 });
 
 /**
- * @api {post} /entries/:author/:name Delete an entry
+ * @api {delete} /entries/:author/:name Delete an entry
  * @apiGroup Entry
  * @apiName DeleteEntry
  * @apiUse EntryGet
@@ -519,15 +506,6 @@ entryRouter.put('/', authRequired, checkModifiable, (req, res) => {
  * @apiPermission modifiable
  */
 entryRouter.delete('/', authRequired, checkModifiable, (req, res) => {
-  if (req.selEntry == null) {
-    // Not found
-    res.status(404);
-    res.json({
-      id: 'ENTRY_NOT_FOUND',
-      message: 'Specified entry is not found.'
-    });
-    return;
-  }
   // Delete the entry. :P
   req.selEntry.destroy()
   .then(() => {

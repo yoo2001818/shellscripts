@@ -17,6 +17,7 @@ marked.setOptions({
 });
 
 import Highlight from 'react-highlight';
+import Helmet from 'react-helmet';
 
 import { loadList } from '../actions/comment.js';
 import { confirmEntryDelete } from '../actions/entry.js';
@@ -50,6 +51,7 @@ class EntryView extends Component {
     const { entry, author, session, sessionUser, entryLoading } = this.props;
     const rawPath = `/api/entries/${author.username}/${entry.name}/raw`;
     const editPath = `/${author.username}/${entry.name}/edit`;
+    const title = `${entry.title} - ${author.name || author.username}`;
     if (entry.deleted) {
       const { history } = this.context;
       // Redirect to index?
@@ -58,6 +60,7 @@ class EntryView extends Component {
     }
     return (
       <div id='entry-view' className='entry-view'>
+        <Helmet title={title} />
         <div className='header small-content'>
           <EntryMiniCard entry={entry} showFull={true}
             starable={!!session.login} />
