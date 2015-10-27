@@ -70,6 +70,12 @@ html {
       padding-left: 2em;
       padding-right: 2em;
       margin: 0.4em 0.2em;
+      &:first-child {
+        margin-left: 0;
+      }
+      &:last-child {
+        margin-right: 0;
+      }
     }
   }
 }

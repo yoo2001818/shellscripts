@@ -25,7 +25,7 @@ class UserStarred extends Component {
     const renderList = (list && list.ids &&
       list.ids.map(id => entries[id]).map((entry, key) => {
         return (
-          <EntryMiniCard key={key} entry={entry} hideUser={true} />
+          <EntryMiniCard key={key} entry={entry} />
         );
       })) || [];
     let docTitle = user.username;

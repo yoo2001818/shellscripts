@@ -41,9 +41,6 @@ export default function serverRenderer(req, res) {
   const history = createMemoryHistory();
   const location = history.createLocation(req.originalUrl);
   const store = configureStore(undefined, superagentClient(req));
-  // TODO should be moved to somewhere else...
-  store.dispatch(LangActions.set(req.acceptsLanguages('ko', 'en') || 'en'));
-  moment.locale(store.getState().lang.lang);
   match({ routes, location }, (error, redirectLocation, renderProps) => {
     if (redirectLocation) {
       res.redirect(redirectLocation.pathname + redirectLocation.search);
@@ -54,6 +51,7 @@ export default function serverRenderer(req, res) {
     } else {
       prefetch(store, renderProps)
       .then(() => {
+        moment.locale(store.getState().lang.lang);
         let appHtml = renderToString(
           <div id='root'>
             <Provider store={store}>

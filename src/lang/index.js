@@ -7,8 +7,13 @@ function encodeText(text, param) {
   return text;
 }
 
+export const localeList = {
+  en: 'English',
+  ko: '한국어'
+};
+
 export const translate = (lang = 'en') => {
-  const translations = languages[lang];
+  const translations = languages[lang] || languages['en'];
   return (key, param = []) => {
     const translation = translations[key] || 'ERR_' + key;
     return encodeText(translation, param);

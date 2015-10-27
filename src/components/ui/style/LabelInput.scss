@@ -11,4 +11,19 @@
       display: block;
     }
   }
+  &.oneline {
+    &>label {
+      &>.label {
+        display: inline-block;
+        margin-right: 0.5em;
+        vertical-align: middle;
+        min-width: 6em;
+        text-align: right;
+      }
+      &>.field {
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
 }
