@@ -14,8 +14,7 @@ export default function pagination(actionType, entityType) {
     loadedAt: 0
   }, action) {
     let newState = Object.assign({}, state, {
-      load: paginationLoad(state.load, action),
-      loadedAt: new Date().valueOf()
+      load: paginationLoad(state.load, action)
     });
     const { meta, payload, type } = action;
     switch (type) {
@@ -25,7 +24,8 @@ export default function pagination(actionType, entityType) {
       if (payload.result.length === 0) {
         // End of pagination - there's no entities to load.
         return Object.assign({}, newState, {
-          finished: true
+          finished: true,
+          loadedAt: new Date().valueOf()
         });
       }
       return Object.assign({}, newState, {
@@ -34,7 +34,8 @@ export default function pagination(actionType, entityType) {
         pageCount: meta.reset ? 1 : state.pageCount + 1,
         finished: false,
         // Prehaps we should sort it?
-        ids: meta.reset ? payload.result : state.ids.concat(payload.result)
+        ids: meta.reset ? payload.result : state.ids.concat(payload.result),
+        loadedAt: new Date().valueOf()
       });
     default:
       return newState;
