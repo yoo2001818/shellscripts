@@ -13,9 +13,14 @@ export default class TagSelect extends Component {
       value: props.value || []
     };
   }
+  componentWillMount() {
+    this.setState({
+      value: this.props.value || this.state.value || []
+    });
+  }
   componentWillReceiveProps(props) {
     this.setState({
-      value: props.value
+      value: props.value || this.state.value || []
     });
   }
   handleChange(e) {
