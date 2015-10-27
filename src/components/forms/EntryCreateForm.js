@@ -11,6 +11,7 @@ import LabelInput from '../ui/LabelInput.js';
 import ErrorInput from '../ui/ErrorInput.js';
 import ErrorShow from '../ui/ErrorShow.js';
 import LoadingOverlay from '../ui/LoadingOverlay.js';
+import TagSelect from '../TagSelect.js';
 import AutoExpandTextArea from 'react-textarea-autosize';
 import UserMiniCard from '../UserMiniCard.js';
 
@@ -76,11 +77,8 @@ class EntryCreateForm extends Component {
                 </ErrorShow>
               </div>
               <ul className='tags'>
-                <ErrorInput placeholder={__('tags')}
-                  {...tags} className='dotted' />
-                <InputTip>
-                  <Translated name='seperatedByComma' />
-                </InputTip>
+                <TagSelect placeholder={__('tags')}
+                  className='dotted' {...tags} />
               </ul>
               <div className='footer'>
                 { modifying ? (
@@ -185,7 +183,7 @@ export default connect(
   store => ({
     form: store.form,
     lang: store.lang,
-    entryLoading: store.entry.load.loading
+    entryLoading: store.entry.load && store.entry.load.loading
   })
 )(reduxForm({
   form: 'entryCreate',

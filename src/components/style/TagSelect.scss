@@ -1,0 +1,64 @@
+.tag-select {
+  font-size: 1em;
+  background-color: #fff;
+  color: #333;
+  display: inline-block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0.5em 0;
+  padding: 0.3em 0.4em;
+  border-radius: 0.2em;
+  border: 1px solid #ccc;
+  cursor: text;
+  position: relative;
+  overflow-x: hidden;
+  &:hover {
+    border: 1px solid #999;
+  }
+  &.focus {
+    border: 1px solid #83B1F2;
+  }
+  &:invalid {
+    box-shadow: none;
+  }
+  &.dotted {
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px dashed #ccc;
+  }
+  .tag-placeholder {
+    display: block;
+    position: absolute;
+    color: #999;
+    top: 0.6em;
+    left: 0.8em;
+    padding-left: 2px;
+  }
+  .tag-entry {
+    cursor: pointer;
+    padding: 0.3em 0.4em;
+    border-radius: 0.2em;
+    box-sizing: border-box;
+    padding: 0.4em;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 0.3em;
+    margin: 0.1em;
+    font-size: 0.9em;
+    box-sizing: border-box;
+    line-height: 1.3em;
+    color: #333;
+    &:hover {
+      border: 1px solid #AECBEB;
+      background-color: #FAFCFF;
+    }
+  }
+  .input > input {
+    display: inline;
+    margin: 0.1em;
+    margin-right: 0.2em;
+    padding: 0.4em;
+    border: 1px solid transparent;
+    width: auto;
+  }
+}

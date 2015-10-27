@@ -39,7 +39,6 @@ export function buildEntryGet(options) {
         $like: '% ' + tag + ' %'
       }))
     };
-    console.log(where.tagIndex);
   }
   include.push({
     model: User,
