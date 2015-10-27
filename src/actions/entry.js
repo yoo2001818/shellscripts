@@ -62,9 +62,7 @@ export const fetch = createAction(FETCH,
 
 export const create = createAction(CREATE,
   (data) => api(POST, `/api/entries/${data.author}/${data.name}`, {
-    body: Object.assign({}, data, {
-      type: 'script'
-    })
+    body: data
   }),
   () => ({
     schema: Entry
@@ -73,9 +71,7 @@ export const create = createAction(CREATE,
 
 export const edit = createAction(EDIT_ENTRY,
   (data) => api(PUT, `/api/entries/${data.author}/${data.name}`, {
-    body: Object.assign({}, data, {
-      type: 'script'
-    })
+    body: data
   }),
   () => ({
     schema: Entry

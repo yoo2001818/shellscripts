@@ -5,25 +5,21 @@ import Helmet from 'react-helmet';
 import translate from '../lang/index.js';
 import EntryCreateForm from '../components/forms/EntryCreateForm.js';
 
-class EntryCreate extends Component {
+class ListCreate extends Component {
   render() {
     const __ = translate(this.props.lang.lang);
     const { user } = this.props;
+    // Do not reset form; It should be saved!
     return (
       <div id='entry-create'>
         <Helmet title={__('createEntryTitle')} />
-        <EntryCreateForm author={user} initialValues={{
-          // This is to avoid React bug #2533
-          // https://github.com/facebook/react/issues/2533
-          brief: '', description: '', script: '', author: user.username,
-          tags: []
-        }} key='script' type='script' />
+        <EntryCreateForm author={user} type='list' key='list' />
       </div>
     );
   }
 }
 
-EntryCreate.propTypes = {
+ListCreate.propTypes = {
   user: PropTypes.object,
   lang: PropTypes.object
 };
@@ -34,4 +30,4 @@ export default connect(
     const user = users[session.login];
     return { user, lang };
   }
-)(EntryCreate);
+)(ListCreate);

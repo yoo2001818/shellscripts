@@ -37,12 +37,12 @@ if (__CLIENT__) {
 
 class EntryCreateForm extends Component {
   handleSubmit(data) {
-    console.log(data);
     let doAction = create;
     if (this.props.modifying) doAction = edit;
-    this.props.dispatch(doAction(data))
+    this.props.dispatch(doAction(Object.assign({}, data, {
+      type: this.props.type
+    })))
     .then(action => {
-      console.log(action);
       if (!action.payload.result) return;
       const { history } = this.context;
       // Redirect to created entry. :/
@@ -105,23 +105,46 @@ class EntryCreateForm extends Component {
               </LabelInput>
             </div>
           </div>
-          <LabelInput label={__('script')}>
-            <div className='script'>
-              <AceEditor
-                mode='sh'
-                theme='solarized_light'
-                height='40em'
-                width='100%'
-                fontSize={16}
-                {...script}
-                />
+          { this.props.type === 'script' ? (
+            <LabelInput label={__('script')}>
+              <div className='script'>
+                <AceEditor
+                  mode='sh'
+                  theme='solarized_light'
+                  height='40em'
+                  width='100%'
+                  fontSize={16}
+                  {...script}
+                  />
+              </div>
+            </LabelInput>
+          ) : false }
+          { this.props.type === 'list' ? (
+            <div>
+              <InputTip>
+                <Translated name='listInsertTip' />
+              </InputTip>
             </div>
-          </LabelInput>
-          <div className='footer'>
-            <button disabled={invalid}>
-              <Translated name='save' />
-            </button>
-          </div>
+          ) : false }
+          { this.props.type === 'list' ? (
+            <div className='footer'>
+              <button>
+                <Translated name='tempSave' />
+              </button>
+              <button disabled={invalid}>
+                <Translated name='submit' />
+              </button>
+              <InputTip>
+                <Translated name='tempSaveNote' />
+              </InputTip>
+            </div>
+          ) : (
+            <div className='footer'>
+              <button disabled={invalid}>
+                <Translated name='save' />
+              </button>
+            </div>
+          )}
           <LoadingOverlay loading={entryLoading} />
         </div>
       </form>
@@ -137,7 +160,8 @@ EntryCreateForm.propTypes = {
   invalid: PropTypes.bool,
   author: PropTypes.object,
   modifying: PropTypes.bool,
-  entryLoading: PropTypes.bool
+  entryLoading: PropTypes.bool,
+  type: PropTypes.string
 };
 
 EntryCreateForm.contextTypes = {

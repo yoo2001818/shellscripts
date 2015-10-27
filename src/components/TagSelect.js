@@ -143,6 +143,7 @@ export default class TagSelect extends Component {
             onClick={this.handleRemove.bind(this, key)}
           >
             { tag }
+            <i className='fa fa-times' />
           </div>
         ))}
         <AutoSizeInput ref='input' value={this.state.inputValue}

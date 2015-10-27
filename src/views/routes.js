@@ -17,6 +17,7 @@ import Entry from './Entry.js';
 import EntryView from './EntryView.js';
 import EntryEdit from './EntryEdit.js';
 import EntryCreate from './EntryCreate.js';
+import ListCreate from './ListCreate.js';
 
 export const routes = (
   <Route path='/' component={App}>
@@ -29,7 +30,10 @@ export const routes = (
       <Route path='authMethods' component={AuthMethodSettings} />
       <Route path='*' component={NotFound} />
     </Route>
-    <Route path='new' component={EntryCreate} />
+    <Route path='new'>
+      <IndexRoute component={EntryCreate} />
+      <Route path='list' component={ListCreate} />
+    </Route>
     <Route path=':username' component={User}>
       <IndexRoute component={UserEntries} />
       <Route path='starred' component={UserStarred} />
