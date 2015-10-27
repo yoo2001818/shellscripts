@@ -10,10 +10,12 @@ export default function pagination(actionType, entityType) {
     pageCount: 0,
     finished: false,
     ids: [],
-    load: undefined
+    load: undefined,
+    loadedAt: 0
   }, action) {
     let newState = Object.assign({}, state, {
-      load: paginationLoad(state.load, action)
+      load: paginationLoad(state.load, action),
+      loadedAt: new Date().valueOf()
     });
     const { meta, payload, type } = action;
     switch (type) {

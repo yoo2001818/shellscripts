@@ -79,7 +79,7 @@ export function loadList(entry, last) {
   return (dispatch, getState) => {
     const { comment: { list } } = getState();
     const page = list[`${entry.author.toLowerCase()}/${entry.name}`];
-    if (page != null && new Date().valueOf() - page.loadedAt < 10000) {
+    if (page != null && new Date().valueOf() - page.loadedAt < 40000) {
       return Promise.resolve();
     }
     // This is 'refetch'.
@@ -97,6 +97,11 @@ export function loadListMore(entry, forced = false) {
     if (page.load && page.load.loading) return Promise.resolve();
     // If list is null, cancel it.
     if (!forced && page.lastIndex == null) return Promise.resolve();
+    if (!forced && page.finished &&
+      new Date().valueOf() - page.loadedAt < 10000
+    ) {
+      return Promise.resolve();
+    }
     return dispatch(fetchList(entry, page.lastIndex));
   };
 }

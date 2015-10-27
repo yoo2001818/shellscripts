@@ -106,7 +106,7 @@ export const unstar = createAction(UNSTAR,
 export function loadList(last) {
   return (dispatch, getState) => {
     const { entry: { list } } = getState();
-    if (list != null && new Date().valueOf() - list.loadedAt < 6000) {
+    if (list != null && new Date().valueOf() - list.loadedAt < 10000) {
       return Promise.resolve();
     }
     // This is 'refetch'.
@@ -131,7 +131,7 @@ export function loadUserList(username, last) {
   return (dispatch, getState) => {
     const { entry: { userList } } = getState();
     const list = userList[username.toLowerCase()];
-    if (list != null && new Date().valueOf() - list.loadedAt < 10000) {
+    if (list != null && new Date().valueOf() - list.loadedAt < 20000) {
       return Promise.resolve();
     }
     return dispatch(fetchUserList(username, last, true));
@@ -156,7 +156,7 @@ export function loadUserStarredList(username, last) {
   return (dispatch, getState) => {
     const { entry: { userStarredList } } = getState();
     const list = userStarredList[username.toLowerCase()];
-    if (list != null && new Date().valueOf() - list.loadedAt < 10000) {
+    if (list != null && new Date().valueOf() - list.loadedAt < 20000) {
       return Promise.resolve();
     }
     return dispatch(fetchUserStarredList(username, last, true));

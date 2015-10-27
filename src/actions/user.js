@@ -48,8 +48,8 @@ export const uploadPhoto = createAction(UPLOAD_PHOTO,
 export function load(username = '') {
   return (dispatch, getState) => {
     const { entities: { users } } = getState();
-    const userId = users[username.toLowerCase()];
-    if (userId == null || users[userId] == null) {
+    const user = users[username.toLowerCase()];
+    if (user == null || user.id == null) {
       return dispatch(fetch(username));
     }
     return Promise.resolve();
