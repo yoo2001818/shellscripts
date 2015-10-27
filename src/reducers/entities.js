@@ -15,6 +15,7 @@ export default function entities(state = {
       const target = action.payload.entities[key];
       for (let entity in target) {
         if (target[entity] == null) {
+          original[entity] = target[entity];
           continue;
         }
         original[entity] = Object.assign({}, original[entity], target[entity], {

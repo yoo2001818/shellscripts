@@ -65,9 +65,11 @@ class EntryMiniCard extends Component {
           {
             tags.map((tag, id) => (
               <li key={id}>
-                <ToolTip caption={tag.description}>
-                  {tag.name}
-                </ToolTip>
+                <Link to='/search' query={{query: tag.name}}>
+                  <ToolTip caption={tag.description}>
+                    {tag.name}
+                  </ToolTip>
+                </Link>
               </li>
             ))
           }

@@ -192,12 +192,20 @@ export const Entry = sequelize.define('entry', {
   stars: {
     type: Sequelize.INTEGER,
     defaultValue: 0
-  }
+  },
+  // For the same reason, we're using tagIndex for searching.
+  tagIndex: Sequelize.TEXT
 }, {
   hooks: {
-    beforeValidate: entry => {
+    beforeValidate: (entry, options) => {
       if (entry.name) {
         entry.name = entry.name.toLowerCase();
+      }
+      if (entry.tags) {
+        entry.tagIndex = ' ' + entry.tags.map(tag => tag.name).join(' ') + ' ';
+        if (options.fields) {
+          options.fields.push('tagIndex');
+        }
       }
     }
   },

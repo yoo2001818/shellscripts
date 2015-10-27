@@ -24,6 +24,7 @@ export default function pagination(actionType, entityType) {
       if (payload.result.length === 0) {
         // End of pagination - there's no entities to load.
         return Object.assign({}, newState, {
+          ids: meta.reset ? payload.result : state.ids,
           finished: true,
           loadedAt: new Date().valueOf()
         });

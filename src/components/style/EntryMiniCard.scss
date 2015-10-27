@@ -143,6 +143,9 @@
     margin: 0.4em 0;
     list-style-type: none;
     &>li {
+      display: inline-block;
+    }
+    &>li>a {
       max-width: 100%;
       padding: 0.4em;
       display: inline-block;
@@ -152,6 +155,10 @@
       font-size: 0.9em;
       box-sizing: border-box;
       line-height: 1.3em;
+      color: #333;
+      &:hover, &:hover span {
+        text-decoration: underline;
+      }
       .tooltip {
         display: inline-block;
         max-width: 100%;

@@ -16,20 +16,15 @@ function checkModifiable(req, res, next) {
 export function buildEntryGet(options) {
   let { title, tags, username, userId, type, lastIndex } = options;
   const where = {};
-  const include = [];
+  let include = [];
   if (title != null) {
     where.title = {
-      $like: title
+      $iLike: title
     };
   }
   include.push({
     model: Tag,
     as: 'tags',
-    where: tags ? ({
-      name: {
-        $in: tags
-      }
-    }) : undefined,
     include: [{
       model: TagType,
       as: 'type',
@@ -37,6 +32,15 @@ export function buildEntryGet(options) {
     }],
     attributes: ['name', 'description']
   });
+  if (tags) {
+    const tagArray = Array.isArray(tags) ? tags : tags.split(/[ ,]/);
+    where.tagIndex = {
+      $and: tagArray.map(tag => ({
+        $like: '% ' + tag + ' %'
+      }))
+    };
+    console.log(where.tagIndex);
+  }
   include.push({
     model: User,
     as: 'author',
@@ -110,6 +114,45 @@ export default router;
  *   and this will send entries starting from there.
  */
 router.get('/entries/', (req, res) => {
+  if (req.query.keyword) {
+    const { keyword } = req.query;
+    const keywords = Array.isArray(keyword) ? keyword : keyword.split(/[ ,]/);
+    // Keyword based search.
+    // java 8 download script -> find only tags then...
+    // 'java', 'script', and name 'java 8 download script'
+    // This would work I suppose. :/
+    Tag.findAll({
+      where: {
+        name: {
+          $in: keywords
+        }
+      }
+    })
+    .then(tags => {
+      // Map tags to names
+      let tagNames = tags.map(tag => tag.name);
+      // If there are more tags than 33% of keywords, continue as tag serach
+      let ignoreTitle = tagNames.length >= keywords.length / 3;
+      // Then... build query and continue
+      Entry.findAll(buildEntryGet({
+        lastIndex: req.query.lastIndex,
+        tags: ignoreTitle ? tagNames : undefined,
+        title: !ignoreTitle ? `%${keyword}%` : undefined
+      }))
+      .then(entries => {
+        res.json(entries.map(entry => {
+          let displayEntry = entry.toJSON();
+          Object.assign(displayEntry, {
+            tags: displayEntry.tags.map(tag => Object.assign({}, tag, {
+              entryTag: undefined
+            }))
+          });
+          return displayEntry;
+        }));
+      });
+    });
+    return;
+  }
   Entry.findAll(buildEntryGet(req.query))
   .then(entries => {
     res.json(entries.map(entry => {
@@ -297,7 +340,8 @@ entryRouter.post('/', authRequired, checkModifiable, (req, res) => {
     .then(tagObjs => {
       return Entry.create({
         name, title, brief, description, type, script, requiresRoot,
-        authorId: req.selUser.id
+        authorId: req.selUser.id,
+        tagIndex: ' ' + tagObjs.map(tag => tag.name).join(' ') + ' '
       }, { transaction })
       // Then set the tags data and we're done.
       .then(entry => {
@@ -461,7 +505,8 @@ entryRouter.put('/', authRequired, checkModifiable, (req, res) => {
     // Then modify the entry with given data.
     .then(tagObjs => {
       return req.selEntry.update({
-        title, brief, description, type, script, requiresRoot
+        title, brief, description, type, script, requiresRoot,
+        tagIndex: ' ' + tagObjs.map(tag => tag.name).join(' ') + ' '
       }, { transaction })
       // Then set the tags data and we're done.
       .then(entry => {

@@ -76,6 +76,7 @@
   "createEntryTitle": "게시글 작성하기",
   "starredEntries": "별 준 게시글",
   "authoredEntries": "작성한 게시글",
+  "searchNoResult": "검색 결과가 없습니다.",
   "FIELD_TOO_LONG": "길이가 너무 깁니다",
   "AUTH_INVALID_USERNAME": "올바른 사용자 이름이 아닙니다",
   "AUTH_INVALID_PASSWORD": "비밀번호가 틀립니다",

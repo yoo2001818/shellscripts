@@ -31,9 +31,6 @@ class Index extends Component {
             content: 'noindex, follow'
           }
         ]} />
-        <h1>
-          <Translated name='hello'>{'World'}</Translated>
-        </h1>
         <InfiniteScroll
           loadMore={this.handleLoad.bind(this)}
           hasMore={!list.finished}

@@ -4,11 +4,23 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import qs from 'qs';
-import { setQuery, setTempQuery } from '../actions/search.js';
+import { setQuery, setTempQuery, loadListMore }
+  from '../actions/search.js';
 import SearchBar from '../components/SearchBar.js';
 import translate from '../lang/index.js';
+import InfiniteScroll from '../components/ui/InfiniteScroll.js';
+import Translated from '../components/ui/Translated.js';
+import EntryMiniCard from '../components/EntryMiniCard.js';
 
 class Search extends Component {
+  handleLoad() {
+    return this.props.loadListMore()
+    .then(action => {
+      if (!action) return;
+      if (action.error) throw action;
+      return action;
+    });
+  }
   componentWillUnmount() {
     this.props.setTempQuery({
       query: ''
@@ -18,7 +30,7 @@ class Search extends Component {
     if (searchBar == null) return;
     if (this.handledFocus) return;
     // Focus to input text
-    const domNode = searchBar.getDOMNode();
+    const domNode = searchBar;
     domNode.focus();
     // Set cursor on the end
     const { tempQuery } = this.props.search;
@@ -28,25 +40,42 @@ class Search extends Component {
   }
   render() {
     const __ = translate(this.props.lang.lang);
-    let innerContent;
-    const { load, query } = this.props.search;
-    if (load.loading) {
-      innerContent = (
-        <div className='loading'>
-          <i className="fa fa-refresh fa-spin"></i>
-        </div>
+    const { query, list } = this.props.search;
+    const { entities } = this.props;
+    const entries = list.ids.map(id => entities.entries[id]);
+    const renderList = entries.map((entry, key) => {
+      return (
+        <EntryMiniCard key={key} entry={entry} />
       );
-    } else {
-      innerContent = (
-        <p>Results come here</p>
-      );
-    }
+    });
     return (
       <div id="search">
         <Helmet title={__('searchTitle', [query])} />
         <SearchBar refCallback={this.handleSearchBar.bind(this)} />
-        <div className='content'>
-          { innerContent }
+        <div className='content small-content'>
+          { query ? (
+            <InfiniteScroll
+              loadMore={this.handleLoad.bind(this)}
+              hasMore={!list.finished}
+              loader={(
+                <div className='loading content'>
+                  <i className="fa fa-refresh fa-spin"></i>
+                </div>
+              )}
+              errorRetry={(
+                <button onClick={this.handleLoad.bind(this)}>
+                  <Translated name='retry' />
+                </button>
+              )}
+            >
+              {renderList}
+              { list && list.ids.length == 0 ? (
+                <p>
+                  <Translated name='searchNoResult' />
+                </p>
+              ) : false }
+            </InfiniteScroll>
+          ) : false }
         </div>
       </div>
     );
@@ -55,13 +84,15 @@ class Search extends Component {
 
 Search.propTypes = {
   search: PropTypes.object,
-  lang: PropTypes.lang,
-  setTempQuery: PropTypes.func
+  lang: PropTypes.object,
+  setTempQuery: PropTypes.func,
+  entities: PropTypes.object,
+  loadListMore: PropTypes.func.isRequired
 };
 
 const ConnectSearch = connect(
-  store => ({search: store.search, lang: store.lang}),
-  { setTempQuery }
+  store => ({search: store.search, lang: store.lang, entities: store.entities}),
+  { setTempQuery, loadListMore }
 )(Search);
 
 ConnectSearch.fetchData = function(store, routerState) {

@@ -1,33 +1,35 @@
 import * as SearchActions from '../actions/search.js';
 import { loadFilter } from './load.js';
+import pagination from './pagination.js';
 
 const loadReducer = loadFilter(SearchActions);
+const listPagination = pagination(SearchActions.FETCH, 'entries');
 
 export default function search(state = {
   load: undefined,
-  result: null,
   query: '',
-  tempQuery: ''
+  tempQuery: '',
+  list: undefined
 }, action) {
-  const load = loadReducer(state.load, action);
-  if (!action.payload) return Object.assign({}, state, { load });
+
+  let newState = Object.assign({}, state, {
+    load: loadReducer(state.load, action),
+    list: listPagination(state.list, action)
+  });
+  if (!action.payload) return newState;
   const { query } = action.payload;
   switch (action.type) {
-  case SearchActions.FETCH:
-    break;
   case SearchActions.SET_QUERY:
     // Invalidate result too.
-    return Object.assign({}, state, {
+    return Object.assign({}, newState, {
       query,
       tempQuery: query,
-      result: undefined,
-      load
+      result: undefined
     });
   case SearchActions.SET_TEMP_QUERY:
-    return Object.assign({}, state, {
-      tempQuery: query,
-      load
+    return Object.assign({}, newState, {
+      tempQuery: query
     });
   }
-  return Object.assign({}, state, { load });
+  return newState;
 }
