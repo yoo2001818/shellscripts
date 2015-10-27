@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import { confirmCommentDelete, loadList } from '../actions/comment.js';
 import Translated from './ui/Translated.js';
+import ToolTip from './ui/ToolTip.js';
 import UserMiniCard from './UserMiniCard.js';
 import CommentForm from './forms/CommentForm.js';
 
@@ -78,7 +79,9 @@ class CommentCard extends Component {
         <div className='container'>
           <UserMiniCard user={author} />
           <div className='date'>
-            {moment(comment.createdAt).fromNow()}
+            <ToolTip caption={moment(entry.createdAt).format('lll')}>
+              {moment(entry.createdAt).fromNow()}
+            </ToolTip>
           </div>
           <div className='description'>
             {comment.description}

@@ -76,7 +76,9 @@ class EntryMiniCard extends Component {
         </ul>
         <div className='footer'>
           <span className='date'>
-            {moment(entry.createdAt).fromNow()}
+            <ToolTip caption={moment(entry.createdAt).format('lll')}>
+              {moment(entry.createdAt).fromNow()}
+            </ToolTip>
           </span>
           <span className='permalink'>
             <Link to={'/' + permalink}>

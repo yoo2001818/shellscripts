@@ -33,6 +33,9 @@
     font-size: 0.9em;
     transition: margin-top 0.3s, opacity 0.2s;
     color: #fff;
+    width: auto;
+    display: block;
+    white-space: nowrap;
   }
   &>.content {
     &:after {

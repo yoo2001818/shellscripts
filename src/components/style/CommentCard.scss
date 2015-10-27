@@ -76,7 +76,10 @@
     & > .description {
       font-size: 0.9em;
       white-space: pre-line;
-      margin-top: 0.4em;
+      margin-top: 0.2em;
+      padding: 0.2em 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 }
