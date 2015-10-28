@@ -304,6 +304,99 @@ function resolveTags(tags, transaction) {
   });
 }
 
+function resolveChildren(children, transaction) {
+  // This should return an error if ANY of the children doesn't exist.
+  // Since we get children data as a string, we've to fetch the data... with
+  // tons of queries. Which is kinda awkward.
+
+  // Verify children has right type
+  if (!Array.isArray(children)) {
+    return Promise.reject({
+      id: 'CHILDREN_TYPE_ERROR',
+      message: 'Children type must be an array'
+    });
+  }
+  // Start with empty list.
+  let childrenPromise = Promise.resolve([]);
+  for (let child of children) {
+    childrenPromise = childrenPromise.then(array => {
+      // This is processed per a child.
+      // Verify child type
+      if (typeof child !== 'string') {
+        throw {
+          id: 'CHILDREN_TYPE_ERROR',
+          message: 'Child type must be a string'
+        };
+      }
+      // Split author and entry name
+      const [authorName, entryName] = child.split('/');
+      // Verify author and entry info
+      if (authorName == null || entryName == null) {
+        throw {
+          id: 'CHILDREN_TYPE_ERROR',
+          message: 'Not a valid entry ID'
+        };
+      }
+      // First, we have to fetch the author; Ctrl+C / Ctrl+V to the rescue!
+      return User.findOne({
+        where: { login: authorName.toLowerCase() }, transaction
+      })
+      .then(author => {
+        // Now we have author information; fetch the script.
+        // If we don't have author - Too bad - this is an error.
+        if (author == null) {
+          throw {
+            id: 'CHILDREN_USER_NOT_FOUND',
+            message: 'User with given username is not found.'
+          };
+        }
+        // Also, Ctrl + C and V is my best friend.
+        // Ok, I admit that it isn't my best friend, it's not even a live
+        // object. Still, it's pretty cool. Uh. Yeah. ... back to coding.
+        return Entry.findOne({
+          where: {
+            authorId: author.id,
+            name: entryName.toLowerCase()
+          }, transaction
+        });
+      })
+      .then(entry => {
+        // We FINALLY got the entry information.
+        // But can't find entry? Too bad. Go away.
+        if (entry == null) {
+          throw {
+            id: 'CHILDREN_ENTRY_NOT_FOUND',
+            message: 'Entry with given name is not found.'
+          };
+        }
+        // If it succeeded, throw new array containing received entry.
+        // Since 'push' function modifies original object, Use 'concat' function
+        // to duplicate array.
+        return array.concat([entry]);
+      });
+    });
+  }
+  // Okay! to wrap it up, We do.... nothing. Just return a promise...
+  // :P
+  return childrenPromise;
+}
+
+function injectChildrenToEntry(entry, children, transaction) {
+  // We assume that entry has already created and saved to the server.
+
+  // Ignore if type is not list;
+  if (entry.type !== 'list') return Promise.resolve(entry);
+  // Or, fetch the children list. Duhhh
+  return resolveChildren(children, transaction)
+  .then(children => {
+    // Then, clear the children list first, since children list on SQL is not
+    // ordered list, we'll have to clear the list to get it in the right order
+    return entry.setChildren(null, { transaction })
+    .then(() => entry.setChildren(children, { transaction }))
+    .then(() => entry);
+  });
+}
+
 /**
  * @api {post} /entries/:author/:name Create an entry
  * @apiGroup Entry
@@ -313,7 +406,7 @@ function resolveTags(tags, transaction) {
  * @apiParam (Body) {String} brief Brief description. (Usually one line)
  * @apiParam (Body) {String} description Detailed description. Accepts markdown.
  * @apiParam (Body) {String[]} tags The tags name of the entry.
- * @apiParam (Body) {String="script","collection"} type The type of the entry.
+ * @apiParam (Body) {String="script","list"} type The type of the entry.
  * @apiParam (Body) {String} [script] The script data of the entry.
  * @apiParam (Body) {Boolean} [requiresRoot] Whether if this requires root.
  * @apiParam (Body) {String[]} [children] The ordered list of child scripts.
@@ -331,11 +424,14 @@ entryRouter.post('/', authRequired, checkModifiable, (req, res) => {
     return;
   }
   const name = req.selEntryName.toLowerCase();
-  let { title, brief, description, tags, type, script, requiresRoot } =
-    req.body;
+  let { title, brief, description, tags, type, script, requiresRoot
+    , children } = req.body;
   if (title == null || title === '') title = name;
   if (!Array.isArray(tags) && typeof tags === 'string') tags = tags.split(',');
   tags = tags.map(name => name.toLowerCase());
+  if (!Array.isArray(children) && typeof children === 'string') {
+    children = children.split(',');
+  }
   // Since this requires quite a lot of SQL queries, Use transaction to prevent
   // conflictions.
   sequelize.transaction(transaction =>
@@ -351,7 +447,9 @@ entryRouter.post('/', authRequired, checkModifiable, (req, res) => {
       .then(entry => {
         return entry.setTags(tagObjs, { transaction })
         .then(() => entry);
-      });
+      })
+      // Then set the children and we're really done.
+      .then(entry => injectChildrenToEntry(entry, children, transaction));
     })
     // Re-retrieve entry object with tags and user
     .then(entry => Entry.findOne({
@@ -453,7 +551,7 @@ entryRouter.get('/raw', (req, res) => {
  * @apiParam (Body) {String} brief Brief description. (Usually one line)
  * @apiParam (Body) {String} description Detailed description. Accepts markdown.
  * @apiParam (Body) {String[]} tags The tags name of the entry.
- * @apiParam (Body) {String="script","collection"} type The type of the entry.
+ * @apiParam (Body) {String="script","list"} type The type of the entry.
  * @apiParam (Body) {String} [script] The script data of the entry.
  * @apiParam (Body) {Boolean} [requiresRoot] Whether if this requires root.
  * @apiParam (Body) {String[]} [children] The ordered list of child scripts.
@@ -465,11 +563,14 @@ entryRouter.get('/raw', (req, res) => {
 entryRouter.put('/', authRequired, checkModifiable, (req, res) => {
   // TODO This code is copied from entry create part. Prehaps I can merge them?
   const name = req.selEntryName.toLowerCase();
-  let { title, brief, description, tags, type, script, requiresRoot } =
-    req.body;
+  let { title, brief, description, tags, type, script, requiresRoot
+    , children } = req.body;
   if (title == null || title === '') title = name;
   if (!Array.isArray(tags) && typeof tags === 'string') tags = tags.split(',');
   tags = tags.map(name => name.toLowerCase());
+  if (!Array.isArray(children) && typeof children === 'string') {
+    children = children.split(',');
+  }
   // Since this requires quite a lot of SQL queries, Use transaction to prevent
   // conflictions.
   sequelize.transaction(transaction =>
@@ -484,7 +585,9 @@ entryRouter.put('/', authRequired, checkModifiable, (req, res) => {
       .then(entry => {
         return entry.setTags(tagObjs, { transaction })
         .then(() => entry);
-      });
+      })
+      // Then set the children and we're really done.
+      .then(entry => injectChildrenToEntry(entry, children, transaction));
     })
     // Re-retrieve entry object with tags and user
     .then(entry => Entry.findOne({

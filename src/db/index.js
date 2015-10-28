@@ -181,7 +181,7 @@ export const Entry = sequelize.define('entry', {
   },
   description: Sequelize.TEXT,
   type: {
-    type: Sequelize.ENUM('script', 'collection'),
+    type: Sequelize.ENUM('script', 'list'),
     allowNull: false
   },
   script: Sequelize.TEXT,
