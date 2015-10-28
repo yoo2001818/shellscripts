@@ -9,12 +9,13 @@ GLOBAL.__DEVELOPMENT__ = !PRODUCTION;
 GLOBAL.__DEVTOOLS__ = false;
 
 var WebpackIsomorphicTools = require('webpack-isomorphic-tools');
-var projectPath = __dirname;
+var path = require('path');
+var projectPath = path.resolve(__dirname, __DEVELOPMENT__ ? 'src' : 'lib');
 
 global.__WEBPACK_ISOMORPHIC_TOOLS__ = new WebpackIsomorphicTools(
   require('./webpack-isomorphic-tools.config.js')
 )
 .development(__DEVELOPMENT__)
 .server(projectPath, function() {
-  require('./src/server.js');
+  require(path.resolve(projectPath, 'server.js'));
 });
