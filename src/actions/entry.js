@@ -48,7 +48,7 @@ export const fetchUserStarredList = createAction(FETCH_USER_STARRED_LIST,
 
 export const fetch = createAction(FETCH,
   (username, name) => api(GET, `/api/entries/${username}/${name}`),
-  (username, name) => ({
+  (username, name, silent = false) => ({
     replace: {
       entries: {
         // I've heard that `` strings don't work in here.
@@ -56,7 +56,8 @@ export const fetch = createAction(FETCH,
       }
     },
     errors: [404],
-    schema: Entry
+    schema: Entry,
+    silent
   })
 );
 
@@ -173,7 +174,7 @@ export function loadUserStarredListMore(username) {
   };
 }
 
-export function load(username, name) {
+export function load(username, name, silent) {
   return (dispatch, getState) => {
     const { entities: { entries } } = getState();
     const entry = entries[username.toLowerCase() + '/' + name.toLowerCase()];
@@ -183,7 +184,7 @@ export function load(username, name) {
       return Promise.resolve();
     }
     // Well, always reload... for now.
-    return dispatch(fetch(username, name));
+    return dispatch(fetch(username, name, silent));
   };
 }
 

@@ -79,8 +79,8 @@ class CommentCard extends Component {
         <div className='container'>
           <UserMiniCard user={author} />
           <div className='date'>
-            <ToolTip caption={moment(entry.createdAt).format('lll')}>
-              {moment(entry.createdAt).fromNow()}
+            <ToolTip caption={moment(comment.createdAt).format('lll')}>
+              {moment(comment.createdAt).fromNow()}
             </ToolTip>
           </div>
           <div className='description'>

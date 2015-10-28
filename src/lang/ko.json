@@ -90,5 +90,6 @@
   "AUTH_USERNAME_POLICY": "사용자 이름은 알파벳과 숫자로만 구성되어야 합니다",
   "AUTH_USERNAME_EXISTS": "해당 사용자 이름이 이미 존재합니다",
   "AUTH_PASSWORD_POLICY": "비밀번호는 6글자 이상이어야 합니다",
-  "ENTRY_NAME_POLICY": "소문자와 숫자, -로만 구성되어야 합니다"
+  "ENTRY_NAME_POLICY": "소문자와 숫자, -로만 구성되어야 합니다",
+  "ENTRY_NAME_EXISTS": "이미 해당 이름이 존재합니다"
 }

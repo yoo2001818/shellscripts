@@ -13,7 +13,9 @@ class ListCreate extends Component {
     return (
       <div id='entry-create'>
         <Helmet title={__('createEntryTitle')} />
-        <EntryCreateForm author={user} type='list' key='list' />
+        <EntryCreateForm author={user} initialValues={{
+          type: 'list'
+        }} formKey='list' />
       </div>
     );
   }

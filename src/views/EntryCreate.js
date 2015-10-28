@@ -16,8 +16,8 @@ class EntryCreate extends Component {
           // This is to avoid React bug #2533
           // https://github.com/facebook/react/issues/2533
           brief: '', description: '', script: '', author: user.username,
-          tags: []
-        }} key='script' type='script' />
+          tags: [], type: 'script'
+        }} formKey='script' />
       </div>
     );
   }

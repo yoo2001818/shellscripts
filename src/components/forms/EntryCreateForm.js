@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { isLength, matches } from 'validator';
-import { create, edit } from '../../actions/entry.js';
+import { create, edit, load } from '../../actions/entry.js';
 
 import Translated from '../ui/Translated.js';
 import translate from '../../lang/index.js';
@@ -39,9 +39,7 @@ class EntryCreateForm extends Component {
   handleSubmit(data) {
     let doAction = create;
     if (this.props.modifying) doAction = edit;
-    this.props.dispatch(doAction(Object.assign({}, data, {
-      type: this.props.type
-    })))
+    this.props.dispatch(doAction(data))
     .then(action => {
       if (!action.payload.result) return;
       const { history } = this.context;
@@ -51,7 +49,7 @@ class EntryCreateForm extends Component {
   }
   render() {
     const __ = translate(this.props.lang.lang);
-    const { fields: { name, title, brief, description, tags, script },
+    const { fields: { name, title, brief, description, tags, script, type },
       handleSubmit, invalid, author, modifying, entryLoading } = this.props;
     const permalink = `${author.username}/${name.value}`;
     return (
@@ -105,7 +103,7 @@ class EntryCreateForm extends Component {
               </LabelInput>
             </div>
           </div>
-          { this.props.type === 'script' ? (
+          { type.value === 'script' ? (
             <LabelInput label={__('script')}>
               <div className='script'>
                 <AceEditor
@@ -119,14 +117,14 @@ class EntryCreateForm extends Component {
               </div>
             </LabelInput>
           ) : false }
-          { this.props.type === 'list' ? (
+          { type.value === 'list' ? (
             <div>
               <InputTip>
                 <Translated name='listInsertTip' />
               </InputTip>
             </div>
           ) : false }
-          { this.props.type === 'list' ? (
+          { type.value === 'list' ? (
             <div className='footer'>
               <button>
                 <Translated name='tempSave' />
@@ -203,6 +201,33 @@ function validateFrom(data) {
   return errors;
 }
 
+function asyncValidateForm(data, dispatch) {
+  console.log(data);
+  if (data.id == null) {
+    // Check if name exists.
+    return dispatch((dispatch, getState) => {
+      const { session } = getState();
+      // WTF
+      if (session == null) return Promise.resolve({});
+      const { login } = session;
+      // Then, fetch the name.
+      return dispatch(load(login, data.name, true))
+      .then(action => {
+        if (action && action.error) {
+          return {};
+        } else {
+          return {
+            name: {
+              id: 'ENTRY_NAME_EXISTS'
+            }
+          };
+        }
+      });
+    });
+  }
+  return Promise.resolve({});
+}
+
 export default connect(
   store => ({
     form: store.form,
@@ -212,6 +237,8 @@ export default connect(
 )(reduxForm({
   form: 'entryCreate',
   fields: ['name', 'author', 'title', 'brief', 'description', 'tags',
-    'script', 'requiresRoot'],
-  validate: validateFrom
+    'script', 'requiresRoot', 'type', 'id'],
+  validate: validateFrom,
+  asyncValidate: asyncValidateForm,
+  asyncBlurFields: ['name']
 })(EntryCreateForm));

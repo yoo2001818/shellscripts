@@ -89,5 +89,7 @@
   "AUTH_INVALID_PASSWORD": "Invalid password",
   "AUTH_USERNAME_POLICY": "Username should only contain alphanumberic characters.",
   "AUTH_USERNAME_EXISTS": "Username already exists",
-  "AUTH_PASSWORD_POLICY": "Password should be longer than 6 characters"
+  "AUTH_PASSWORD_POLICY": "Password should be longer than 6 characters",
+  "ENTRY_NAME_POLICY": "Name can only contain alphabets and - characters",
+  "ENTRY_NAME_EXISTS": "Name already exists"
 }
