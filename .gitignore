@@ -34,3 +34,5 @@ doc/
 uploads/
 
 webpack-assets.json
+
+/lib/

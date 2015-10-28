@@ -15,7 +15,7 @@ export const STAR = 'ENTRY_STAR';
 export const UNSTAR = 'ENTRY_UNSTAR';
 
 export const fetchList = createAction(FETCH_LIST,
-  lastIndex => api(GET, '/api/entries/', {
+  lastIndex => api(GET, '/entries/', {
     query: { lastIndex }
   }),
   (lastIndex, reset) => ({
@@ -25,7 +25,7 @@ export const fetchList = createAction(FETCH_LIST,
 );
 
 export const fetchUserList = createAction(FETCH_USER_LIST,
-  (username, lastIndex) => api(GET, `/api/entries/${username}`, {
+  (username, lastIndex) => api(GET, `/entries/${username}`, {
     query: { lastIndex }
   }),
   (username, lastIndex, reset) => ({
@@ -36,7 +36,7 @@ export const fetchUserList = createAction(FETCH_USER_LIST,
 );
 
 export const fetchUserStarredList = createAction(FETCH_USER_STARRED_LIST,
-  (username, lastIndex) => api(GET, `/api/users/${username}/starred`, {
+  (username, lastIndex) => api(GET, `/users/${username}/starred`, {
     query: { lastIndex }
   }),
   (username, lastIndex, reset) => ({
@@ -47,7 +47,7 @@ export const fetchUserStarredList = createAction(FETCH_USER_STARRED_LIST,
 );
 
 export const fetch = createAction(FETCH,
-  (username, name) => api(GET, `/api/entries/${username}/${name}`),
+  (username, name) => api(GET, `/entries/${username}/${name}`),
   (username, name, silent = false) => ({
     replace: {
       entries: {
@@ -62,7 +62,7 @@ export const fetch = createAction(FETCH,
 );
 
 export const create = createAction(CREATE,
-  (data) => api(POST, `/api/entries/${data.author}/${data.name}`, {
+  (data) => api(POST, `/entries/${data.author}/${data.name}`, {
     body: data
   }),
   () => ({
@@ -71,7 +71,7 @@ export const create = createAction(CREATE,
 );
 
 export const edit = createAction(EDIT_ENTRY,
-  (data) => api(PUT, `/api/entries/${data.author}/${data.name}`, {
+  (data) => api(PUT, `/entries/${data.author}/${data.name}`, {
     body: data
   }),
   () => ({
@@ -80,21 +80,21 @@ export const edit = createAction(EDIT_ENTRY,
 );
 
 export const deleteEntry = createAction(DELETE_ENTRY,
-  (data) => api(DELETE, `/api/entries/${data.author}/${data.name}`),
+  (data) => api(DELETE, `/entries/${data.author}/${data.name}`),
   () => ({
     schema: Entry
   })
 );
 
 export const star = createAction(STAR,
-  (username, name) => api(POST, `/api/entries/${username}/${name}/stars`),
+  (username, name) => api(POST, `/entries/${username}/${name}/stars`),
   () => ({
     schema: Entry
   })
 );
 
 export const unstar = createAction(UNSTAR,
-  (username, name) => api(DELETE, `/api/entries/${username}/${name}/stars`),
+  (username, name) => api(DELETE, `/entries/${username}/${name}/stars`),
   () => ({
     schema: Entry
   })

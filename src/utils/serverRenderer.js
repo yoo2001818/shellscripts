@@ -12,8 +12,6 @@ import routes from '../views/routes.js';
 import prefetch from '../utils/prefetch.js';
 import { superagentClient } from './apiClient.js';
 
-import * as LangActions from '../actions/lang.js';
-
 function renderPage(html, head, initialState) {
   return `
     <!doctype html>

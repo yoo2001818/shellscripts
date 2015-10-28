@@ -1,4 +1,5 @@
 import superagent from 'superagent';
+import netConfig from '../../config/network.config.js';
 
 // Just a dummy client. really.
 export function dummyClient(type, endpoint, options) {
@@ -11,9 +12,12 @@ export function dummyClient(type, endpoint, options) {
 
 function wrapURL(url) {
   if (__SERVER__) {
-    return 'http://localhost:8000' + url;
+    return netConfig.apiUrl + url;
   }
-  return url;
+  if (netConfig.useReverseProxy) {
+    return '/api' + url;
+  }
+  return netConfig.apiUrl + url;
 }
 
 // superagent client

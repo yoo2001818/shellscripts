@@ -5,15 +5,17 @@ import compression from 'compression';
 import morgan from 'morgan';
 
 import serverRenderer from './utils/serverRenderer.js';
-import apiRouter from './api/index.js';
+import apiProxy from './utils/apiProxy.js';
+import netConfig from '../config/network.config.js';
 
 let app = express();
 
-if (__DEVELOPMENT__) app.set('json spaces', 2);
-
 app.use(morgan('dev'));
 
-app.use('/api', apiRouter);
+if (netConfig.useReverseProxy) {
+  app.use('/api', apiProxy);
+}
+
 app.use('/uploads', new ServeStatic('./uploads'));
 app.get('/favicon.ico', (req, res) => {
   res.sendStatus(404);
@@ -51,6 +53,6 @@ if (!__DEVELOPMENT__) {
 // Server side rendering
 app.use(serverRenderer);
 
-app.listen(8000, () => {
+app.listen(netConfig.port, () => {
   console.log('server started');
 });
