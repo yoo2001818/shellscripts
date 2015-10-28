@@ -9,7 +9,7 @@ export const SET_QUERY = 'SEARCH_SET_QUERY';
 export const SET_TEMP_QUERY = 'SEARCH_SET_TEMP_QUERY';
 
 export const fetch = createAction(FETCH,
-  (keyword, lastIndex) => api(GET, '/api/entries/', {
+  (keyword, lastIndex) => api(GET, '/entries/', {
     query: { lastIndex, keyword }
   }),
   (keyword, lastIndex, reset) => ({

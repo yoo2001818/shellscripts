@@ -17,33 +17,33 @@ export const CHECK_USERNAME = 'SESSION_CHECK_USERNAME';
 export const CHECK_EMAIL = 'SESSION_CHECK_EMAIL';
 
 export const fetch = createAction(FETCH,
-  () => api(GET, '/api/session', {}),
+  () => api(GET, '/session', {}),
   () => ({
     errors: [401],
     schema: User
   }));
 export const login = createAction(LOGIN,
-  credentials => api(POST, '/api/session/local', {
+  credentials => api(POST, '/session/local', {
     body: credentials
   }),
   (_, meta) => Object.assign({}, meta, {
     schema: User
   }));
 export const logout = createAction(LOGOUT,
-  () => api(DELETE, '/api/session', {}),
+  () => api(DELETE, '/session', {}),
   (_, meta) => meta);
 // Calling user in session actions? This may look weird, but current user is
 // stored in 'session' reducer now. Well I think I should put current user to
 // users table, and put user's ID in here.
 export const signUpFinalize = createAction(SIGNUP_FINALIZE,
-  data => api(POST, '/api/user/finalize', {
+  data => api(POST, '/user/finalize', {
     body: data
   }),
   (_, meta) => Object.assign({}, meta, {
     schema: User
   }));
 export const localSignUp = createAction(LOCAL_SIGNUP,
-  credentials => api(POST, '/api/session/local/register', {
+  credentials => api(POST, '/session/local/register', {
     body: credentials
   }),
   (_, meta) => Object.assign({}, meta, {
@@ -70,26 +70,26 @@ export const oAuthSignUp = createAction(OAUTH_SIGNUP,
     }
   }));
 export const localChangePassword = createAction(LOCAL_CHANGE_PASSWORD,
-  credentials => api(PUT, '/api/session/local', {
+  credentials => api(PUT, '/session/local', {
     body: credentials
   }),
   (_, meta) => meta
 );
 export const methodFetch = createAction(METHOD_FETCH,
-  () => api(GET, '/api/session/methods'));
+  () => api(GET, '/session/methods'));
 export const methodDelete = createAction(METHOD_DELETE,
-  method => api(DELETE, `/api/session/${method}`),
+  method => api(DELETE, `/session/${method}`),
   method => ({
     method
   }));
 export const checkUsername = createAction(CHECK_USERNAME,
-  username => api(GET, `/api/users/${username}`),
+  username => api(GET, `/users/${username}`),
   () => ({
     errors: [404],
     silent: true
   }));
 export const checkEmail = createAction(CHECK_EMAIL,
-  email => api(POST, '/api/user/email', {
+  email => api(POST, '/user/email', {
     body: { email }
   }));
 

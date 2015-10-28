@@ -13,7 +13,7 @@ export const DELETE_COMMENT = 'COMMENT_DELETE';
 export const fetchList = createAction(FETCH_LIST,
   (entry, lastIndex) =>
     api(GET,
-      `/api/entries/${entry.author.toLowerCase()}/${entry.name}/comments`,
+      `/entries/${entry.author.toLowerCase()}/${entry.name}/comments`,
       {
         query: { lastIndex }
       }),
@@ -28,7 +28,7 @@ export const fetchList = createAction(FETCH_LIST,
 export const fetch = createAction(FETCH,
   (entry, id) =>
     api(GET,
-      `/api/entries/${entry.author.toLowerCase()}/${entry.name}/comments/${id}`
+      `/entries/${entry.author.toLowerCase()}/${entry.name}/comments/${id}`
     ),
   (entry, id) => ({
     replace: {
@@ -44,7 +44,7 @@ export const fetch = createAction(FETCH,
 export const create = createAction(CREATE,
   (entry, data) =>
     api(POST,
-      `/api/entries/${entry.author.toLowerCase()}/${entry.name}/comments`,
+      `/entries/${entry.author.toLowerCase()}/${entry.name}/comments`,
       {
         body: data
       }),
@@ -56,7 +56,7 @@ export const create = createAction(CREATE,
 export const edit = createAction(EDIT_COMMENT,
   (entry, data) =>
     api(PUT,
-`/api/entries/${entry.author.toLowerCase()}/${entry.name}/comments/${data.id}`,
+`/entries/${entry.author.toLowerCase()}/${entry.name}/comments/${data.id}`,
       {
         body: data
       }),
@@ -68,7 +68,7 @@ export const edit = createAction(EDIT_COMMENT,
 export const deleteComment = createAction(DELETE_COMMENT,
   (entry, id) =>
     api(DELETE,
-      `/api/entries/${entry.author.toLowerCase()}/${entry.name}/comments/${id}`
+      `/entries/${entry.author.toLowerCase()}/${entry.name}/comments/${id}`
     ),
   () => ({
     schema: Comment

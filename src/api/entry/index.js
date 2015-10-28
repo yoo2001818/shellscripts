@@ -4,6 +4,7 @@ import authRequired from '../lib/authRequired.js';
 import adminRequired from '../lib/adminRequired.js';
 import starRouter from './star.js';
 import commentRouter from './comment.js';
+import netConfig from '../../../config/network.config.js';
 
 function checkModifiable(req, res, next) {
   if (req.selUser.id !== req.user.id) {
@@ -430,8 +431,7 @@ entryRouter.get('/', (req, res) => {
 entryRouter.get('/raw', (req, res) => {
   const { author, name } = req.selEntry;
   res.attachment(author.username + '_' + name + '.sh');
-  // TODO Put sitename in a config file?
-  const footer = `\n\n# http://localhost:8000/${author.username}/${name}`;
+  const footer = `\n\n# ${netConfig.url}/${author.username}/${name}`;
   if (req.selEntry.type === 'script') {
     res.send(req.selEntry.script + footer);
   } else {

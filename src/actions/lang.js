@@ -8,9 +8,9 @@ import { api, GET, POST } from '../middleware/api.js';
 export const SET = 'LANG_SET';
 
 export const set = createAction(SET);
-export const get = createAction(SET, () => api(GET, '/api/lang'));
+export const get = createAction(SET, () => api(GET, '/lang'));
 export const save = createAction(SET,
-  lang => api(POST, '/api/lang/', {
+  lang => api(POST, '/lang/', {
     body: { lang }
   })
 );

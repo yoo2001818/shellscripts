@@ -7,7 +7,7 @@ export const SET_PROFILE = 'USER_SET_PROFILE';
 export const UPLOAD_PHOTO = 'USER_UPLOAD_PHOTO';
 
 export const fetch = createAction(FETCH,
-  username => api(GET, `/api/users/${username}`),
+  username => api(GET, `/users/${username}`),
   username => ({
     replace: {
       users: {
@@ -20,7 +20,7 @@ export const fetch = createAction(FETCH,
 );
 
 export const setProfile = createAction(SET_PROFILE,
-  (username, data) => api(POST, `/api/users/${username}`, {
+  (username, data) => api(POST, `/users/${username}`, {
     body: data
   }),
   () => ({
@@ -30,7 +30,7 @@ export const setProfile = createAction(SET_PROFILE,
 );
 
 export const uploadPhoto = createAction(UPLOAD_PHOTO,
-  (username, file) => api(POST, `/api/users/${username}/photo`, {
+  (username, file) => api(POST, `/users/${username}/photo`, {
     body: {
       x: 0,
       y: 0,
