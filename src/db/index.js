@@ -197,16 +197,19 @@ export const Entry = sequelize.define('entry', {
   tagIndex: Sequelize.TEXT
 }, {
   hooks: {
-    beforeValidate: (entry, options) => {
+    beforeValidate: (entry) => {
       if (entry.name) {
         entry.name = entry.name.toLowerCase();
       }
+      // TagIndex should be set explicitly.
+      /*
       if (entry.tags) {
         entry.tagIndex = ' ' + entry.tags.map(tag => tag.name).join(' ') + ' ';
         if (options.fields) {
           options.fields.push('tagIndex');
         }
       }
+      */
     }
   },
   instanceMethods: {

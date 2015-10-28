@@ -267,6 +267,43 @@ authorRouter.use('/:name', (req, res, next) => {
   });
 }, entryRouter);
 
+function resolveTags(tags, transaction) {
+  // Find existing tags first.
+  return Tag.findAll({
+    where: {
+      name: {
+        $in: tags
+      }
+    }, transaction
+  })
+  .then(tagObjs => {
+    // Remove tag with existing ID from the array.
+    tagObjs.forEach(tagObj => tags.splice(tags.indexOf(tagObj.name), 1));
+    // Then, bulk create missing tags
+    if (tags.length > 0) {
+      return Tag.bulkCreate(tags.map(tagName => ({
+        name: tagName
+        // TODO And other default values
+      })), { transaction })
+      // Since bulkCreate doesn't return created objects, we have to fetch
+      // them again. Which is pretty awkward though.
+      .then(() => Tag.findAll({
+        where: {
+          name: {
+            $in: tags
+          }
+        }, transaction
+      }))
+      // Then, concat new tags to original tags array.
+      .then(newTagObjs => {
+        tagObjs = tagObjs.concat(newTagObjs);
+        return tagObjs;
+      });
+    }
+    return tagObjs;
+  });
+}
+
 /**
  * @api {post} /entries/:author/:name Create an entry
  * @apiGroup Entry
@@ -279,6 +316,7 @@ authorRouter.use('/:name', (req, res, next) => {
  * @apiParam (Body) {String="script","collection"} type The type of the entry.
  * @apiParam (Body) {String} [script] The script data of the entry.
  * @apiParam (Body) {Boolean} [requiresRoot] Whether if this requires root.
+ * @apiParam (Body) {String[]} [children] The ordered list of child scripts.
  * @apiDescription Creates and returns a new entry.
  * @apiUse AuthRequired
  */
@@ -301,40 +339,7 @@ entryRouter.post('/', authRequired, checkModifiable, (req, res) => {
   // Since this requires quite a lot of SQL queries, Use transaction to prevent
   // conflictions.
   sequelize.transaction(transaction =>
-    // Find existing tags first.
-    Tag.findAll({
-      where: {
-        name: {
-          $in: tags
-        }
-      }, transaction
-    })
-    .then(tagObjs => {
-      // Remove tag with existing ID from the array.
-      tagObjs.forEach(tagObj => tags.splice(tags.indexOf(tagObj.name), 1));
-      // Then, bulk create missing tags
-      if (tags.length > 0) {
-        return Tag.bulkCreate(tags.map(tagName => ({
-          name: tagName
-          // TODO And other default values
-        })), { transaction })
-        // Since bulkCreate doesn't return created objects, we have to fetch
-        // them again. Which is pretty awkward though.
-        .then(() => Tag.findAll({
-          where: {
-            name: {
-              $in: tags
-            }
-          }, transaction
-        }))
-        // Then, concat new tags to original tags array.
-        .then(newTagObjs => {
-          tagObjs = tagObjs.concat(newTagObjs);
-          return tagObjs;
-        });
-      }
-      return tagObjs;
-    })
+    resolveTags(tags, transaction)
     // Then create new entry with given data.
     .then(tagObjs => {
       return Entry.create({
@@ -451,6 +456,7 @@ entryRouter.get('/raw', (req, res) => {
  * @apiParam (Body) {String="script","collection"} type The type of the entry.
  * @apiParam (Body) {String} [script] The script data of the entry.
  * @apiParam (Body) {Boolean} [requiresRoot] Whether if this requires root.
+ * @apiParam (Body) {String[]} [children] The ordered list of child scripts.
  * @apiDescription Edits and returns the entry.
  * @apiUse AuthRequired
  * @apiUse modifiable
@@ -467,40 +473,7 @@ entryRouter.put('/', authRequired, checkModifiable, (req, res) => {
   // Since this requires quite a lot of SQL queries, Use transaction to prevent
   // conflictions.
   sequelize.transaction(transaction =>
-    // Find existing tags first.
-    Tag.findAll({
-      where: {
-        name: {
-          $in: tags
-        }
-      }, transaction
-    })
-    .then(tagObjs => {
-      // Remove tag with existing ID from the array.
-      tagObjs.forEach(tagObj => tags.splice(tags.indexOf(tagObj.name), 1));
-      // Then, bulk create missing tags
-      if (tags.length > 0) {
-        return Tag.bulkCreate(tags.map(tagName => ({
-          name: tagName
-          // TODO And other default values
-        })), { transaction })
-        // Since bulkCreate doesn't return created objects, we have to fetch
-        // them again. Which is pretty awkward though.
-        .then(() => Tag.findAll({
-          where: {
-            name: {
-              $in: tags
-            }
-          }, transaction
-        }))
-        // Then, concat new tags to original tags array.
-        .then(newTagObjs => {
-          tagObjs = tagObjs.concat(newTagObjs);
-          return tagObjs;
-        });
-      }
-      return tagObjs;
-    })
+    resolveTags(tags, transaction)
     // Then modify the entry with given data.
     .then(tagObjs => {
       return req.selEntry.update({
