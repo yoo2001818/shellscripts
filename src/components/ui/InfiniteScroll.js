@@ -46,7 +46,7 @@ export default class InfiniteScroll extends Component {
     }
     window.addEventListener('scroll', this.boundScrollListener);
     window.addEventListener('resize', this.boundScrollListener);
-    this.scrollListener();
+    setTimeout(() => this.scrollListener(), 10);
   }
   detachScrollListener() {
     window.removeEventListener('scroll', this.boundScrollListener);

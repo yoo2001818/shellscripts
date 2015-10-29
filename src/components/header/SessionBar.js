@@ -45,7 +45,7 @@ class SessionBar extends Component {
                 <i className='fa fa-list' />
                 {`(${this.props.listCart.list.length})`}
               </span>
-            )} caption={__('listEdit')} href='/new/list'>
+            )} caption={__('listEdit')} href='/new/list' preventClose>
               <div>
                 List displayed here!
               </div>

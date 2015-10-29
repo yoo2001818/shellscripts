@@ -119,7 +119,7 @@ export function loadListMore() {
     // If it's already loading, cancel it.
     if (list.load && list.load.loading) return Promise.resolve();
     // If list is null, cancel it.
-    if (list.lastIndex == null) return Promise.resolve();
+    // if (list.lastIndex == null) return Promise.resolve();
     return dispatch(fetchList(list.lastIndex));
   };
 }
@@ -144,7 +144,7 @@ export function loadUserListMore(username) {
     // If it's already loading, cancel it.
     if (list && list.load && list.load.loading) return Promise.resolve();
     // If list is null, cancel it.
-    if (list.lastIndex == null) return Promise.resolve();
+    // if (list.lastIndex == null) return Promise.resolve();
     return dispatch(fetchUserList(username, list && list.lastIndex));
   };
 }
@@ -169,7 +169,7 @@ export function loadUserStarredListMore(username) {
     // If it's already loading, cancel it.
     if (list && list.load && list.load.loading) return Promise.resolve();
     // If list is null, cancel it.
-    if (list.lastIndex == null) return Promise.resolve();
+    // if (list.lastIndex == null) return Promise.resolve();
     return dispatch(fetchUserStarredList(username, list && list.lastIndex));
   };
 }

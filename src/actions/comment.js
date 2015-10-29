@@ -96,7 +96,7 @@ export function loadListMore(entry, forced = false) {
     // If it's already loading, cancel it.
     if (page.load && page.load.loading) return Promise.resolve();
     // If list is null, cancel it.
-    if (!forced && page.lastIndex == null) return Promise.resolve();
+    // if (!forced && page.lastIndex == null) return Promise.resolve();
     if (!forced && page.finished &&
       new Date().valueOf() - page.loadedAt < 10000
     ) {
