@@ -59,9 +59,13 @@
       input {
         font-weight: bold;
       }
-      &>.fa {
-        color: #444;
-        padding-right: 0.3em;
+      .fa {
+        color: #777;
+        padding-right: 0.3rem;
+        font-size: 0.9em;
+        line-height: 1rem;
+        font-weight: normal;
+        vertical-align: bottom;
       }
       &>a {
         color: #000;

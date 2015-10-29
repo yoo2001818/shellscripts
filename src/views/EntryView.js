@@ -89,16 +89,29 @@ class EntryView extends Component {
           ) : false }
           <LoadingOverlay loading={entryLoading} />
         </div>
-        <pre className='script'>
-          <Highlight className='lang-bash' languages={['bash']}>
-            {this.props.entry.script}
-          </Highlight>
-        </pre>
-        <div className='script-download'>
-          <a href={rawPath}>
-            <Translated name='downloadRaw' />
-          </a>
-        </div>
+        { entry.type === 'script' ? (
+          <div className='script-section'>
+            <pre className='script'>
+              <Highlight className='lang-bash' languages={['bash']}>
+                {this.props.entry.script}
+              </Highlight>
+            </pre>
+            <div className='script-download'>
+              <a href={rawPath}>
+                <Translated name='downloadRaw' />
+              </a>
+            </div>
+          </div>
+        ) : false }
+        { entry.type === 'list' ? (
+          <div className='list-section'>
+            {
+              entry.children.map((child, key) => (
+                <EntryMiniCard entry={child} key={key} />
+              ))
+            }
+          </div>
+        ) : false }
         <CommentList entry={entry} />
         { this.canComment() ? (
           <CommentForm
@@ -129,13 +142,16 @@ EntryView.contextTypes = {
 
 const ConnectEntryView = connect(
   (state, props) => {
-    const { session, entities: { users } } = state;
+    const { session, entities: { users, entries } } = state;
     const { entry } = props;
     return {
       sessionUser: users[session.login],
       session,
       author: users[entry.author],
-      entryLoading: state.entry.load.loading
+      entryLoading: state.entry.load.loading,
+      entry: Object.assign({}, entry, {
+        children: entry.children && entry.children.map(id => entries[id])
+      })
     };
   },
   { confirmEntryDelete }
