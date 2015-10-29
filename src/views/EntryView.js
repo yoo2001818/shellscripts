@@ -28,6 +28,7 @@ import CommentList from '../components/CommentList.js';
 import CommentForm from '../components/forms/CommentForm.js';
 import LoadingOverlay from '../components/ui/LoadingOverlay.js';
 import DropDownMenu from '../components/ui/DropDownMenu.js';
+import netConfig from '../../config/network.config.js';
 
 class EntryView extends Component {
   handleDelete(e) {
@@ -52,7 +53,8 @@ class EntryView extends Component {
   render() {
     const __ = translate(this.props.lang.lang);
     const { entry, author, session, sessionUser, entryLoading } = this.props;
-    const rawPath = `/api/entries/${author.username}/${entry.name}/raw`;
+    const rawPath =
+      `${netConfig.url}/api/entries/${author.username}/${entry.name}/raw`;
     const editPath = `/${author.username}/${entry.name}/edit`;
     const title = `${entry.title} - ${author.name || author.username}`;
     if (entry.deleted) {
