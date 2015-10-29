@@ -267,9 +267,9 @@ Entry.belongsToMany(User, {through: 'starredEntry', as: 'starredUsers'});
 Entry.hasMany(Comment);
 // This is pretty tricky - http://stackoverflow.com/a/25634978/3317669
 Entry.belongsToMany(Entry, {as: 'children', foreignKey: 'parentEntryId',
-  through: 'entryLinks'});
+  through: 'entryLink'});
 Entry.belongsToMany(Entry, {as: 'parents', foreignKey: 'entryId',
-  through: 'entryLinks'});
+  through: 'entryLink'});
 
 Comment.belongsTo(Entry);
 Comment.belongsTo(User, {as: 'author'});

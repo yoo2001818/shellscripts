@@ -1,9 +1,79 @@
 import Express from 'express';
-import { sequelize, User, Entry, Tag, TagType } from '../../db/index.js';
+import { sequelize, User, Entry, Tag, TagType, EntryLink }
+  from '../../db/index.js';
 import authRequired from '../lib/authRequired.js';
 import adminRequired from '../lib/adminRequired.js';
 import starRouter from './star.js';
 import commentRouter from './comment.js';
+
+const defaultGetQuery = {
+  include: [
+    {
+      model: Tag,
+      as: 'tags',
+      include: [{
+        model: TagType,
+        as: 'type',
+        attributes: ['name']
+      }],
+      attributes: ['name', 'description']
+    }, {
+      model: User,
+      as: 'author',
+      attributes: ['username', 'name', 'photo']
+    },
+    {
+      model: Entry,
+      as: 'children',
+      include: [
+        {
+          model: Tag,
+          as: 'tags',
+          include: [{
+            model: TagType,
+            as: 'type',
+            attributes: ['name']
+          }],
+          attributes: ['name', 'description']
+        },
+        {
+          model: User,
+          as: 'author',
+          attributes: ['username', 'name', 'photo']
+        }
+      ],
+      attributes: {
+        exclude: ['userId', 'author', 'script', 'description', 'requiresRoot']
+      }
+    }
+  ],
+  attributes: {
+    exclude: ['userId', 'author']
+  },
+  order: [
+    [
+      {
+        model: Entry,
+        as: 'children'
+      }, EntryLink, 'id'
+    ],
+    [
+      {
+        model: Tag,
+        as: 'tags'
+      }, 'name'
+    ],
+    [
+      {
+        model: Entry,
+        as: 'children'
+      }, {
+        model: Tag,
+        as: 'tags'
+      }, 'name'
+    ]
+  ]
+};
 
 function checkModifiable(req, res, next) {
   if (req.selUser.id !== req.user.id) {
@@ -231,35 +301,12 @@ export const entryRouter = new Express.Router();
 authorRouter.use('/:name', (req, res, next) => {
   const { name } = req.params;
   // Inject entry to request
-  Entry.findOne({
+  Entry.findOne(Object.assign({}, defaultGetQuery, {
     where: {
       authorId: req.selUser.id,
       name: name.toLowerCase()
-    },
-    include: [
-      {
-        model: Tag,
-        as: 'tags',
-        include: [{
-          model: TagType,
-          as: 'type',
-          attributes: ['name']
-        }],
-        attributes: ['name', 'description']
-      }, {
-        model: User,
-        as: 'author',
-        attributes: ['username', 'name', 'photo']
-      }
-    ],
-    attributes: {
-      exclude: ['userId', 'author']
-    },
-    order: [[{
-      model: Tag,
-      as: 'tags'
-    }, 'name']]
-  })
+    }
+  }))
   .then(entry => {
     req.selEntryName = name;
     req.selEntry = entry;
@@ -452,14 +499,11 @@ entryRouter.post('/', authRequired, checkModifiable, (req, res) => {
       .then(entry => injectChildrenToEntry(entry, children, transaction));
     })
     // Re-retrieve entry object with tags and user
-    .then(entry => Entry.findOne({
+    .then(entry => Entry.findOne(Object.assign({}, defaultGetQuery, {
       where: {
         id: entry.id
-      },
-      include: buildEntryGet({}).include,
-      order: buildEntryGet({}).order,
-      transaction
-    }))
+      }, transaction
+    })))
   )
   .then(entry => {
     let displayEntry = entry.toJSON();
@@ -590,14 +634,11 @@ entryRouter.put('/', authRequired, checkModifiable, (req, res) => {
       .then(entry => injectChildrenToEntry(entry, children, transaction));
     })
     // Re-retrieve entry object with tags and user
-    .then(entry => Entry.findOne({
+    .then(entry => Entry.findOne(Object.assign({}, defaultGetQuery, {
       where: {
         id: entry.id
-      },
-      include: buildEntryGet({}).include,
-      order: buildEntryGet({}).order,
-      transaction
-    }))
+      }, transaction
+    })))
   )
   .then(entry => {
     let displayEntry = entry.toJSON();
