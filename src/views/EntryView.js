@@ -19,6 +19,7 @@ marked.setOptions({
 import Highlight from 'react-highlight';
 import Helmet from 'react-helmet';
 
+import translate from '../lang/index.js';
 import { loadList } from '../actions/comment.js';
 import { confirmEntryDelete } from '../actions/entry.js';
 import Translated from '../components/ui/Translated.js';
@@ -26,6 +27,7 @@ import EntryMiniCard from '../components/EntryMiniCard.js';
 import CommentList from '../components/CommentList.js';
 import CommentForm from '../components/forms/CommentForm.js';
 import LoadingOverlay from '../components/ui/LoadingOverlay.js';
+import DropDownMenu from '../components/ui/DropDownMenu.js';
 
 class EntryView extends Component {
   handleDelete(e) {
@@ -48,6 +50,7 @@ class EntryView extends Component {
     };
   }
   render() {
+    const __ = translate(this.props.lang.lang);
     const { entry, author, session, sessionUser, entryLoading } = this.props;
     const rawPath = `/api/entries/${author.username}/${entry.name}/raw`;
     const editPath = `/${author.username}/${entry.name}/edit`;
@@ -96,11 +99,6 @@ class EntryView extends Component {
                 {this.props.entry.script}
               </Highlight>
             </pre>
-            <div className='script-download'>
-              <a href={rawPath}>
-                <Translated name='downloadRaw' />
-              </a>
-            </div>
           </div>
         ) : false }
         { entry.type === 'list' ? (
@@ -112,6 +110,22 @@ class EntryView extends Component {
             }
           </div>
         ) : false }
+        <div className='script-download'>
+          <a href={rawPath}>
+            <Translated name='downloadRaw' />
+          </a>
+          <DropDownMenu title={(
+            <Translated name='scriptRunShortcut' />
+          )} caption={__('scriptRunShortcutDesc')} href={rawPath} preventClose>
+            <div className='script-shortcut'>
+              <pre>
+                <code>
+                  {`curl -S ${rawPath} | bash /dev/stdin`}
+                </code>
+              </pre>
+            </div>
+          </DropDownMenu>
+        </div>
         <CommentList entry={entry} />
         { this.canComment() ? (
           <CommentForm
@@ -133,7 +147,8 @@ EntryView.propTypes = {
   session: PropTypes.object,
   sessionUser: PropTypes.object,
   confirmEntryDelete: PropTypes.func,
-  entryLoading: PropTypes.bool
+  entryLoading: PropTypes.bool,
+  lang: PropTypes.object
 };
 
 EntryView.contextTypes = {
@@ -142,7 +157,7 @@ EntryView.contextTypes = {
 
 const ConnectEntryView = connect(
   (state, props) => {
-    const { session, entities: { users, entries } } = state;
+    const { session, entities: { users, entries }, lang } = state;
     const { entry } = props;
     return {
       sessionUser: users[session.login],
@@ -151,7 +166,8 @@ const ConnectEntryView = connect(
       entryLoading: state.entry.load.loading,
       entry: Object.assign({}, entry, {
         children: entry.children && entry.children.map(id => entries[id])
-      })
+      }),
+      lang
     };
   },
   { confirmEntryDelete }

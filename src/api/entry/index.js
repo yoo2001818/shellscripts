@@ -583,6 +583,13 @@ entryRouter.get('/raw', (req, res) => {
     res.send(req.selEntry.script + footer);
   } else {
     // 'Bake' various scripts into a single file.
+    const script = '#!/bin/bash\n' + req.selEntry.children.map(child => {
+      const author = child.author && child.author.username;
+      const link = `${author}/${child.name}`;
+      const url = `http://localhost:8000/api/entries/${link}/raw`;
+      return `curl -S '${url}' | bash /dev/stdin`;
+    }).join('\n');
+    res.send(script + footer);
   }
 });
 
