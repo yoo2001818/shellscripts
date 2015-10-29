@@ -181,7 +181,7 @@ export const Entry = sequelize.define('entry', {
   },
   description: Sequelize.TEXT,
   type: {
-    type: Sequelize.ENUM('script', 'collection'),
+    type: Sequelize.ENUM('script', 'list'),
     allowNull: false
   },
   script: Sequelize.TEXT,
@@ -197,16 +197,19 @@ export const Entry = sequelize.define('entry', {
   tagIndex: Sequelize.TEXT
 }, {
   hooks: {
-    beforeValidate: (entry, options) => {
+    beforeValidate: (entry) => {
       if (entry.name) {
         entry.name = entry.name.toLowerCase();
       }
+      // TagIndex should be set explicitly.
+      /*
       if (entry.tags) {
         entry.tagIndex = ' ' + entry.tags.map(tag => tag.name).join(' ') + ' ';
         if (options.fields) {
           options.fields.push('tagIndex');
         }
       }
+      */
     }
   },
   instanceMethods: {
@@ -264,9 +267,9 @@ Entry.belongsToMany(User, {through: 'starredEntry', as: 'starredUsers'});
 Entry.hasMany(Comment);
 // This is pretty tricky - http://stackoverflow.com/a/25634978/3317669
 Entry.belongsToMany(Entry, {as: 'children', foreignKey: 'parentEntryId',
-  through: 'entryLinks'});
+  through: 'entryLink'});
 Entry.belongsToMany(Entry, {as: 'parents', foreignKey: 'entryId',
-  through: 'entryLinks'});
+  through: 'entryLink'});
 
 Comment.belongsTo(Entry);
 Comment.belongsTo(User, {as: 'author'});

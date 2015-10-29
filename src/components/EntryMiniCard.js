@@ -54,6 +54,11 @@ class EntryMiniCard extends Component {
           ) : false }
           <h1 className='title'>
             <Link to={'/' + permalink}>
+              { entry.type === 'list' ? (
+                <i className='fa fa-list' />
+              ) : (
+                <i className='fa fa-file-o' />
+              ) }
               {entry.title}
             </Link>
           </h1>

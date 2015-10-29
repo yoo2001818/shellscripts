@@ -34,7 +34,8 @@ User.define({
 
 Entry.define({
   author: User,
-  tags: arrayOf(Tag)
+  tags: arrayOf(Tag),
+  children: arrayOf(Entry)
 });
 
 Tag.define({
