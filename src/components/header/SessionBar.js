@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import DropDownMenu from '../ui/DropDownMenu.js';
 import Translated from '../ui/Translated.js';
 import { logout } from '../../actions/session.js';
+import { enable } from '../../actions/listCart.js';
 import translate from '../../lang/index.js';
 import userPlaceholder from '../../assets/userPlaceholder.png';
 
@@ -15,6 +16,10 @@ class SessionBar extends Component {
     if (session.load.loading) return;
     this.props.logout();
     return;
+  }
+  handleNewList(e) {
+    this.props.enable();
+    e.preventDefault();
   }
   render() {
     const __ = translate(this.props.lang.lang);
@@ -34,9 +39,21 @@ class SessionBar extends Component {
       }
       return (
         <div className='session'>
+          { this.props.listCart.enabled ? (
+            <DropDownMenu title={(
+              <span className='cart-title'>
+                <i className='fa fa-list' />
+                {`(${this.props.listCart.list.length})`}
+              </span>
+            )} caption={__('listEdit')} href='/new/list'>
+              <div>
+                List displayed here!
+              </div>
+            </DropDownMenu>
+          ) : false }
           <DropDownMenu title={(
             <i className='fa fa-plus' />
-          )} caption={__('createNew')} href={`/new`}>
+          )} caption={__('createNew')} href='/new'>
             <ul>
               <li>
                 <Link to='/new'>
@@ -44,7 +61,7 @@ class SessionBar extends Component {
                 </Link>
               </li>
               <li>
-                <Link to='/new/list'>
+                <Link to='/new/list' onClick={this.handleNewList.bind(this)}>
                   <Translated name='newList' />
                 </Link>
               </li>
@@ -100,14 +117,17 @@ SessionBar.propTypes = {
   session: PropTypes.object,
   user: PropTypes.object,
   lang: PropTypes.object,
-  logout: PropTypes.func.isRequired
+  logout: PropTypes.func.isRequired,
+  // Should be removed later
+  enable: PropTypes.func.isRequired,
+  listCart: PropTypes.object
 };
 
 export default connect(
   state => {
-    const { session, entities: { users }, lang } = state;
+    const { session, entities: { users }, lang, listCart } = state;
     const user = users[session.login];
-    return { session, user, lang };
+    return { session, user, lang, listCart };
   },
-  { logout }
+  { logout, enable }
 )(SessionBar);

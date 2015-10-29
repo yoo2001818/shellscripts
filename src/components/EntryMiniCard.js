@@ -8,6 +8,7 @@ import moment from 'moment';
 import { star, unstar } from '../actions/entry.js';
 
 import UserMiniCard from './UserMiniCard.js';
+import AddToListCart from './AddToListCart.js';
 import ToolTip from './ui/ToolTip.js';
 import Translated from './ui/Translated.js';
 import sliceEllipsis from '../utils/sliceEllipsis.js';
@@ -29,24 +30,27 @@ class EntryMiniCard extends Component {
     return (
       <div className='entry-mini-card'>
         <div className='head'>
-          {starable ? (
             <div className='status'>
-              <button className='action'
-                onClick={this.handleToggleStar.bind(this)}
-              >
-                <i className='fa fa-star' />
-                <Translated name={entry.voted ? 'unstar' : 'star'} />
-              </button>
-              <div className='state'>
-                {entry.stars}
-              </div>
-            </div>
-          ) : (
-            <div className='status'>
-              <i className='fa fa-star' />
-              {entry.stars}
-            </div>
-          )}
+              {starable ? (
+                <span className='stars'>
+                  <button className='action'
+                    onClick={this.handleToggleStar.bind(this)}
+                  >
+                    <i className='fa fa-star' />
+                    <Translated name={entry.voted ? 'unstar' : 'star'} />
+                  </button>
+                  <div className='state'>
+                    {entry.stars}
+                  </div>
+                </span>
+              ) : (
+                <span className='stars raw'>
+                  <i className='fa fa-star' />
+                  {entry.stars}
+                </span>
+              )}
+              <AddToListCart entry={entry} />
+          </div>
           { !hideUser ? (
             <div className='author'>
               <UserMiniCard user={author} hideUsername={true} />

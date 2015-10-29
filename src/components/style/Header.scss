@@ -38,6 +38,7 @@ header {
     text-align: right;
     padding-right: 1rem;
     box-sizing: border-box;
+    z-index: 1;
     a:hover {
       text-decoration: none;
     }
@@ -64,7 +65,7 @@ header {
     position: absolute;
     top: 0;
     right: 0;
-    width: 16em;
+    width: 13em;
     text-align: right;
     overflow: visible;
     white-space: nowrap;
@@ -85,6 +86,12 @@ header {
       border-radius: 3pt;
       box-sizing: border-box;
       box-shadow: 0 1px 3px -1px #000;
+    }
+    .cart-title {
+      text-decoration: none;
+      .fa {
+        margin-right: 0.3em;
+      }
     }
   }
 }

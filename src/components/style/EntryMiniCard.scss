@@ -20,28 +20,37 @@
         margin: 0;
         display: inline-block;
         width: auto;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
         vertical-align: middle;
         height: 2.2em;
-        line-height: 2.2em;
         padding: 0 0.6em;
+        margin: 0 0.3em;
       }
-      &>.state {
-        box-sizing: border-box;
-        border-radius: 0.2em;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-        font-size: 1em;
-        color: #555;
-        background-color: #FFFFFF;
-        display: inline-block;
-        line-height: 2.2em;
-        padding: 0 0.8em;
-        border: 1px solid #94BDEB;
-        border-left: none;
-        height: 2.2em;
-        vertical-align: middle;
+      &>.stars {
+        button {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+          margin: 0;
+        }
+        &>.state {
+          box-sizing: border-box;
+          border-radius: 0.2em;
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+          font-size: 1em;
+          color: #555;
+          background-color: #FFFFFF;
+          display: inline-block;
+          line-height: 2.2em;
+          padding: 0 0.8em;
+          border: 1px solid #94BDEB;
+          border-left: none;
+          height: 2.2em;
+          vertical-align: middle;
+        }
+        &.raw {
+          vertical-align: middle;
+          padding-right: 0.3em;
+        }
       }
     }
     &>.title {
