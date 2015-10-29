@@ -22,8 +22,21 @@ class EntryMiniCard extends Component {
     }
     return star(author.username, entry.name);
   }
+  shouldComponentUpdate(nextProps) {
+    const { rawEntry } = nextProps;
+    const entry = rawEntry;
+    for (var key in entry) {
+      if (Array.isArray(this.cache[key])) {
+        if (this.cache[key].length !== entry[key].length) return true;
+      } else {
+        if (this.cache[key] !== entry[key]) return true;
+      }
+    }
+    return false;
+  }
   render() {
-    const { entry, hideUser, showFull, starable } = this.props;
+    const { rawEntry, entry, hideUser, showFull, starable } = this.props;
+    this.cache = Object.assign({}, rawEntry);
     const { author, tags } = entry;
     const permalink = `${author.username}/${entry.name}`;
     if (entry.deleted) return false;
@@ -101,6 +114,7 @@ class EntryMiniCard extends Component {
 }
 
 EntryMiniCard.propTypes = {
+  rawEntry: PropTypes.object,
   entry: PropTypes.object.isRequired,
   showLink: PropTypes.bool,
   hideUser: PropTypes.bool,
@@ -118,7 +132,8 @@ export default connect(
       entry: Object.assign({}, entry, {
         author: users[entry.author],
         tags: entry.tags.map(id => tags[id])
-      })
+      }),
+      rawEntry: entry
     };
   },
   { star, unstar }

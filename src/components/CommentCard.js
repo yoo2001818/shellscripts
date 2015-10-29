@@ -37,8 +37,16 @@ class CommentCard extends Component {
     return session.login === author.login ||
       (sessionUser && sessionUser.isAdmin);
   }
+  shouldComponentUpdate(nextProps, nextState) {
+    if (!this.state || this.state.editing || nextState) return true;
+    return !(this.cache &&
+      this.cache.description === nextProps.comment.description);
+  }
   render() {
     const { author, comment, entry } = this.props;
+    this.cache = {
+      description: comment.description
+    };
     // Just hide the deleted comment
     if (comment.deleted) {
       return false;
