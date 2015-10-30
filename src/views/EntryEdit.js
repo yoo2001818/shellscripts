@@ -13,6 +13,7 @@ class EntryEdit extends Component {
       <div id='entry-edit'>
         <Helmet title={__('editEntryTitle')} />
         <EntryCreateForm author={author}
+          entry={entry}
           initialValues={entry} modifying
           formKey={entry.type} />
       </div>

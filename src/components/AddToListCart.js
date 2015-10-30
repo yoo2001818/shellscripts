@@ -25,8 +25,8 @@ class AddToListCart extends Component {
     }
   }
   render() {
-    const { listCart } = this.props;
-    if (!listCart.enabled) return false;
+    const { listCart, ignoreDisabled } = this.props;
+    if (!listCart.enabled && !ignoreDisabled) return false;
     return (
       // I'm not sure why I'm using span tag.
       <span className='list-cart-add'>
@@ -59,7 +59,8 @@ AddToListCart.propTypes = {
   entry: PropTypes.object,
   add: PropTypes.func,
   remove: PropTypes.func,
-  showRemoveIcon: PropTypes.bool
+  showRemoveIcon: PropTypes.bool,
+  ignoreDisabled: PropTypes.bool
 };
 
 export default connect(

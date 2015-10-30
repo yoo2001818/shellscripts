@@ -5,10 +5,33 @@ $break-small: 30em;
   &>.list {
     max-width: 25em;
     max-height: 20em;
+    margin-bottom: 0.1em;
     overflow: auto;
     // Hide on mobile devices; it's too big.
     @media screen and (max-width: $break-small) {
       display: none;
+    }
+    .tip {
+      padding: 0.3em 0;
+      font-size: 0.9em;
+      white-space: normal;
+      min-width: 15em;
+      color: #333;
+      text-align: center;
+    }
+  }
+  ul {
+    text-align: right;
+  }
+  &.editor {
+    padding: 0.6em 0.8em;
+    border: 1px solid #ccc;
+    border-radius: 0.3em;
+    text-align: left;
+    box-shadow: 0 1px 2px -1px rgba(0, 0, 0, 0.5);
+    margin: 1em 0;
+    &>.list {
+      max-width: 100%;
     }
   }
 }

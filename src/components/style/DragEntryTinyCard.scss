@@ -5,6 +5,9 @@
   padding-right: 2em;
   overflow: hidden;
   cursor: move;
+  &:last-child {
+    border-bottom: none;
+  }
   &.dragging {
     opacity: 0.3;
   }

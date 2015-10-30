@@ -2,22 +2,29 @@ import './style/ListCart.scss';
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-
+import { Link } from 'react-router';
 import { DragDropContext as dragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import classNames from 'classnames';
 
-import { add, remove, swap } from '../actions/listCart.js';
+import { add, remove, swap, confirmDisable } from '../actions/listCart.js';
 import DragEntryTinyCard from './DragEntryTinyCard.js';
+import Translated from './ui/Translated.js';
+import InputTip from './ui/InputTip.js';
 
 class ListCart extends Component {
+  handleCancelList(e) {
+    this.props.confirmDisable();
+    e.preventDefault();
+  }
   render() {
-    const { listCart, entries } = this.props;
-    if (!listCart.enabled) return false;
+    const { listCart, entries, editor } = this.props;
+    if (!listCart.enabled && !editor) return false;
     const list = listCart.list.map(entry => Object.assign({}, entries[entry], {
       entryId: entry
     }));
     return (
-      <div className='list-cart'>
+      <div className={classNames('list-cart', { editor })}>
         <div className='list'>
           {
             list.map((entry, key) => (
@@ -28,10 +35,30 @@ class ListCart extends Component {
                 swap={this.props.swap} />
             ))
           }
+          { list.length === 0 ? (
+            <div className='tip'>
+              <Translated name='listInsertTip' />
+            </div>
+          ) : false }
         </div>
-        <div className='actions'>
-          <button>수정</button>
-        </div>
+        { !editor ? (
+          <div className='actions'>
+            <ul>
+              { list.length > 0 ? (
+                <li>
+                  <Link to='/new/list'>
+                    <Translated name='listCartWrite' />
+                  </Link>
+                </li>
+              ) : false }
+              <li>
+                <Link to='/new/list' onClick={this.handleCancelList.bind(this)}>
+                  <Translated name='listCartCancel' />
+                </Link>
+              </li>
+            </ul>
+          </div>
+        ) : false }
       </div>
     );
   }
@@ -40,7 +67,9 @@ class ListCart extends Component {
 ListCart.propTypes = {
   listCart: PropTypes.object,
   entries: PropTypes.object,
-  swap: PropTypes.func
+  swap: PropTypes.func,
+  confirmDisable: PropTypes.func,
+  editor: PropTypes.bool
 };
 
 export default dragDropContext(HTML5Backend)(connect(
@@ -48,5 +77,5 @@ export default dragDropContext(HTML5Backend)(connect(
     listCart: store.listCart,
     entries: store.entities.entries
   }),
-  { add, remove, swap }
+  { add, remove, swap, confirmDisable }
 )(ListCart));

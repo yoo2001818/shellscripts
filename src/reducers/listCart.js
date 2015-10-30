@@ -33,11 +33,13 @@ export default function listCart(state = {
     });
   case ListCartActions.ENABLE:
     return Object.assign({}, state, {
-      enabled: true
+      enabled: true,
+      list: payload || []
     });
   case ListCartActions.DISABLE:
     return Object.assign({}, state, {
-      enabled: false
+      enabled: false,
+      list: []
     });
   }
   return state;

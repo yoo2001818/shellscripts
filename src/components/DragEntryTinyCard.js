@@ -45,7 +45,7 @@ class RawEntryTinyCard extends Component {
       <div className={classNames('entry-tiny-card', {
         dragging: isDragging
       })}>
-        <AddToListCart entry={entry} showRemoveIcon />
+        <AddToListCart entry={entry} showRemoveIcon ignoreDisabled />
         <div className='author'>
           <UserMiniCard user={author} hideUsername={true} />
         </div>

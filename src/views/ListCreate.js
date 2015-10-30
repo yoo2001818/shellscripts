@@ -14,7 +14,10 @@ class ListCreate extends Component {
       <div id='entry-create'>
         <Helmet title={__('createEntryTitle')} />
         <EntryCreateForm author={user} initialValues={{
-          type: 'list'
+          // This is to avoid React bug #2533
+          // https://github.com/facebook/react/issues/2533
+          brief: '', description: '', script: '', author: user.username,
+          tags: [], type: 'list'
         }} formKey='list' />
       </div>
     );

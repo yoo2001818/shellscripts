@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { isLength, matches } from 'validator';
 import { create, edit, load } from '../../actions/entry.js';
+import { disable } from '../../actions/listCart.js';
 
 import Translated from '../ui/Translated.js';
 import translate from '../../lang/index.js';
@@ -14,6 +15,7 @@ import LoadingOverlay from '../ui/LoadingOverlay.js';
 import TagSelect from '../TagSelect.js';
 import AutoExpandTextArea from 'react-textarea-autosize';
 import UserMiniCard from '../UserMiniCard.js';
+import ListCart from '../ListCart.js';
 
 // Ever heard of universal React? :(
 let AceEditor;
@@ -39,13 +41,19 @@ class EntryCreateForm extends Component {
   handleSubmit(data) {
     let doAction = create;
     if (this.props.modifying) doAction = edit;
-    this.props.dispatch(doAction(data))
+    this.props.dispatch(doAction(Object.assign({}, data, {
+      children: this.props.listCart.list
+    })))
     .then(action => {
       if (!action.payload.result) return;
       const { history } = this.context;
       // Redirect to created entry. :/
       history.pushState(null, '/' + action.payload.result);
     });
+    this.props.dispatch(disable());
+  }
+  componentDidMount() {
+    // TODO Here, we overwrite cart data if cart is not available.
   }
   render() {
     const __ = translate(this.props.lang.lang);
@@ -119,22 +127,14 @@ class EntryCreateForm extends Component {
           ) : false }
           { type.value === 'list' ? (
             <div>
-              <InputTip>
-                <Translated name='listInsertTip' />
-              </InputTip>
+              <ListCart editor />
             </div>
           ) : false }
           { type.value === 'list' ? (
             <div className='footer'>
-              <button>
-                <Translated name='tempSave' />
-              </button>
               <button disabled={invalid}>
-                <Translated name='submit' />
+                <Translated name='save' />
               </button>
-              <InputTip>
-                <Translated name='tempSaveNote' />
-              </InputTip>
             </div>
           ) : (
             <div className='footer'>
@@ -159,7 +159,9 @@ EntryCreateForm.propTypes = {
   author: PropTypes.object,
   modifying: PropTypes.bool,
   entryLoading: PropTypes.bool,
-  type: PropTypes.string
+  type: PropTypes.string,
+  listCart: PropTypes.array,
+  entry: PropTypes.object
 };
 
 EntryCreateForm.contextTypes = {
@@ -232,7 +234,8 @@ export default connect(
   store => ({
     form: store.form,
     lang: store.lang,
-    entryLoading: store.entry.load && store.entry.load.loading
+    entryLoading: store.entry.load && store.entry.load.loading,
+    listCart: store.listCart
   })
 )(reduxForm({
   form: 'entryCreate',
