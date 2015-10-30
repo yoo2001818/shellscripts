@@ -22,8 +22,8 @@ export default function listCart(state = {
       newList.splice(payload, 1);
       return newState;
     case ListCartActions.SWAP:
-      newList[payload.from] = state[payload.to];
-      newList[payload.to] = state[payload.from];
+      newList[payload.from] = state.list[payload.to];
+      newList[payload.to] = state.list[payload.from];
       return newState;
     }
     break;
