@@ -89,6 +89,7 @@
   "listCartAdd": "Add",
   "listCartRemove": "Remove #$1",
   "listCartWrite": "Checkout list",
+  "listCartEdit": "Checkout and edit list",
   "listCartCancel": "Discard",
   "confirmListCartDisable": "Discard List",
   "confirmListCartDisableDescription": "Are you sure you want to discard the list you're making?",

@@ -10,7 +10,6 @@ import classNames from 'classnames';
 import { add, remove, swap, confirmDisable } from '../actions/listCart.js';
 import DragEntryTinyCard from './DragEntryTinyCard.js';
 import Translated from './ui/Translated.js';
-import InputTip from './ui/InputTip.js';
 
 class ListCart extends Component {
   handleCancelList(e) {
@@ -46,13 +45,19 @@ class ListCart extends Component {
             <ul>
               { list.length > 0 ? (
                 <li>
-                  <Link to='/new/list'>
-                    <Translated name='listCartWrite' />
-                  </Link>
+                  { listCart.target ? (
+                    <Link to={listCart.target}>
+                      <Translated name='listCartEdit' />
+                    </Link>
+                  ) : (
+                    <Link to='/new/list'>
+                      <Translated name='listCartWrite' />
+                    </Link>
+                  ) }
                 </li>
               ) : false }
               <li>
-                <Link to='/new/list' onClick={this.handleCancelList.bind(this)}>
+                <Link to='/' onClick={this.handleCancelList.bind(this)}>
                   <Translated name='listCartCancel' />
                 </Link>
               </li>

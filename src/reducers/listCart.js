@@ -2,7 +2,8 @@ import * as ListCartActions from '../actions/listCart.js';
 
 export default function listCart(state = {
   list: [],
-  enabled: false
+  enabled: false,
+  target: null
 }, action) {
   const { type, payload } = action;
 
@@ -34,12 +35,14 @@ export default function listCart(state = {
   case ListCartActions.ENABLE:
     return Object.assign({}, state, {
       enabled: true,
-      list: payload || []
+      list: (payload && payload.initial) || [],
+      target: (payload && payload.target)
     });
   case ListCartActions.DISABLE:
     return Object.assign({}, state, {
       enabled: false,
-      list: []
+      list: [],
+      target: null
     });
   }
   return state;

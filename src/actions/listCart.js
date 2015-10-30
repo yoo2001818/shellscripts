@@ -19,7 +19,10 @@ export const swap = createAction(SWAP, (objA, objB) => ({
 }));
 export const clear = createAction(CLEAR);
 
-export const enable = createAction(ENABLE);
+export const enable = createAction(ENABLE,
+  (initial = [], target) => ({
+    initial, target
+  }));
 export const disable = createAction(DISABLE);
 
 export function confirmDisable() {
@@ -35,6 +38,31 @@ export function confirmDisable() {
           name: 'yes',
           type: 'red-button',
           action: disable()
+        },
+        {
+          name: 'no'
+        }
+      ]
+    }));
+  };
+}
+
+export function confirmEnable(data, target) {
+  return (dispatch, getState) => {
+    const { listCart } = getState();
+    if (!listCart.enabled) {
+      return dispatch(enable(data, target));
+    }
+    dispatch(open({
+      title: 'confirmListCartEnable',
+      body: {
+        translated: 'confirmListCartEnableDescription'
+      },
+      choices: [
+        {
+          name: 'yes',
+          type: 'red-button',
+          action: enable(data, target)
         },
         {
           name: 'no'

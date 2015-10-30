@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { isLength, matches } from 'validator';
 import { create, edit, load } from '../../actions/entry.js';
-import { disable } from '../../actions/listCart.js';
+import { disable, enable } from '../../actions/listCart.js';
 
 import Translated from '../ui/Translated.js';
 import translate from '../../lang/index.js';
@@ -52,8 +52,27 @@ class EntryCreateForm extends Component {
     });
     this.props.dispatch(disable());
   }
-  componentDidMount() {
-    // TODO Here, we overwrite cart data if cart is not available.
+  componentWillMount() {
+    // Here, we overwrite cart data if children are available.
+    const { entry, author, listCart } = this.props;
+    if (entry && entry.type === 'list') {
+      const editLink = `/${author.username}/${entry.name}/edit`;
+      if (listCart.target !== editLink) {
+        this.props.dispatch(enable(entry.children, editLink));
+      }
+    }
+  }
+  componentDidUpdate() {
+    const { entry, author, listCart } = this.props;
+    if (entry && entry.type === 'list') {
+      const editLink = `/${author.username}/${entry.name}/edit`;
+      if (!listCart.enabled || listCart.target !== editLink) {
+        // You don't belong here!
+        const { history } = this.context;
+        // Redirect back. woot
+        history.goBack();
+      }
+    }
   }
   render() {
     const __ = translate(this.props.lang.lang);
@@ -160,7 +179,7 @@ EntryCreateForm.propTypes = {
   modifying: PropTypes.bool,
   entryLoading: PropTypes.bool,
   type: PropTypes.string,
-  listCart: PropTypes.array,
+  listCart: PropTypes.object,
   entry: PropTypes.object
 };
 

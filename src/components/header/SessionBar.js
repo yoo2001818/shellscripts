@@ -6,7 +6,7 @@ import DropDownMenu from '../ui/DropDownMenu.js';
 import Translated from '../ui/Translated.js';
 import ListCart from '../ListCart.js';
 import { logout } from '../../actions/session.js';
-import { enable } from '../../actions/listCart.js';
+import { confirmEnable } from '../../actions/listCart.js';
 import translate from '../../lang/index.js';
 import userPlaceholder from '../../assets/userPlaceholder.png';
 
@@ -24,7 +24,7 @@ class SessionBar extends Component {
   }
   render() {
     const __ = translate(this.props.lang.lang);
-    const { session, user } = this.props;
+    const { session, user, listCart } = this.props;
     if (session.load.loading) {
       return (
         <div className='session loading'>
@@ -40,13 +40,20 @@ class SessionBar extends Component {
       }
       return (
         <div className='session'>
-          { this.props.listCart.enabled ? (
+          { listCart.enabled ? (
             <DropDownMenu title={(
               <span className='cart-title'>
-                <i className='fa fa-list' />
-                {`(${this.props.listCart.list.length})`}
+                { listCart.target ? (
+                  <i className='fa fa-pencil' />
+                ) : (
+                  <i className='fa fa-list' />
+                ) }
+                {`(${listCart.list.length})`}
               </span>
-            )} caption={__('listEdit')} href='/new/list' preventClose>
+            )}
+            caption={__('listEdit')}
+            href={listCart.target || '/new/list'}
+            preventClose>
               <ListCart />
             </DropDownMenu>
           ) : false }
@@ -128,5 +135,5 @@ export default connect(
     const user = users[session.login];
     return { session, user, lang, listCart };
   },
-  { logout, enable }
+  { logout, enable: confirmEnable }
 )(SessionBar);
