@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 
 import DropDownMenu from '../ui/DropDownMenu.js';
 import Translated from '../ui/Translated.js';
+import ListCart from '../ListCart.js';
 import { logout } from '../../actions/session.js';
 import { enable } from '../../actions/listCart.js';
 import translate from '../../lang/index.js';
@@ -46,9 +47,7 @@ class SessionBar extends Component {
                 {`(${this.props.listCart.list.length})`}
               </span>
             )} caption={__('listEdit')} href='/new/list' preventClose>
-              <div>
-                List displayed here!
-              </div>
+              <ListCart />
             </DropDownMenu>
           ) : false }
           <DropDownMenu title={(

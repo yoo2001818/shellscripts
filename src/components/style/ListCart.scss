@@ -1,0 +1,84 @@
+$break-small: 500pt;
+.list-cart {
+  margin: 0.2em 0.5em;
+  min-width: 6em;
+  &>.list {
+    max-width: 26em;
+    max-height: 20em;
+    overflow: auto;
+    // Hide on mobile devices; it's too big.
+    @media screen and (max-width: $break-small) {
+      display: none;
+    }
+  }
+}
+
+.entry-tiny-card {
+  padding: 0.3em 0;
+  border-bottom: 1px solid #ccc;
+  font-size: 0.9em;
+  padding-right: 2em;
+  overflow: hidden;
+  &>.title {
+    display: inline-block;
+    vertical-align: middle;
+    width: auto;
+    font-size: 1em;
+    font-weight: bold;
+    margin: 0.4em 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+    .fa {
+      color: #777;
+      padding-right: 0.3rem;
+      font-size: 0.9em;
+      line-height: 1rem;
+      font-weight: normal;
+      vertical-align: bottom;
+    }
+    &>a {
+      color: #000;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  &>.author {
+    display: inline-block;
+    vertical-align: middle;
+    &>.user-mini-card:after {
+      content: '/';
+      color: #888;
+      font-weight: normal;
+      font-size: 1em;
+      padding: 0 0.3em;
+    }
+  }
+  &>.list-cart-add {
+    z-index: 1;
+    position: relative;
+    background-color: #fff;
+    float: right;
+    line-height: 2.5em;
+    margin: 0;
+    padding: 0 0.3em;
+    margin-right: -2em;
+    button {
+      padding: 0;
+      margin: 0;
+      border: none;
+      background: none;
+    }
+    .caption {
+      display: none;
+    }
+  }
+  &:after {
+    display: block;
+    font-size: 0;
+    content: '';
+    clear: both;
+  }
+}

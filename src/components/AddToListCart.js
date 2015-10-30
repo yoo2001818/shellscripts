@@ -36,12 +36,18 @@ class AddToListCart extends Component {
           })}
           onClick={this.handleToggle.bind(this)}
         >
-          <i className='fa fa-list' />
-          <Translated
-            name={this.hasItem() ? 'listCartRemove' : 'listCartAdd'}
-          >
-            {this.getIndex() + 1}
-          </Translated>
+          { this.props.showRemoveIcon ? (
+            <i className='fa fa-trash' />
+          ) : (
+            <i className='fa fa-list' />
+          ) }
+          <span className='caption'>
+            <Translated
+              name={this.hasItem() ? 'listCartRemove' : 'listCartAdd'}
+            >
+              {this.getIndex() + 1}
+            </Translated>
+          </span>
         </button>
       </span>
     );
@@ -52,7 +58,8 @@ AddToListCart.propTypes = {
   listCart: PropTypes.object,
   entry: PropTypes.object,
   add: PropTypes.func,
-  remove: PropTypes.func
+  remove: PropTypes.func,
+  showRemoveIcon: PropTypes.bool
 };
 
 export default connect(
