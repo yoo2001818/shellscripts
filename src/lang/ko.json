@@ -99,6 +99,7 @@
   "confirmListCartEnableDescription": "정말 편집중인 리스트를 버리고 새로 여시겠습니까?",
   "disable": "비활성화",
   "enable": "활성화",
+  "comment": "댓글",
   "FIELD_RESERVED": "예약된 단어입니다",
   "FIELD_TOO_LONG": "길이가 너무 깁니다",
   "AUTH_INVALID_USERNAME": "올바른 사용자 이름이 아닙니다",

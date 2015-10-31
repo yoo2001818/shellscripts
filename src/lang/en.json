@@ -99,6 +99,7 @@
   "tempSaveNote": "Saved data will be stored on your web browser.",
   "disable": "Disable",
   "enable": "Enable",
+  "comment": "Comment",
   "FIELD_RESERVED": "Reserved word",
   "FIELD_TOO_LONG": "Value is too long",
   "AUTH_INVALID_USERNAME": "Invalid username",

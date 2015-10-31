@@ -61,9 +61,9 @@ class CommentForm extends Component {
           <div className='container'>
             <UserMiniCard user={author} />
             <div className='description'>
-              <ErrorShow placeholder={__('subject')} noSuccess
+              <ErrorShow placeholder={__('comment')} noSuccess
                 {...description}>
-                <AutoExpandTextArea placeholder={__('subject')}
+                <AutoExpandTextArea placeholder={__('comment')}
                   className='noresize' noNewLine {...description} />
               </ErrorShow>
             </div>
