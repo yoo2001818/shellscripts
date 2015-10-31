@@ -1,4 +1,5 @@
 import * as ListCartActions from '../actions/listCart.js';
+import * as SessionActions from '../actions/session.js';
 
 export default function listCart(state = {
   list: [],
@@ -39,6 +40,7 @@ export default function listCart(state = {
       target: (payload && payload.target)
     });
   case ListCartActions.DISABLE:
+  case SessionActions.LOGOUT:
     return Object.assign({}, state, {
       enabled: false,
       list: [],

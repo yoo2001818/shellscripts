@@ -108,7 +108,10 @@ export default router;
  * @apiUse AuthRequired
  */
 router.get('/session/', authRequired, (req, res) => {
-  res.json(req.user);
+  // Always reveal email address to user himself
+  res.json(Object.assign({}, req.user.toJSON(), {
+    email: req.user.email
+  }));
 });
 
 /**

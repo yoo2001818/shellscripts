@@ -44,6 +44,11 @@ export const User = sequelize.define('user', inject({
     allowNull: false,
     defaultValue: true
   },
+  showEmail: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: true
+  },
   name: Sequelize.STRING,
   bio: Sequelize.TEXT,
   photo: Sequelize.STRING,
@@ -68,6 +73,7 @@ export const User = sequelize.define('user', inject({
       });
       delete obj.passports;
       delete obj.updatedAt;
+      if (!obj.showEmail) delete obj.email;
       return obj;
     }
   }

@@ -82,6 +82,15 @@ $break-small: 500pt;
       //background-color: #f9f9f9;
       //border-bottom: 1px solid #ccc;
     }
+    &>h2 {
+      font-size: 1.1em;
+      font-weight: bold;
+      margin: 0;
+      padding: 0.8rem 1rem;
+      color: #333;
+      //background-color: #f9f9f9;
+      //border-bottom: 1px solid #ccc;
+    }
     .localMethod, .authMethod {
       border-bottom: 1px solid #ccc;
       &:last-child {
@@ -126,6 +135,7 @@ $break-small: 500pt;
                 display: inline-block;
                 vertical-align: text-top;
                 margin: 0 0.2em;
+                max-width: 15em;
               }
             }
           }
@@ -149,15 +159,15 @@ $break-small: 500pt;
     }
     &>.content {
       padding: 1em;
-      .input, .errorInput {
+      .errorInput {
         max-width: 20em;
       }
       .footer {
         text-align: left;
         button {
           width: auto;
-          padding-left: 1.5em;
-          padding-right: 1.5em;
+          padding-left: 1em;
+          padding-right: 1em;
           min-width: 8em;
         }
         &.right {

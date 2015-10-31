@@ -17,7 +17,13 @@ function checkModifiable(req, res, next) {
 export const userRouter = new Express.Router();
 
 userRouter.get('/', (req, res) => {
-  res.json(req.selUser);
+  if (req.selUser === req.user || (req.user && req.user.isAdmin)) {
+    res.json(Object.assign({}, req.selUser.toJSON(), {
+      email: req.selUser.email
+    }));
+  } else {
+    res.json(req.selUser);
+  }
 });
 
 // Adminification (is that even a word?) block. should be removed I suppose.
@@ -334,6 +340,44 @@ userRouter.post('/finalize', checkModifiable, (req, res) => {
     res.status(500);
     res.json(err);
   });
+});
+
+/**
+ * @api {post} /user/email Update email address
+ * @apiGroup User
+ * @apiName SetUserEmail
+ * @apiParam (Body) {String} email The email address.
+ * @apiParam (Body) {Boolean} showEmail Whether if show email to others
+ * @apiDescription Updates and returns the user email.
+ *
+ *   This will fail if user hasn't signed in.
+ *
+ * @apiSuccessExample {json} If user has signed in:
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "username": "Username",
+ *     "email": "Email"
+ *   }
+ * @apiUse AuthRequired
+ * @apiUse modifiable
+ * @apiPermission modifiable
+ * @apiErrorExample {json} If email conflicts:
+ *   HTTP/1.1 409 Conflict
+ *   {
+ *     "id": "AUTH_EMAIL_EXISTS",
+ *     "message": "Email address is already in use."
+ *   }
+ */
+userRouter.post('/email', checkModifiable, (req, res) => {
+  const { email, showEmail } = req.body;
+  req.selUser.update({
+    email, showEmail
+  })
+  .then(() => res.json(req.selUser),
+    (err) => {
+      res.status(500);
+      res.json(err);
+    });
 });
 
 userRouter.delete('/', checkModifiable, (req, res) => {

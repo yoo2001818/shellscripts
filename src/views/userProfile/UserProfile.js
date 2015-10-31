@@ -62,10 +62,14 @@ class UserProfile extends Component {
             <p className='username'>{user.username}</p>
           </div>
           <div className='contact'>
-            <p className='email'>
-              <i className="fa fa-envelope-o icon"></i>
-              <a href={`mailto:${user.email}`} target='_blank'>{user.email}</a>
-            </p>
+            { user.showEmail ? (
+              <p className='email'>
+                <i className="fa fa-envelope-o icon"></i>
+                <a href={`mailto:${user.email}`} target='_blank'>
+                  {user.email}
+                </a>
+              </p>
+            ) : false }
             { user.website ? (
               <p className='website'>
                 <i className="fa fa-link icon"></i>

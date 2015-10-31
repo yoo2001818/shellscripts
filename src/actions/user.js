@@ -5,6 +5,7 @@ import { User } from '../schema/index.js';
 export const FETCH = 'USER_FETCH';
 export const SET_PROFILE = 'USER_SET_PROFILE';
 export const SET_ENABLED = 'USER_SET_ENABLED';
+export const SET_EMAIL = 'USER_SET_EMAIL';
 export const UPLOAD_PHOTO = 'USER_UPLOAD_PHOTO';
 
 export const fetch = createAction(FETCH,
@@ -32,6 +33,16 @@ export const setEnabled = createAction(SET_ENABLED,
 
 export const setProfile = createAction(SET_PROFILE,
   (username, data) => api(POST, `/users/${username}`, {
+    body: data
+  }),
+  () => ({
+    errors: [404],
+    schema: User
+  })
+);
+
+export const setEmail = createAction(SET_EMAIL,
+  (username, data) => api(POST, `/users/${username}/email`, {
     body: data
   }),
   () => ({

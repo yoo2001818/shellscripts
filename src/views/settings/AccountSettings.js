@@ -5,6 +5,7 @@ import { save as saveLang } from '../../actions/lang.js';
 import translate, { localeList } from '../../lang/index.js';
 import Translated from '../../components/ui/Translated.js';
 import LabelInput from '../../components/ui/LabelInput.js';
+import EmailChangeForm from '../../components/forms/EmailChangeForm.js';
 
 class AccountSettings extends Component {
   handleLangChange(e) {
@@ -34,17 +35,30 @@ class AccountSettings extends Component {
             </LabelInput>
           </div>
         </section>
+        <section>
+          <h2>
+            <Translated name='emailTitle' />
+          </h2>
+          <div className='content'>
+            <EmailChangeForm initialValues={this.props.user} />
+          </div>
+        </section>
       </div>
     );
   }
 }
 
 AccountSettings.propTypes = {
+  user: PropTypes.object,
   lang: PropTypes.object,
   saveLang: PropTypes.func
 };
 
 export default connect(
-  store => ({lang: store.lang}),
+  state => {
+    const { session, lang, entities: { users } } = state;
+    const user = users[session.login];
+    return { user, lang };
+  },
   { saveLang }
 )(AccountSettings);

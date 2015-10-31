@@ -15,6 +15,7 @@ export default class SortOrderSelect extends Component {
   }
   render() {
     const { list } = this.props;
+    if (list == null) return false;
     return (
       <div className='sort-order-select'>
         <DropDownMenu title={(

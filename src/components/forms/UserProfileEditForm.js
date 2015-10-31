@@ -107,15 +107,17 @@ class UserProfileEditForm extends Component {
               <p className='username'>{user.username}</p>
             </div>
             <div className='contact'>
-              {/*
-              Email is not editable now...
-              <ErrorInput className='email' type='text'
-                placeholder={__('email')} {...fields.email}/>
-              */}
-              <p className='email'>
-                <i className="fa fa-envelope-o icon"></i>
-                <a href={`mailto:${user.email}`}>{user.email}</a>
-              </p>
+              { user.showEmail ? (
+                <p className='email'>
+                  <i className="fa fa-envelope-o icon"></i>
+                  <a href={`mailto:${user.email}`}>{user.email}</a>
+                </p>
+              ) : (
+                <p className='email'>
+                  <i className="fa fa-envelope-o icon"></i>
+                  <Translated name='emailHidden' />
+                </p>
+              ) }
               <ErrorInput className='website' type='text'
                 placeholder={__('website')} {...fields.website}/>
             </div>
