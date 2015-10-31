@@ -4,7 +4,7 @@ import ToolTip from './ToolTip.js';
 import classNames from 'classnames';
 import React, { Component, PropTypes, cloneElement } from 'react';
 
-export default class Dialog extends Component {
+export default class DropDownMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -67,7 +67,7 @@ export default class Dialog extends Component {
   }
 }
 
-Dialog.propTypes = {
+DropDownMenu.propTypes = {
   href: PropTypes.string,
   caption: PropTypes.string,
   children: PropTypes.any,

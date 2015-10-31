@@ -1,0 +1,23 @@
+.sort-order-select {
+  text-align: right;
+  margin: 0.5em;
+  .dropdown .button > a {
+    color: #333;
+  }
+  .sort-order-title {
+    font-size: 0.9em;
+    .title {
+      color: #333;
+      padding-right: 0.3em;
+    }
+    .description {
+      color: #666;
+    }
+  }
+  .content {
+    a {
+      white-space: nowrap;
+      text-decoration: none;
+    }
+  }
+}

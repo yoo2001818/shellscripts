@@ -1,12 +1,18 @@
 import React, { Component, PropTypes } from 'react';
-import { loadList, loadListMore } from '../actions/entry.js';
+import { fetchList, loadList, loadListMore } from '../actions/entry.js';
 import { connect } from 'react-redux';
 import InfiniteScroll from '../components/ui/InfiniteScroll.js';
 import Translated from '../components/ui/Translated.js';
 import EntryMiniCard from '../components/EntryMiniCard.js';
+import SortOrderSelect from '../components/SortOrderSelect.js';
 import Helmet from 'react-helmet';
 
 class Index extends Component {
+  handleChange(type) {
+    this.props.fetchList({
+      order: type
+    }, true);
+  }
   handleLoad() {
     return this.props.loadListMore()
     .then(action => {
@@ -31,6 +37,7 @@ class Index extends Component {
             content: 'noindex, follow'
           }
         ]} />
+        <SortOrderSelect list={list} onChange={this.handleChange.bind(this)}/>
         <InfiniteScroll
           loadMore={this.handleLoad.bind(this)}
           hasMore={!list.finished}
@@ -55,6 +62,7 @@ class Index extends Component {
 Index.propTypes = {
   entry: PropTypes.object,
   entities: PropTypes.object,
+  fetchList: PropTypes.func.isRequired,
   loadListMore: PropTypes.func.isRequired
 };
 
@@ -63,7 +71,7 @@ export const ConnectIndex = connect(
     entry: store.entry,
     entities: store.entities
   }),
-  { loadListMore }
+  { fetchList, loadListMore }
 )(Index);
 
 ConnectIndex.fetchData = function(store) {

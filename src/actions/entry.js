@@ -15,33 +15,36 @@ export const STAR = 'ENTRY_STAR';
 export const UNSTAR = 'ENTRY_UNSTAR';
 
 export const fetchList = createAction(FETCH_LIST,
-  lastIndex => api(GET, '/entries/', {
-    query: { lastIndex }
+  props => api(GET, '/entries/', {
+    query: props
   }),
-  (lastIndex, reset) => ({
+  (props, reset) => ({
     schema: arrayOf(Entry),
-    lastIndex, reset
+    order: props.order,
+    reset
   })
 );
 
 export const fetchUserList = createAction(FETCH_USER_LIST,
-  (username, lastIndex) => api(GET, `/entries/${username}`, {
-    query: { lastIndex }
+  (username, props) => api(GET, `/entries/${username}`, {
+    query: props
   }),
-  (username, lastIndex, reset) => ({
+  (username, props, reset) => ({
     schema: arrayOf(Entry),
-    lastIndex, reset, name: username.toLowerCase(),
+    order: props.order,
+    reset, name: username.toLowerCase(),
     errors: [404]
   })
 );
 
 export const fetchUserStarredList = createAction(FETCH_USER_STARRED_LIST,
-  (username, lastIndex) => api(GET, `/users/${username}/starred`, {
-    query: { lastIndex }
+  (username, props) => api(GET, `/users/${username}/starred`, {
+    query: props
   }),
-  (username, lastIndex, reset) => ({
+  (username, props, reset) => ({
     schema: arrayOf(Entry),
-    lastIndex, reset, name: username.toLowerCase(),
+    order: props.order,
+    reset, name: username.toLowerCase(),
     errors: [404]
   })
 );
@@ -100,14 +103,17 @@ export const unstar = createAction(UNSTAR,
   })
 );
 
-export function loadList(last) {
+export function loadList(last, order) {
   return (dispatch, getState) => {
     const { entry: { list } } = getState();
     if (list != null && new Date().valueOf() - list.loadedAt < 10000) {
       return Promise.resolve();
     }
     // This is 'refetch'.
-    return dispatch(fetchList(last, true));
+    return dispatch(fetchList({
+      lastIndex: last,
+      order: order || (list && list.order) || 'id'
+    }, true));
   };
 }
 
@@ -120,18 +126,25 @@ export function loadListMore() {
     if (list.load && list.load.loading) return Promise.resolve();
     // If list is null, cancel it.
     // if (list.lastIndex == null) return Promise.resolve();
-    return dispatch(fetchList(list.lastIndex));
+    return dispatch(fetchList({
+      lastIndex: list.lastIndex,
+      lastStar: list.lastStar,
+      order: list.order
+    }));
   };
 }
 
-export function loadUserList(username, last) {
+export function loadUserList(username, last, order) {
   return (dispatch, getState) => {
     const { entry: { userList } } = getState();
     const list = userList[username.toLowerCase()];
     if (list != null && new Date().valueOf() - list.loadedAt < 20000) {
       return Promise.resolve();
     }
-    return dispatch(fetchUserList(username, last, true));
+    return dispatch(fetchUserList(username, {
+      lastIndex: last,
+      order: order || (list && list.order) || 'id'
+    }, true));
   };
 }
 
@@ -145,18 +158,25 @@ export function loadUserListMore(username) {
     if (list && list.load && list.load.loading) return Promise.resolve();
     // If list is null, cancel it.
     // if (list.lastIndex == null) return Promise.resolve();
-    return dispatch(fetchUserList(username, list && list.lastIndex));
+    return dispatch(fetchUserList(username, {
+      lastIndex: list.lastIndex,
+      lastStar: list.lastStar,
+      order: list.order
+    }));
   };
 }
 
-export function loadUserStarredList(username, last) {
+export function loadUserStarredList(username, last, order) {
   return (dispatch, getState) => {
     const { entry: { userStarredList } } = getState();
     const list = userStarredList[username.toLowerCase()];
     if (list != null && new Date().valueOf() - list.loadedAt < 20000) {
       return Promise.resolve();
     }
-    return dispatch(fetchUserStarredList(username, last, true));
+    return dispatch(fetchUserStarredList(username, {
+      lastIndex: last,
+      order: order || (list && list.order) || 'id'
+    }, true));
   };
 }
 
@@ -170,7 +190,11 @@ export function loadUserStarredListMore(username) {
     if (list && list.load && list.load.loading) return Promise.resolve();
     // If list is null, cancel it.
     // if (list.lastIndex == null) return Promise.resolve();
-    return dispatch(fetchUserStarredList(username, list && list.lastIndex));
+    return dispatch(fetchUserStarredList(username, {
+      lastIndex: list.lastIndex,
+      lastStar: list.lastStar,
+      order: list.order
+    }));
   };
 }
 

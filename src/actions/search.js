@@ -9,21 +9,27 @@ export const SET_QUERY = 'SEARCH_SET_QUERY';
 export const SET_TEMP_QUERY = 'SEARCH_SET_TEMP_QUERY';
 
 export const fetch = createAction(FETCH,
-  (keyword, lastIndex) => api(GET, '/entries/', {
-    query: { lastIndex, keyword }
+  (keyword, props) => api(GET, '/entries/', {
+    query: Object.assign({}, props, {
+      keyword
+    })
   }),
-  (keyword, lastIndex, reset) => ({
+  (keyword, props, reset) => ({
     schema: arrayOf(Entry),
-    lastIndex, reset
+    order: props.order,
+    reset
   })
 );
 export const forceSetQuery = createAction(SET_QUERY);
 export const setTempQuery = createAction(SET_TEMP_QUERY);
 
-export function loadList(last) {
+export function loadList(last, order) {
   return (dispatch, getState) => {
-    const { search: { query } } = getState();
-    return dispatch(fetch(query, last, true));
+    const { search: { list, query } } = getState();
+    return dispatch(fetch(query, {
+      lastIndex: last,
+      order: order || (list && list.order) || 'id'
+    }, true));
   };
 }
 
@@ -36,7 +42,11 @@ export function loadListMore() {
     if (list.load && list.load.loading) return Promise.resolve();
     // If list is null, cancel it.
     // if (list.lastIndex == null) return Promise.resolve();
-    return dispatch(fetch(query, list.lastIndex));
+    return dispatch(fetch(query, {
+      lastIndex: list.lastIndex,
+      lastStar: list.lastStar,
+      order: list.order
+    }));
   };
 }
 

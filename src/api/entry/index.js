@@ -85,9 +85,11 @@ function checkModifiable(req, res, next) {
 }
 
 export function buildEntryGet(options) {
-  let { title, tags, username, userId, type, lastIndex } = options;
+  let { title, tags, username, userId, type, lastIndex, lastStar, order }
+    = options;
   const where = {};
   let include = [];
+  let orders = [];
   if (title != null) {
     where.title = {
       $iLike: title
@@ -134,23 +136,52 @@ export function buildEntryGet(options) {
   }
   // This shouldn't be done in here but whatever. :/
   lastIndex = parseInt(lastIndex);
-  if (!isNaN(lastIndex)) {
-    where.id = {
-      $lt: lastIndex
-    };
+  lastStar = parseInt(lastStar);
+  if (order === 'star') {
+    // Order by stars.
+    // http://use-the-index-luke.com/sql/partial-results/fetch-next-page
+    if (!isNaN(lastIndex) && !isNaN(lastStar)) {
+      where.stars = {
+        $lte: lastStar
+      };
+      where.$not = {
+        stars: lastStar,
+        id: {
+          $gte: lastIndex
+        }
+      };
+    }
+  } else if (order === 'idRev') {
+    if (!isNaN(lastIndex)) {
+      where.id = {
+        $gt: lastIndex
+      };
+    }
+  } else {
+    if (!isNaN(lastIndex)) {
+      where.id = {
+        $lt: lastIndex
+      };
+    }
   }
+  if (order === 'star') {
+    orders.push(['stars', 'DESC']);
+    orders.push(['id', 'DESC']);
+  } else if (order === 'idRev') {
+    orders.push(['id', 'ASC']);
+  } else {
+    orders.push(['id', 'DESC']);
+  }
+  orders.push([{
+    model: Tag,
+    as: 'tags'
+  }, 'name']);
   return {
     where,
     include,
     // TODO currently it's hardcoded. should be changed
     limit: 20,
-    order: [
-      ['id', 'DESC'],
-      [{
-        model: Tag,
-        as: 'tags'
-      }, 'name']
-    ],
+    order: orders,
     attributes: {
       exclude: ['userId', 'author', 'script', 'description', 'requiresRoot']
     }
@@ -174,6 +205,8 @@ export default router;
  * @apiParam (Query) {String[]} [tags] The entries' tags to search
  * @apiParam (Query) {String} [username] The entries' username to search
  * @apiParam (Query) {String} [type] The entries' type
+ * @apiParam (Query) {String="id","idRev","star"} [order] The loading order
+ * @apiParam (Query) {Integer} [lastStar] The last entry's stars you've seen
  * @apiParam (Query) {Integer} [lastIndex] The last entry's ID you've seen
  * @apiDescription Returns entries matching the criteria, or lists all entries
  *   if no criteria was given.
@@ -204,11 +237,10 @@ router.get('/entries/', (req, res) => {
       // If there are more tags than 33% of keywords, continue as tag serach
       let ignoreTitle = tagNames.length >= keywords.length / 3;
       // Then... build query and continue
-      Entry.findAll(buildEntryGet({
-        lastIndex: req.query.lastIndex,
+      Entry.findAll(buildEntryGet(Object.assign({}, req.query, {
         tags: ignoreTitle ? tagNames : undefined,
         title: !ignoreTitle ? `%${keyword}%` : undefined
-      }))
+      })))
       .then(entries => {
         res.json(entries.map(entry => {
           let displayEntry = entry.toJSON();

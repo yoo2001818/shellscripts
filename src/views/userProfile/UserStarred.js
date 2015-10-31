@@ -1,16 +1,22 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import { loadUserStarredList, loadUserStarredListMore }
+import { fetchUserStarredList, loadUserStarredList, loadUserStarredListMore }
   from '../../actions/entry.js';
 import Translated from '../../components/ui/Translated.js';
 import InfiniteScroll from '../../components/ui/InfiniteScroll.js';
 import EntryMiniCard from '../../components/EntryMiniCard.js';
+import SortOrderSelect from '../../components/SortOrderSelect.js';
 import UserProfile from './UserProfile.js';
 
 class UserStarred extends Component {
   constructor(props) {
     super(props);
+  }
+  handleChange(type) {
+    this.props.fetchUserStarredList(this.props.user.username, {
+      order: type
+    }, true);
   }
   handleLoadList() {
     return this.props.loadUserStarredListMore(this.props.user.username)
@@ -35,6 +41,7 @@ class UserStarred extends Component {
         <Helmet title={docTitle} />
         <UserProfile user={user} selected='starred' />
         <div className='small-content'>
+          <SortOrderSelect list={list} onChange={this.handleChange.bind(this)}/>
           <InfiniteScroll
             loadMore={this.handleLoadList.bind(this)}
             hasMore={list && !list.finished}
@@ -61,6 +68,7 @@ UserStarred.propTypes = {
   user: PropTypes.object,
   entries: PropTypes.object,
   list: PropTypes.object,
+  fetchUserStarredList: PropTypes.func.isRequired,
   loadUserStarredListMore: PropTypes.func.isRequired
 };
 
@@ -72,7 +80,7 @@ const ConnectUserStarred = connect(
       list: entry.userStarredList[user.login], entries
     };
   },
-  { loadUserStarredListMore }
+  { fetchUserStarredList, loadUserStarredListMore }
 )(UserStarred);
 
 ConnectUserStarred.fetchData = function(store, routerState) {

@@ -1,7 +1,7 @@
 import pagination from './pagination.js';
 
-export default function subPagination(actionType, entityType, field) {
-  const builtPagination = pagination(actionType, entityType, field);
+export default function subPagination(actionType, entityType) {
+  const builtPagination = pagination(actionType, entityType);
   return function updateSubPagination(state = {}, action) {
     const { meta, payload } = action;
     if (meta && meta.name) {

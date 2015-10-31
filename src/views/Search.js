@@ -4,9 +4,10 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import qs from 'qs';
-import { setQuery, setTempQuery, loadListMore }
+import { setQuery, setTempQuery, loadList, loadListMore }
   from '../actions/search.js';
 import SearchBar from '../components/SearchBar.js';
+import SortOrderSelect from '../components/SortOrderSelect.js';
 import translate from '../lang/index.js';
 import InfiniteScroll from '../components/ui/InfiniteScroll.js';
 import Translated from '../components/ui/Translated.js';
@@ -20,6 +21,9 @@ class Search extends Component {
       if (action.error) throw action;
       return action;
     });
+  }
+  handleChange(type) {
+    this.props.loadList(null, type);
   }
   componentWillUnmount() {
     this.props.setTempQuery({
@@ -54,27 +58,32 @@ class Search extends Component {
         <SearchBar refCallback={this.handleSearchBar.bind(this)} />
         <div className='content small-content'>
           { query ? (
-            <InfiniteScroll
-              loadMore={this.handleLoad.bind(this)}
-              hasMore={!list.finished}
-              loader={(
-                <div className='loading content'>
-                  <i className="fa fa-refresh fa-spin"></i>
-                </div>
-              )}
-              errorRetry={(
-                <button onClick={this.handleLoad.bind(this)}>
-                  <Translated name='retry' />
-                </button>
-              )}
-            >
-              {renderList}
-              { list && list.ids.length == 0 ? (
-                <p>
-                  <Translated name='searchNoResult' />
-                </p>
-              ) : false }
-            </InfiniteScroll>
+            <div>
+              <SortOrderSelect
+                list={list} onChange={this.handleChange.bind(this)}
+              />
+              <InfiniteScroll
+                loadMore={this.handleLoad.bind(this)}
+                hasMore={!list.finished}
+                loader={(
+                  <div className='loading content'>
+                    <i className="fa fa-refresh fa-spin"></i>
+                  </div>
+                )}
+                errorRetry={(
+                  <button onClick={this.handleLoad.bind(this)}>
+                    <Translated name='retry' />
+                  </button>
+                )}
+              >
+                {renderList}
+                { list && list.ids.length == 0 ? (
+                  <p>
+                    <Translated name='searchNoResult' />
+                  </p>
+                ) : false }
+              </InfiniteScroll>
+            </div>
           ) : false }
         </div>
       </div>
@@ -87,12 +96,13 @@ Search.propTypes = {
   lang: PropTypes.object,
   setTempQuery: PropTypes.func,
   entities: PropTypes.object,
+  loadList: PropTypes.func.isRequired,
   loadListMore: PropTypes.func.isRequired
 };
 
 const ConnectSearch = connect(
   store => ({search: store.search, lang: store.lang, entities: store.entities}),
-  { setTempQuery, loadListMore }
+  { setTempQuery, loadListMore, loadList }
 )(Search);
 
 ConnectSearch.fetchData = function(store, routerState) {

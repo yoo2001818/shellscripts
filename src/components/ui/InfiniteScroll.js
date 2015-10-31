@@ -22,8 +22,8 @@ export default class InfiniteScroll extends Component {
     return (
       <div>
         {children}
-        {loading && loader}
-        {error && errorRetry}
+        {loading && false && loader}
+        {error && false && errorRetry}
       </div>
     );
   }
