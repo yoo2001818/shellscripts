@@ -75,11 +75,10 @@ RawEntryTinyCard.propTypes = {
 let EntryTinyCard = connect(
   (state, props) => {
     const { entry } = props;
-    const { entities: { users, tags } } = state;
+    const { entities: { users } } = state;
     return {
       entry: Object.assign({}, entry, {
-        author: users[entry.author],
-        tags: entry.tags.map(id => tags[id])
+        author: users[entry.author]
       })
     };
   }

@@ -22,6 +22,7 @@ import Helmet from 'react-helmet';
 import translate from '../lang/index.js';
 import { loadList } from '../actions/comment.js';
 import { confirmEntryDelete } from '../actions/entry.js';
+import { confirmEnable } from '../actions/listCart.js';
 import Translated from '../components/ui/Translated.js';
 import EntryMiniCard from '../components/EntryMiniCard.js';
 import CommentList from '../components/CommentList.js';
@@ -31,6 +32,42 @@ import DropDownMenu from '../components/ui/DropDownMenu.js';
 import netConfig from '../../config/network.config.js';
 
 class EntryView extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      aboutToEdit: false
+    };
+  }
+  componentWillUpdate(props, state) {
+    if (state.aboutToEdit) {
+      const { entry, author, listCart } = props;
+      if (entry.type === 'list') {
+        const editLink = `/${author.username}/${entry.name}/edit`;
+        if (listCart.target === editLink) {
+          // OK, continue to that address. :P
+          const { history } = this.context;
+          history.pushState(null, editLink);
+          this.setState({
+            aboutToEdit: false
+          });
+        }
+      }
+    }
+  }
+  handleEdit(e) {
+    const { entry, author, listCart } = this.props;
+    if (entry.type === 'list') {
+      // Check overwrite
+      const editLink = `/${author.username}/${entry.name}/edit`;
+      this.setState({
+        aboutToEdit: true
+      });
+      if (listCart.target !== editLink) {
+        this.props.confirmEnable(entry.childrenRaw, editLink);
+        e.preventDefault();
+      }
+    }
+  }
   handleDelete(e) {
     this.props.confirmEntryDelete(this.props.entry);
     e.preventDefault();
@@ -74,7 +111,7 @@ class EntryView extends Component {
           </div>
           { this.canEdit() ? (
             <div className='actions'>
-              <Link to={editPath}>
+              <Link to={editPath} onClick={this.handleEdit.bind(this)}>
                 <button>
                   <i className='fa fa-pencil' />
                   <span className='description'>
@@ -150,7 +187,9 @@ EntryView.propTypes = {
   sessionUser: PropTypes.object,
   confirmEntryDelete: PropTypes.func,
   entryLoading: PropTypes.bool,
-  lang: PropTypes.object
+  lang: PropTypes.object,
+  listCart: PropTypes.object,
+  confirmEnable: PropTypes.func
 };
 
 EntryView.contextTypes = {
@@ -159,7 +198,7 @@ EntryView.contextTypes = {
 
 const ConnectEntryView = connect(
   (state, props) => {
-    const { session, entities: { users, entries }, lang } = state;
+    const { session, entities: { users, entries }, lang, listCart } = state;
     const { entry } = props;
     return {
       sessionUser: users[session.login],
@@ -167,12 +206,14 @@ const ConnectEntryView = connect(
       author: users[entry.author],
       entryLoading: state.entry.load.loading,
       entry: Object.assign({}, entry, {
-        children: entry.children && entry.children.map(id => entries[id])
+        children: entry.children && entry.children.map(id => entries[id]),
+        childrenRaw: entry.children
       }),
-      lang
+      lang,
+      listCart
     };
   },
-  { confirmEntryDelete }
+  { confirmEntryDelete, confirmEnable }
 )(EntryView);
 
 ConnectEntryView.fetchData = function(store, routerState) {
