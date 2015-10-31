@@ -1,6 +1,7 @@
 {
   "hello": "Hello, $1!",
   "sitename": "Shellscripts",
+  "footer": "&copy; 2015 Duknam Yoo. [GitHub](https://github.com/yoo2001818/shellscripts)",
   "search": "Search",
   "searchTitle": "Search - $1",
   "signIn": "Sign in",
