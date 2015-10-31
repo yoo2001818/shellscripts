@@ -19,7 +19,9 @@ if (process.env.SERVER_RUN_AS_API === 'yes') {
   require(path.resolve(projectPath, 'api.js'));
 } else {
   // Start API server
-  if (__DEVELOPMENT__ || !netConfig.apiFork) {
+  if (__DEVELOPMENT__ || !netConfig.apiFork ||
+    process.env.SERVER_NO_FORK === 'yes'
+  ) {
     // If in development state, it's much better to just require it
     // since babel translation is a memory-hog
     require(path.resolve(projectPath, 'api.js'));

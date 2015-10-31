@@ -587,7 +587,7 @@ entryRouter.get('/raw', (req, res) => {
       const author = child.author && child.author.username;
       const link = `${author}/${child.name}`;
       const url = `${netConfig.url}/api/entries/${link}/raw`;
-      return `curl -S '${url}' | bash /dev/stdin`;
+      return `curl -s '${url}' | bash /dev/stdin`;
     }).join('\n');
     res.send(script + footer);
   }

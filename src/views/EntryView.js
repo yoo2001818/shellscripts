@@ -122,7 +122,7 @@ class EntryView extends Component {
             <div className='script-shortcut'>
               <pre>
                 <code>
-                  {`curl -S ${rawPath} | bash /dev/stdin`}
+                  {`curl -s ${rawPath} | bash /dev/stdin`}
                 </code>
               </pre>
             </div>
