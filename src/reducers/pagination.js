@@ -1,6 +1,6 @@
 import { loadFilter } from './load.js';
 
-export default function pagination(actionType, entityType) {
+export default function pagination(actionType, entityType, field = 'id') {
   const paginationLoad = loadFilter({ actionType });
   return function updatePagination(state = {
     // load would be come here I suppose
@@ -30,8 +30,9 @@ export default function pagination(actionType, entityType) {
         });
       }
       return Object.assign({}, newState, {
-        firstIndex: Math.max(state.firstIndex, entities[payload.result[0]].id),
-        lastIndex: entities[payload.result[payload.result.length - 1]].id,
+        firstIndex: Math.max(state.firstIndex,
+          entities[payload.result[0]][field]),
+        lastIndex: entities[payload.result[payload.result.length - 1]][field],
         pageCount: meta.reset ? 1 : state.pageCount + 1,
         finished: false,
         // Prehaps we should sort it?

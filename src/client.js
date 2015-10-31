@@ -34,9 +34,35 @@ moment.locale(store.getState().lang.lang);
 
 // TODO devTools
 
+// scroll position markers
+
+const scrollPos = [];
+
 function handleUpdate() {
   prefetch(store, this.state);
+  const action = this.state.location.action;
+  if (action !== 'POP') {
+    window.scrollTo(0, 0);
+  } else {
+    window.scrollTo(0, scrollPos.pop() || 0);
+  }
 }
+
+history.listenBefore(location => {
+  const action = location.action;
+  const supportPageOffset = window.pageXOffset !== undefined;
+  const isCSS1Compat = ((document.compatMode || '') === 'CSS1Compat');
+  const scrollY = supportPageOffset ? window.pageYOffset :
+    isCSS1Compat ? document.documentElement.scrollTop :
+    document.body.scrollTop;
+  if (action !== 'POP') {
+    if (action === 'REPLACE') {
+      scrollPos.pop();
+    }
+    scrollPos.push(scrollY);
+    window.scrollTo(0, 0);
+  }
+});
 
 render(
   <div id='root'>
