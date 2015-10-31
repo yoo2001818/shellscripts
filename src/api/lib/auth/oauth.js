@@ -67,7 +67,16 @@ export default function login(type, req, accessToken, refreshToken, profile,
       }
     })
   )
-  .then(user => done(null, user), err => {
+  .then(user => {
+    if (user.enabled) {
+      done(null, user);
+    } else {
+      done(null, false, {
+        id: 'AUTH_DISABLED_USER',
+        message: 'User has been disabled. Please contact the administrator.'
+      });
+    }
+  }, err => {
     console.log(err.stack);
     done(err);
   });

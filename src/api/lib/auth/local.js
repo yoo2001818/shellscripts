@@ -51,12 +51,12 @@ export default function login(req, username, password, done) {
     return passport.getUser();
   })
   .then(user => {
-    if (user == null) {
-      throw {
+    if (user == null || !user.enabled) {
+      done(null, false, {
         id: 'AUTH_DISABLED_USER',
-        message: 'User has been disabled. Please contact the administrator.',
-        invalid: true
-      };
+        message: 'User has been disabled. Please contact the administrator.'
+      });
+      return;
     }
     done(null, user);
   }, error => {

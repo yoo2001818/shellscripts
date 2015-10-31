@@ -39,6 +39,11 @@ export const User = sequelize.define('user', inject({
     allowNull: false,
     defaultValue: false
   },
+  enabled: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: true
+  },
   name: Sequelize.STRING,
   bio: Sequelize.TEXT,
   photo: Sequelize.STRING,

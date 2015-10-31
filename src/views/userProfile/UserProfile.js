@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import Translated from '../../components/ui/Translated.js';
 import UserProfileEditForm from '../../components/forms/UserProfileEditForm.js';
 import userPlaceholder from '../../assets/userPlaceholder.png';
+import { setEnabled } from '../../actions/user.js';
 
 class UserProfile extends Component {
   constructor(props) {
@@ -18,6 +19,14 @@ class UserProfile extends Component {
   canEdit() {
     const { user, session, sessionUser } = this.props;
     return session.login === user.login || (sessionUser && sessionUser.isAdmin);
+  }
+  canDisable() {
+    const { user, session, sessionUser } = this.props;
+    return sessionUser && sessionUser.isAdmin && session.login !== user.login;
+  }
+  handleDisable() {
+    const { user } = this.props;
+    this.props.setEnabled(user.username, !user.enabled);
   }
   handleStartEdit() {
     this.setState({
@@ -76,6 +85,28 @@ class UserProfile extends Component {
                 <Translated name='edit' />
               </span>
             </button>
+            { this.canDisable() ? (
+              user.enabled ? (
+                <button
+                  onClick={this.handleDisable.bind(this)}
+                  className='red-button'
+                >
+                  <i className="fa fa-ban"></i>
+                  <span className='description'>
+                    <Translated name='disable' />
+                  </span>
+                </button>
+              ) : (
+                <button
+                  onClick={this.handleDisable.bind(this)}
+                >
+                  <i className="fa fa-check"></i>
+                  <span className='description'>
+                    <Translated name='enable' />
+                  </span>
+                </button>
+              )
+            ) : false }
           </div>
         ) : false }
       </div>
@@ -110,7 +141,8 @@ UserProfile.propTypes = {
   user: PropTypes.object,
   session: PropTypes.object,
   sessionUser: PropTypes.object,
-  selected: PropTypes.string
+  selected: PropTypes.string,
+  setEnabled: PropTypes.func
 };
 
 const ConnectUserProfile = connect(
@@ -120,7 +152,8 @@ const ConnectUserProfile = connect(
       sessionUser: users[session.login],
       session
     };
-  }
+  },
+  { setEnabled }
 )(UserProfile);
 
 export default ConnectUserProfile;

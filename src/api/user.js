@@ -56,6 +56,38 @@ if (__DEVELOPMENT__) {
 }
 
 /**
+ * @api {post} /users/:username/enabled Disable/Enable the user
+ * @apiGroup User
+ * @apiName SetUserEnabled
+ * @apiParam (Parameter) {String} username The username of the user
+ * @apiParam (Body) {Boolean} enabled Value to set.
+ * @apiDescription Disable or enables the user.
+ *
+ *   Disabled user won't be able to do anything.
+ *
+ * @apiSuccessExample {json} If the action was successful
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "username": "Username",
+ *     "email": "Email"
+ *   }
+ * @apiUse AuthRequired
+ * @apiUse modifiable
+ * @apiPermission modifiable
+ */
+userRouter.post('/enabled', adminRequired, (req, res) => {
+  const { enabled } = req.body;
+  req.selUser.update({
+    enabled
+  })
+  .then(() => res.json(req.selUser),
+    (err) => {
+      res.status(500);
+      res.json(err);
+    });
+});
+
+/**
  * @api {post} /user/ Update the profile
  * @apiGroup User
  * @apiName SetUserProfile
