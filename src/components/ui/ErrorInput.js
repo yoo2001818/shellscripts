@@ -40,7 +40,9 @@ export default class ErrorInput extends Component {
           </label>
         </div>
         { typeof this.props.error === 'string' && this.props.touched ? (
-          <Alert>{ this.props.error }</Alert>
+          <Alert>
+            <Translated name={this.props.error}/>
+          </Alert>
         ) : null }
         { this.props.error && this.props.error.id && this.props.touched ? (
           <Alert>

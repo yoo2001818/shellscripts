@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import { isEmail, isURL, isLength } from 'validator';
+import { User } from '../../validation/schema.js';
+import validate from '../../validation/validate.js';
 import Dropzone from 'react-dropzone';
 import AvatarEditor from 'react-avatar-editor';
 
@@ -177,23 +178,7 @@ UserProfileEditForm.propTypes = {
 };
 
 function validateForm(data) {
-  const errors = {};
-  if (!isEmail(data.email)) {
-    errors.email = true;
-  }
-  if (data.website && !isURL(data.website)) {
-    errors.website = true;
-  }
-  if (!isLength(data.name, 0, 64)) {
-    errors.name = {
-      id: 'FIELD_TOO_LONG'
-    };
-  }
-  if (!isLength(data.bio, 0, 280)) {
-    errors.bio = {
-      id: 'FIELD_TOO_LONG'
-    };
-  }
+  const errors = validate(data, User);
   return errors;
 }
 

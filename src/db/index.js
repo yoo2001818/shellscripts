@@ -1,5 +1,7 @@
 import Sequelize from 'sequelize';
 import sequelize from './init.js';
+import * as validations from '../validation/schema.js';
+import inject from '../validation/sequelize.js';
 
 export { sequelize };
 
@@ -17,28 +19,16 @@ export const Passport = sequelize.define('passport', {
   data: Sequelize.TEXT
 });
 
-export const User = sequelize.define('user', {
+export const User = sequelize.define('user', inject({
   login: {
     type: Sequelize.STRING,
-    unique: true,
-    validate: {
-      is: /^[a-z0-9]+$/
-    }
+    unique: true
   },
   username: {
     type: Sequelize.STRING,
-    unique: true,
-    validate: {
-      is: /^[a-zA-Z0-9]+$/,
-      len: [1, 32]
-    }
+    unique: true
   },
-  email: {
-    type: Sequelize.STRING,
-    validate: {
-      isEmail: true
-    }
-  },
+  email: Sequelize.STRING,
   signedUp: {
     type: Sequelize.BOOLEAN,
     allowNull: false,
@@ -49,29 +39,11 @@ export const User = sequelize.define('user', {
     allowNull: false,
     defaultValue: false
   },
-  name: {
-    type: Sequelize.STRING,
-    validate: {
-      len: [0, 64]
-    }
-  },
-  bio: {
-    type: Sequelize.TEXT,
-    validate: {
-      // I think 280 characters are enough.
-      len: [0, 280]
-    }
-  },
+  name: Sequelize.STRING,
+  bio: Sequelize.TEXT,
   photo: Sequelize.STRING,
-  website: {
-    type: Sequelize.STRING,
-    validate: {
-      isURL: true,
-      // Don't think this is necessary though
-      len: [0, 256]
-    }
-  }
-}, {
+  website: Sequelize.STRING
+}, validations.User), {
   hooks: {
     beforeValidate: (user, options) => {
       if (user.username) {
@@ -96,18 +68,14 @@ export const User = sequelize.define('user', {
   }
 });
 
-export const TagType = sequelize.define('tagType', {
+export const TagType = sequelize.define('tagType', inject({
   name: {
     type: Sequelize.STRING,
     allowNull: false,
-    unique: true,
-    validate: {
-      is: /^([a-z0-9][a-z0-9\-]+[a-z0-9]|[a-z0-9]+)$/,
-      len: [1, 32]
-    }
+    unique: true
   },
   description: Sequelize.TEXT
-}, {
+}, validations.TagType), {
   hooks: {
     beforeValidate: entry => {
       if (entry.name) {
@@ -127,18 +95,14 @@ export const TagType = sequelize.define('tagType', {
   }
 });
 
-export const Tag = sequelize.define('tag', {
+export const Tag = sequelize.define('tag', inject({
   name: {
     type: Sequelize.STRING,
     allowNull: false,
-    unique: true,
-    validate: {
-      is: /^([a-z0-9][a-z0-9\-]+[a-z0-9]|[a-z0-9]+)$/,
-      len: [1, 32]
-    }
+    unique: true
   },
   description: Sequelize.TEXT
-}, {
+}, validations.Tag), {
   hooks: {
     beforeValidate: entry => {
       if (entry.name) {
@@ -157,28 +121,16 @@ export const Tag = sequelize.define('tag', {
   }
 });
 
-export const Entry = sequelize.define('entry', {
+export const Entry = sequelize.define('entry', inject({
   name: {
     type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      is: /^([a-z0-9][a-z0-9\-]+[a-z0-9]|[a-z0-9]+)$/,
-      len: [1, 48]
-    }
+    allowNull: false
   },
   title: {
     type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      len: [0, 150]
-    }
+    allowNull: false
   },
-  brief: {
-    type: Sequelize.TEXT,
-    validate: {
-      len: [0, 400]
-    }
-  },
+  brief: Sequelize.TEXT,
   description: Sequelize.TEXT,
   type: {
     type: Sequelize.ENUM('script', 'list'),
@@ -195,7 +147,7 @@ export const Entry = sequelize.define('entry', {
   },
   // For the same reason, we're using tagIndex for searching.
   tagIndex: Sequelize.TEXT
-}, {
+}, validations.Entry), {
   hooks: {
     beforeValidate: (entry) => {
       if (entry.name) {
