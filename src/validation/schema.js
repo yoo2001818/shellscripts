@@ -14,6 +14,12 @@ export const User = {
       key: 'FIELD_TOO_LONG',
       value: [1, 32]
     },
+    notIn: {
+      key: 'FIELD_RESERVED',
+      value: ['login', 'signup', 'search', 'settings', 'new', 'admin', 'root',
+        'help', 'about', 'contact', 'administrator', 'starred', 'notification',
+        'form']
+    },
     notEmpty: true
   },
   email: {
@@ -77,6 +83,11 @@ export const Entry = {
     len: {
       key: 'FIELD_TOO_LONG',
       value: [1, 32]
+    },
+    notIn: {
+      key: 'FIELD_RESERVED',
+      value: ['starred', 'settings', 'privacy', 'profile', 'ban', 'unban',
+        'disable', 'enable']
     },
     notEmpty: true
   },

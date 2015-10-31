@@ -9,6 +9,7 @@ class EntryCreate extends Component {
   render() {
     const __ = translate(this.props.lang.lang);
     const { user } = this.props;
+    if (user == null) return false;
     return (
       <div id='entry-create'>
         <Helmet title={__('createEntryTitle')} />

@@ -9,6 +9,7 @@ class ListCreate extends Component {
   render() {
     const __ = translate(this.props.lang.lang);
     const { user } = this.props;
+    if (user == null) return false;
     // Do not reset form; It should be saved!
     return (
       <div id='entry-create'>

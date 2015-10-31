@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import { isEmail, isAlphanumeric, isLength } from 'validator';
+import { User } from '../../validation/schema.js';
+import validate from '../../validation/validate.js';
 
 import Translated from '../ui/Translated.js';
 import ErrorInput from '../ui/ErrorInput.js';
@@ -42,20 +43,7 @@ LocalSignUpForm.propTypes = {
 };
 
 function validateFrom(data) {
-  const errors = {};
-  if (!isAlphanumeric(data.username)) {
-    errors.username = {
-      id: 'AUTH_USERNAME_POLICY'
-    };
-  }
-  if (!isLength(data.username, 0, 32)) {
-    errors.username = {
-      id: 'FIELD_TOO_LONG'
-    };
-  }
-  if (!isEmail(data.email)) {
-    errors.email = true;
-  }
+  const errors = validate(data, User);
   if (!data.password || data.password.length < 6) {
     errors.password = {
       id: 'AUTH_PASSWORD_POLICY'

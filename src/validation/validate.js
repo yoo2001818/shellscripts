@@ -11,7 +11,7 @@ function normalizeValidation(validation) {
 function runValidation(key, validation, value) {
   if (validation == null) return null;
   // currently only supports:
-  // is, isURL, isEmail, len, notEmpty
+  // is, isURL, isEmail, len, notEmpty, notIn
   let args = normalizeValidation(validation);
   switch (key) {
   case 'is':
@@ -29,6 +29,11 @@ function runValidation(key, validation, value) {
     break;
   case 'notEmpty':
     if (validator.isNull(value)) return args.key;
+    break;
+  case 'notIn':
+    if (validator.isIn(value, args.value)) return args.key;
+    if (typeof value === 'string' &&
+      validator.isIn(value.toLowerCase(), args.value)) return args.key;
     break;
   }
   return null;
