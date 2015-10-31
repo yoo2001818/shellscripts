@@ -11,7 +11,15 @@ import { checkUsername, signUpFinalize } from '../../actions/session.js';
 
 class PostSignUpForm extends Component {
   handleSubmit(data) {
-    this.props.dispatch(signUpFinalize(data));
+    return this.props.dispatch(signUpFinalize(data))
+    .then(result => {
+      if (result.error) {
+        const error = result.payload.body;
+        throw {_error: error.message};
+      } else {
+        this.context.history.pushState(null, '/');
+      }
+    });
   }
   render() {
     const __ = translate(this.props.lang.lang);
@@ -43,6 +51,10 @@ PostSignUpForm.propTypes = {
   dispatch: PropTypes.func.isRequired,
   resetForm: PropTypes.func.isRequired,
   invalid: PropTypes.bool
+};
+
+PostSignUpForm.contextTypes = {
+  history: PropTypes.object
 };
 
 // Seriously though this is exactly same as LocalSignUpForm.

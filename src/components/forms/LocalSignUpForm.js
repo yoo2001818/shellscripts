@@ -11,7 +11,15 @@ import { localSignUp, checkUsername } from '../../actions/session.js';
 
 class LocalSignUpForm extends Component {
   handleSubmit(data) {
-    this.props.dispatch(localSignUp(data));
+    return this.props.dispatch(localSignUp(data))
+    .then(result => {
+      if (result.error) {
+        const error = result.payload.body;
+        throw {_error: error.message};
+      } else {
+        this.context.history.pushState(null, '/');
+      }
+    });
   }
   render() {
     const __ = translate(this.props.lang.lang);
@@ -40,6 +48,10 @@ LocalSignUpForm.propTypes = {
   resetForm: PropTypes.func.isRequired,
   invalid: PropTypes.bool,
   asyncValidating: PropTypes.bool
+};
+
+LocalSignUpForm.contextTypes = {
+  history: PropTypes.object
 };
 
 function validateFrom(data) {
