@@ -18,10 +18,10 @@ function runValidation(key, validation, value) {
     if (!validator.matches(value, args.value)) return args.key;
     break;
   case 'isURL':
-    if (!validator.isURL(value)) return args.key;
+    if (!validator.isURL(value) && !validator.isNull(value)) return args.key;
     break;
   case 'isEmail':
-    if (!validator.isEmail(value)) return args.key;
+    if (!validator.isEmail(value) && !validator.isNull(value)) return args.key;
     break;
   case 'len':
     const [min, max] = args.value;

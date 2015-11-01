@@ -72,7 +72,10 @@ class UserProfileEditForm extends Component {
     //this.props.dispatch(uploadPhoto(file));
   }
   handleSubmit(data) {
-    this.props.dispatch(setProfile(this.props.user.username, data))
+    this.props.dispatch(setProfile(this.props.user.username, Object.assign({},
+      data, {
+        website: data.website === '' ? null : data.website
+      })))
     .then(() => {
       this.handleCancelEdit();
     });
