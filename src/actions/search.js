@@ -44,7 +44,7 @@ export function loadListMore() {
     // if (list.lastIndex == null) return Promise.resolve();
     return dispatch(fetch(query, {
       lastIndex: list.lastIndex,
-      lastStar: list.lastStar,
+      lastValue: list.lastValue,
       order: list.order
     }));
   };

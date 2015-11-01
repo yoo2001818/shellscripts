@@ -157,7 +157,12 @@ export const Entry = sequelize.define('entry', inject({
     defaultValue: 0
   },
   // For the same reason, we're using tagIndex for searching.
-  tagIndex: Sequelize.TEXT
+  tagIndex: Sequelize.TEXT,
+  // Flagged count
+  reports: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
+  }
 }, validations.Entry), {
   hooks: {
     beforeValidate: (entry) => {
@@ -218,6 +223,7 @@ User.hasMany(Entry, {as: 'entries'});
 User.hasMany(Tag, {as: 'tags'});
 User.hasMany(Comment);
 User.belongsToMany(Entry, {through: 'starredEntry', as: 'starredEntries'});
+User.belongsToMany(Entry, {through: 'reportedEntry', as: 'reportedEntries'});
 
 TagType.hasMany(Tag, {as: 'tags'});
 Tag.belongsTo(User, {as: 'author'});
@@ -227,6 +233,7 @@ Tag.belongsToMany(Entry, {through: 'entryTag', as: 'entries'});
 Entry.belongsTo(User, {as: 'author'});
 Entry.belongsToMany(Tag, {through: 'entryTag', as: 'tags'});
 Entry.belongsToMany(User, {through: 'starredEntry', as: 'starredUsers'});
+Entry.belongsToMany(User, {through: 'reportedEntry', as: 'reportedUsers'});
 Entry.hasMany(Comment);
 // This is pretty tricky - http://stackoverflow.com/a/25634978/3317669
 Entry.belongsToMany(Entry, {as: 'children', foreignKey: 'parentEntryId',

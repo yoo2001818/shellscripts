@@ -5,6 +5,7 @@ import authRequired from '../lib/authRequired.js';
 import adminRequired from '../lib/adminRequired.js';
 import starRouter from './star.js';
 import commentRouter from './comment.js';
+import reportRouter from './report.js';
 import netConfig from '../../../config/network.config.js';
 
 const defaultGetQuery = {
@@ -85,7 +86,7 @@ function checkModifiable(req, res, next) {
 }
 
 export function buildEntryGet(options) {
-  let { title, tags, username, userId, type, lastIndex, lastStar, order }
+  let { title, tags, username, userId, type, lastIndex, lastValue, order }
     = options;
   const where = {};
   let include = [];
@@ -136,16 +137,30 @@ export function buildEntryGet(options) {
   }
   // This shouldn't be done in here but whatever. :/
   lastIndex = parseInt(lastIndex);
-  lastStar = parseInt(lastStar);
+  lastValue = parseInt(lastValue);
   if (order === 'star') {
     // Order by stars.
     // http://use-the-index-luke.com/sql/partial-results/fetch-next-page
-    if (!isNaN(lastIndex) && !isNaN(lastStar)) {
+    if (!isNaN(lastIndex) && !isNaN(lastValue)) {
       where.stars = {
-        $lte: lastStar
+        $lte: lastValue
       };
       where.$not = {
-        stars: lastStar,
+        stars: lastValue,
+        id: {
+          $gte: lastIndex
+        }
+      };
+    }
+  } else if (order === 'report') {
+    // Order by reports.
+    // http://use-the-index-luke.com/sql/partial-results/fetch-next-page
+    if (!isNaN(lastIndex) && !isNaN(lastValue)) {
+      where.reports = {
+        $lte: lastValue
+      };
+      where.$not = {
+        reports: lastValue,
         id: {
           $gte: lastIndex
         }
@@ -166,6 +181,9 @@ export function buildEntryGet(options) {
   }
   if (order === 'star') {
     orders.push(['stars', 'DESC']);
+    orders.push(['id', 'DESC']);
+  } else if (order === 'report') {
+    orders.push(['reports', 'DESC']);
     orders.push(['id', 'DESC']);
   } else if (order === 'idRev') {
     orders.push(['id', 'ASC']);
@@ -205,8 +223,8 @@ export default router;
  * @apiParam (Query) {String[]} [tags] The entries' tags to search
  * @apiParam (Query) {String} [username] The entries' username to search
  * @apiParam (Query) {String} [type] The entries' type
- * @apiParam (Query) {String="id","idRev","star"} [order] The loading order
- * @apiParam (Query) {Integer} [lastStar] The last entry's stars you've seen
+ * @apiParam (Query) {String="id","idRev","star","report"} [order] Loading order
+ * @apiParam (Query) {Integer} [lastValue] The last entry's stars you've seen
  * @apiParam (Query) {Integer} [lastIndex] The last entry's ID you've seen
  * @apiDescription Returns entries matching the criteria, or lists all entries
  *   if no criteria was given.
@@ -723,3 +741,4 @@ entryRouter.delete('/', authRequired, checkModifiable, (req, res) => {
 
 entryRouter.use(starRouter);
 entryRouter.use(commentRouter);
+entryRouter.use(reportRouter);

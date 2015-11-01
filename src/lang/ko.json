@@ -109,6 +109,7 @@
   "emailHidden": "이메일 주소 숨겨짐",
   "requiresRoot": "루트 권한 필요",
   "requiresRootDescription": "이 스크립트를 실행하려면 루트 권한이 필요합니다.",
+  "AUTH_DISABLED_USER": "계정이 정지되었습니다. 관리자에게 문의해 주세요.",
   "FIELD_RESERVED": "예약된 단어입니다",
   "FIELD_TOO_LONG": "길이가 너무 깁니다",
   "AUTH_INVALID_USERNAME": "올바른 사용자 이름이 아닙니다",

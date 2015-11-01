@@ -111,6 +111,7 @@
   "requiresRootDescription": "Root permission is required to run this script",
   "FIELD_RESERVED": "Reserved word",
   "FIELD_TOO_LONG": "Value is too long",
+  "AUTH_DISABLED_USER": "User has been disabled. Please contact the administrator.",
   "AUTH_INVALID_USERNAME": "Invalid username",
   "AUTH_INVALID_PASSWORD": "Invalid password",
   "AUTH_USERNAME_POLICY": "Username should only contain alphanumberic characters.",

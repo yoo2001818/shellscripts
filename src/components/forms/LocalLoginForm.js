@@ -21,7 +21,7 @@ class LocalLoginForm extends Component {
         if (error.id === 'AUTH_INVALID_PASSWORD') {
           throw {password: error};
         }
-        throw {_error: error.message};
+        throw {_error: error.id};
       } else {
         this.context.history.goBack();
       }
@@ -35,7 +35,7 @@ class LocalLoginForm extends Component {
         {
           error ? (
             <Alert>
-              {error}
+              <Translated name={error} />
             </Alert>
           ) : null
         }

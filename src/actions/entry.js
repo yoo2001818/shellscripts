@@ -128,7 +128,7 @@ export function loadListMore() {
     // if (list.lastIndex == null) return Promise.resolve();
     return dispatch(fetchList({
       lastIndex: list.lastIndex,
-      lastStar: list.lastStar,
+      lastValue: list.lastValue,
       order: list.order
     }));
   };
@@ -160,7 +160,7 @@ export function loadUserListMore(username) {
     // if (list.lastIndex == null) return Promise.resolve();
     return dispatch(fetchUserList(username, {
       lastIndex: list.lastIndex,
-      lastStar: list.lastStar,
+      lastValue: list.lastValue,
       order: list.order
     }));
   };
@@ -192,7 +192,7 @@ export function loadUserStarredListMore(username) {
     // if (list.lastIndex == null) return Promise.resolve();
     return dispatch(fetchUserStarredList(username, {
       lastIndex: list.lastIndex,
-      lastStar: list.lastStar,
+      lastValue: list.lastValue,
       order: list.order
     }));
   };

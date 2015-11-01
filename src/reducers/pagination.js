@@ -5,7 +5,7 @@ export default function pagination(actionType, entityType) {
   return function updatePagination(state = {
     // load would be come here I suppose
     lastIndex: null,
-    lastStar: null,
+    lastValue: null,
     firstIndex: null,
     // I think pageCount is meaningless.
     pageCount: 0,
@@ -19,6 +19,7 @@ export default function pagination(actionType, entityType) {
       load: paginationLoad(state.load, action)
     });
     const { meta, payload, type } = action;
+    const order = (meta && meta.order) || state.order;
     switch (type) {
     case actionType:
       if (action.error) return newState;
@@ -31,17 +32,22 @@ export default function pagination(actionType, entityType) {
           loadedAt: new Date().valueOf()
         });
       }
+      const lastEntry = entities[payload.result[payload.result.length - 1]];
+      let lastValue = lastEntry.stars;
+      if (order === 'report') {
+        lastValue = lastEntry.reports;
+      }
       return Object.assign({}, newState, {
         firstIndex: Math.max(state.firstIndex,
           entities[payload.result[0]].id),
-        lastIndex: entities[payload.result[payload.result.length - 1]].id,
-        lastStar: entities[payload.result[payload.result.length - 1]].stars,
+        lastIndex: lastEntry.id,
+        lastValue: lastValue,
         pageCount: meta.reset ? 1 : state.pageCount + 1,
         finished: false,
         // Prehaps we should sort it?
         ids: meta.reset ? payload.result : state.ids.concat(payload.result),
         loadedAt: new Date().valueOf(),
-        order: meta.order || state.order
+        order: order
       });
     default:
       return newState;
