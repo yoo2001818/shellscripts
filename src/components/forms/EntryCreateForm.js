@@ -77,7 +77,8 @@ class EntryCreateForm extends Component {
   }
   render() {
     const __ = translate(this.props.lang.lang);
-    const { fields: { name, title, brief, description, tags, script, type },
+    const { fields: { name, title, brief, description, tags, script, type,
+      requiresRoot },
       handleSubmit, invalid, author, modifying, entryLoading } = this.props;
     const permalink = `${author.username}/${name.value}`;
     return (
@@ -142,6 +143,11 @@ class EntryCreateForm extends Component {
                   fontSize={16}
                   {...script}
                   />
+              </div>
+              <div className='requires-root'>
+                <LabelInput label={__('requiresRoot')} className='oneline'>
+                  <input type='checkbox' {...requiresRoot} />
+                </LabelInput>
               </div>
             </LabelInput>
           ) : false }

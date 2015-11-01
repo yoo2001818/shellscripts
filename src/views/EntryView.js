@@ -94,6 +94,7 @@ class EntryView extends Component {
       `${netConfig.url}/api/entries/${author.username}/${entry.name}/raw`;
     const editPath = `/${author.username}/${entry.name}/edit`;
     const title = `${entry.title} - ${author.name || author.username}`;
+    const sudo = entry.requiresRoot ? 'sudo ' : '';
     if (entry.deleted) {
       const { history } = this.context;
       // Redirect to index?
@@ -138,6 +139,11 @@ class EntryView extends Component {
                 {this.props.entry.script}
               </Highlight>
             </pre>
+            { entry.requiresRoot ? (
+              <div className='requires-root'>
+                <Translated name='requiresRootDescription' />
+              </div>
+            ) : false }
           </div>
         ) : false }
         { entry.type === 'list' ? (
@@ -159,7 +165,7 @@ class EntryView extends Component {
             <div className='script-shortcut'>
               <pre>
                 <code>
-                  {`curl -s ${rawPath} | bash /dev/stdin`}
+                  {`curl -s ${rawPath} | ${sudo}bash /dev/stdin`}
                 </code>
               </pre>
             </div>

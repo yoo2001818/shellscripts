@@ -107,6 +107,8 @@
   "emailTitle": "Email",
   "showEmailName": "Show publicly",
   "emailHidden": "Email hidden",
+  "requiresRoot": "Requires root permission",
+  "requiresRootDescription": "Root permission is required to run this script",
   "FIELD_RESERVED": "Reserved word",
   "FIELD_TOO_LONG": "Value is too long",
   "AUTH_INVALID_USERNAME": "Invalid username",

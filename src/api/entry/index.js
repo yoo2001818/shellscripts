@@ -44,7 +44,7 @@ const defaultGetQuery = {
         }
       ],
       attributes: {
-        exclude: ['userId', 'author', 'script', 'description', 'requiresRoot']
+        exclude: ['userId', 'author', 'script', 'description']
       }
     }
   ],
@@ -619,7 +619,8 @@ entryRouter.get('/raw', (req, res) => {
       const author = child.author && child.author.username;
       const link = `${author}/${child.name}`;
       const url = `${netConfig.url}/api/entries/${link}/raw`;
-      return `curl -s '${url}' | bash /dev/stdin`;
+      const sudo = child.requiresRoot ? 'sudo ' : '';
+      return `curl -s '${url}' | ${sudo}bash /dev/stdin`;
     }).join('\n');
     res.send(script + footer);
   }

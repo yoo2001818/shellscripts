@@ -107,6 +107,8 @@
   "emailTitle": "이메일",
   "showEmailName": "전체 공개",
   "emailHidden": "이메일 주소 숨겨짐",
+  "requiresRoot": "루트 권한 필요",
+  "requiresRootDescription": "이 스크립트를 실행하려면 루트 권한이 필요합니다.",
   "FIELD_RESERVED": "예약된 단어입니다",
   "FIELD_TOO_LONG": "길이가 너무 깁니다",
   "AUTH_INVALID_USERNAME": "올바른 사용자 이름이 아닙니다",
