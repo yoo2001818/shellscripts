@@ -69,9 +69,11 @@
         color: #777;
         padding-right: 0.3rem;
         font-size: 0.9em;
-        line-height: 1rem;
         font-weight: normal;
-        vertical-align: bottom;
+        vertical-align: middle;
+      }
+      span {
+        vertical-align: middle;
       }
       &>a {
         color: #000;

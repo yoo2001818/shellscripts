@@ -23,7 +23,7 @@
   "signUpDesc": "아래의 방법 중 하나를 선택하여 계정을 만들 수 있습니다.",
   "signUpEmail": "이메일 주소로 계정 만들기",
   "signUpUsing": "$1으로 계정 만들기",
-  "signUpDisclaimer": "이 사이트에 가입하면 null을(를) 동의하게 됩니다.",
+  "signUpDisclaimer": "이메일 주소는 기본값으로 전체에 공개됩니다. 원한다면 설정에서 바꿀 수 있습니다.",
   "signUpPostComplete": "아래의 정보를 입력하고 계정 만들기를 끝내주세요.",
   "done": "완료",
   "signUpOr": "또는...",

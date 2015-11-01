@@ -23,7 +23,7 @@
   "signUpDesc": "You can create an account using one of these methods below.",
   "signUpEmail": "Create an account with Email address",
   "signUpUsing": "Create an account with $1",
-  "signUpDisclaimer": "By creating an account, you agree to null.",
+  "signUpDisclaimer": "Your email address will be publicly shown; You can change it in the settings.",
   "signUpPostComplete": "Finish creating an account by filling the form below.",
   "done": "Done",
   "signUpOr": "Or...",
