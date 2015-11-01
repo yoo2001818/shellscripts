@@ -13,6 +13,8 @@ export const EDIT_ENTRY = 'ENTRY_EDIT';
 export const DELETE_ENTRY = 'ENTRY_DELETE';
 export const STAR = 'ENTRY_STAR';
 export const UNSTAR = 'ENTRY_UNSTAR';
+export const REPORT = 'ENTRY_REPORT';
+export const REPORT_RESET = 'ENTRY_REPORT_RESET';
 
 export const fetchList = createAction(FETCH_LIST,
   props => api(GET, '/entries/', {
@@ -98,6 +100,20 @@ export const star = createAction(STAR,
 
 export const unstar = createAction(UNSTAR,
   (username, name) => api(DELETE, `/entries/${username}/${name}/stars`),
+  () => ({
+    schema: Entry
+  })
+);
+
+export const report = createAction(REPORT,
+  (username, name) => api(POST, `/entries/${username}/${name}/reports`),
+  () => ({
+    schema: Entry
+  })
+);
+
+export const reportReset = createAction(REPORT_RESET,
+  (username, name) => api(DELETE, `/entries/${username}/${name}/reports`),
   () => ({
     schema: Entry
   })

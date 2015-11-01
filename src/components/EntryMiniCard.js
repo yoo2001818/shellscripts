@@ -5,10 +5,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import moment from 'moment';
 
-import { star, unstar } from '../actions/entry.js';
+import { star, unstar, report, reportReset } from '../actions/entry.js';
 
 import UserMiniCard from './UserMiniCard.js';
 import AddToListCart from './AddToListCart.js';
+import DropDownMenu from './ui/DropDownMenu.js';
 import ToolTip from './ui/ToolTip.js';
 import Translated from './ui/Translated.js';
 import sliceEllipsis from '../utils/sliceEllipsis.js';
@@ -21,6 +22,16 @@ class EntryMiniCard extends Component {
       return unstar(author.username, entry.name);
     }
     return star(author.username, entry.name);
+  }
+  handleReport() {
+    const { entry, report } = this.props;
+    const { author } = entry;
+    return report(author.username, entry.name);
+  }
+  handleReportReset() {
+    const { entry, reportReset } = this.props;
+    const { author } = entry;
+    return reportReset(author.username, entry.name);
   }
   shouldComponentUpdate(nextProps) {
     const { rawEntry } = nextProps;
@@ -35,7 +46,7 @@ class EntryMiniCard extends Component {
     return false;
   }
   render() {
-    const { rawEntry, entry, hideUser, showFull, starable } = this.props;
+    const { rawEntry, entry, hideUser, showFull, starable, user } = this.props;
     this.cache = Object.assign({}, rawEntry);
     const { author, tags } = entry;
     const permalink = `${author.username}/${entry.name}`;
@@ -44,6 +55,12 @@ class EntryMiniCard extends Component {
       <div className='entry-mini-card'>
         <div className='head'>
             <div className='status'>
+              { user && user.isAdmin ? (
+                <span className='reports raw'>
+                  <i className='fa fa-flag' />
+                  {entry.reports}
+                </span>
+              ) : false }
               {starable ? (
                 <span className='stars'>
                   <button className='action'
@@ -63,6 +80,28 @@ class EntryMiniCard extends Component {
                 </span>
               )}
               <AddToListCart entry={entry} />
+              { showFull ? (
+                <span className='more'>
+                  <DropDownMenu title={null}>
+                    <ul>
+                      <li>
+                        <a href='#' onClick={this.handleReport.bind(this)}>
+                          <Translated name={'report'} />
+                        </a>
+                      </li>
+                      { user && user.isAdmin ? (
+                        <li>
+                          <a href='#'
+                            onClick={this.handleReportReset.bind(this)}
+                          >
+                            <Translated name={'reportReset'} />
+                          </a>
+                        </li>
+                      ) : false }
+                    </ul>
+                  </DropDownMenu>
+                </span>
+              ) : false }
           </div>
           { !hideUser ? (
             <div className='author'>
@@ -120,21 +159,25 @@ EntryMiniCard.propTypes = {
   hideUser: PropTypes.bool,
   showFull: PropTypes.bool,
   starable: PropTypes.bool,
+  user: PropTypes.bool,
   star: PropTypes.func,
-  unstar: PropTypes.func
+  unstar: PropTypes.func,
+  report: PropTypes.func,
+  reportReset: PropTypes.func
 };
 
 export default connect(
   (state, props) => {
     const { entry } = props;
-    const { entities: { users, tags } } = state;
+    const { session, entities: { users, tags } } = state;
     return {
       entry: Object.assign({}, entry, {
         author: users[entry.author],
         tags: entry.tags.map(id => tags[id])
       }),
-      rawEntry: entry
+      rawEntry: entry,
+      user: users[session.login]
     };
   },
-  { star, unstar }
+  { star, unstar, report, reportReset }
 )(EntryMiniCard);

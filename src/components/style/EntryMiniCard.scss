@@ -29,6 +29,7 @@
         display: inline-block;
         border-radius: 0.2em;
         border: 1px solid #94BDEB;
+        margin: 0 0.3em;
         button {
           border-radius: 0.2em;
           border-top-right-radius: 0;
@@ -47,6 +48,31 @@
           border: none;
           vertical-align: middle;
           padding: 0.5em 0.3em;
+          margin: 0;
+        }
+      }
+      &>.reports {
+        vertical-align: middle;
+        padding: 0.5em 0.3em;
+      }
+      &>.more {
+        font-size: 1rem;
+        margin-left: 0.3em;
+        &>.dropdown>.button {
+          a {
+            padding-left: 0.2em;
+            color: #666;
+          }
+          .title {
+            display: none;
+          }
+        }
+        .content {
+          right: -1.2em;
+          a {
+            white-space: nowrap;
+            text-decoration: none;
+          }
         }
       }
     }
