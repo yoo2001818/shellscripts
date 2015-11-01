@@ -32,8 +32,7 @@ header {
     left: 0;
     width: 10rem;
     padding-left: 1rem;
-    font-size: 1.5em;
-    line-height: 2.5rem;
+    font-size: 2rem;
     font-weight: bold;
     text-align: right;
     padding-right: 1rem;
@@ -41,6 +40,10 @@ header {
     z-index: 1;
     a:hover {
       text-decoration: none;
+    }
+    img {
+      vertical-align: middle;
+      height: 2rem;
     }
   }
   .search-bar {

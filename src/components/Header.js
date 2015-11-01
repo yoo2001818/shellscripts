@@ -5,8 +5,8 @@ import { Link } from 'react-router';
 
 import SearchBar from './SearchBar.js';
 import SessionBar from './header/SessionBar.js';
-import Translated from './ui/Translated.js';
 import SignedUpRedirector from './SignedUpRedirector.js';
+import siteLogo from '../assets/siteLogo.png';
 
 export default class Header extends Component {
   render() {
@@ -19,7 +19,7 @@ export default class Header extends Component {
         <div className='container'>
           <div className='logo'>
             <Link to='/'>
-              <Translated name='sitename' />
+              <img src={siteLogo} alt='Shellscripts' />
             </Link>
           </div>
           { searchBar }
