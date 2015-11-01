@@ -103,7 +103,7 @@
   "orderTitle": "정렬",
   "order_id": "최근 게시글부터",
   "order_idRev": "오래된 게시글부터",
-  "order_star": "추천 많은 게시글부터",
+  "order_star": "별 많은 게시글부터",
   "order_report": "신고 많은 게시글부터",
   "emailTitle": "이메일",
   "showEmailName": "전체 공개",
