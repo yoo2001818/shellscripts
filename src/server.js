@@ -53,6 +53,6 @@ if (!__DEVELOPMENT__) {
 // Server side rendering
 app.use(serverRenderer);
 
-app.listen(netConfig.port, () => {
+app.listen(netConfig.port, netConfig.hostname, () => {
   console.log('server started');
 });

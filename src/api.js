@@ -12,6 +12,6 @@ if (__DEVELOPMENT__) app.set('json spaces', 2);
 app.use(morgan('dev'));
 app.use(apiRouter);
 
-app.listen(netConfig.apiPort, () => {
+app.listen(netConfig.apiPort, netConfig.apiHostname, () => {
   console.log('API server started');
 });
