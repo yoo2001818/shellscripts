@@ -5,6 +5,7 @@ import { User } from '../../validation/schema.js';
 import validate from '../../validation/validate.js';
 
 import { setEmail } from '../../actions/user.js';
+import { open } from '../../actions/toast.js';
 import Translated from '../ui/Translated.js';
 import ErrorInput from '../ui/ErrorInput.js';
 import LabelInput from '../ui/LabelInput.js';
@@ -12,7 +13,15 @@ import translate from '../../lang/index.js';
 
 class EmailChangeForm extends Component {
   handleSubmit(data) {
-    this.props.dispatch(setEmail(this.props.user.username, data));
+    this.props.dispatch(setEmail(this.props.user.username, data))
+    .then(action => {
+      if (!action) return;
+      this.props.dispatch(open({
+        body: {
+          translated: 'savedDescription'
+        }
+      }));
+    });
   }
   render() {
     const __ = translate(this.props.lang.lang);

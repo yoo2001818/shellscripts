@@ -1,0 +1,30 @@
+.toast-container {
+  position: fixed;
+  top: 6em;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  text-align: center;
+  visibility: hidden;
+  .toast {
+    position: relative;
+    display: inline-block;
+    margin: 0 auto;
+    width: auto;
+    background-color: #222;
+    color: #fff;
+    padding: 0.6em 0.8em;
+    border-radius: 0.3em;
+    box-shadow: 0 1px 3px -1px rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    top: -1em;
+    transition: opacity 0.5s, top 0.5s;
+  }
+  &.open {
+    visibility: visible;
+    .toast {
+      opacity: 1;
+      top: 0em;
+    }
+  }
+}

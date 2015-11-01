@@ -112,6 +112,8 @@
   "requiresRootDescription": "Root permission is required to run this script",
   "report": "Report",
   "reportReset": "Reset Report Count",
+  "reportThanks": "Thanks for reporting.",
+  "savedDescription": "Saved successfully",
   "FIELD_RESERVED": "Reserved word",
   "FIELD_TOO_LONG": "Value is too long",
   "AUTH_DISABLED_USER": "User has been disabled. Please contact the administrator.",

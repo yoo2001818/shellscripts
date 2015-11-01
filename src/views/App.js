@@ -7,6 +7,7 @@ import { get } from '../actions/lang.js';
 import ProgressBar from '../components/ui/ProgressBar.js';
 import ErrorOverlay from '../components/ui/ErrorOverlay.js';
 import Modal from '../components/Modal.js';
+import Toast from '../components/Toast.js';
 import Header from '../components/Header.js';
 import Footer from '../components/Footer.js';
 
@@ -31,6 +32,7 @@ export default class App extends Component {
         </div>
         <Footer />
         <Modal />
+        <Toast />
         <ErrorOverlay />
         <ProgressBar />
       </div>

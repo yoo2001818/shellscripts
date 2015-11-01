@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import moment from 'moment';
 
 import { star, unstar, report, reportReset } from '../actions/entry.js';
+import { open } from '../actions/toast.js';
 
 import UserMiniCard from './UserMiniCard.js';
 import AddToListCart from './AddToListCart.js';
@@ -24,9 +25,17 @@ class EntryMiniCard extends Component {
     return star(author.username, entry.name);
   }
   handleReport() {
-    const { entry, report } = this.props;
+    const { entry, report, open } = this.props;
     const { author } = entry;
-    return report(author.username, entry.name);
+    return report(author.username, entry.name)
+    .then(action => {
+      if (!action) return;
+      open({
+        body: {
+          translated: 'reportThanks'
+        }
+      });
+    });
   }
   handleReportReset() {
     const { entry, reportReset } = this.props;
@@ -160,6 +169,7 @@ EntryMiniCard.propTypes = {
   showFull: PropTypes.bool,
   starable: PropTypes.bool,
   user: PropTypes.bool,
+  open: PropTypes.func,
   star: PropTypes.func,
   unstar: PropTypes.func,
   report: PropTypes.func,
@@ -179,5 +189,5 @@ export default connect(
       user: users[session.login]
     };
   },
-  { star, unstar, report, reportReset }
+  { star, unstar, report, reportReset, open }
 )(EntryMiniCard);
