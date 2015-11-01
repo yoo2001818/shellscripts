@@ -18,8 +18,9 @@ export const userRouter = new Express.Router();
 
 userRouter.get('/', (req, res) => {
   if (req.selUser === req.user || (req.user && req.user.isAdmin)) {
+    const email = req.selUser.email;
     res.json(Object.assign({}, req.selUser.toJSON(), {
-      email: req.selUser.email
+      email
     }));
   } else {
     res.json(req.selUser);

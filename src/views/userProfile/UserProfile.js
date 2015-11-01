@@ -62,7 +62,7 @@ class UserProfile extends Component {
             <p className='username'>{user.username}</p>
           </div>
           <div className='contact'>
-            { user.showEmail ? (
+            { user.showEmail || this.canDisable() ? (
               <p className='email'>
                 <i className="fa fa-envelope-o icon"></i>
                 <a href={`mailto:${user.email}`} target='_blank'>
