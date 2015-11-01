@@ -1,6 +1,7 @@
 // Server init point
 import express from 'express';
 import ServeStatic from 'serve-static';
+import favicon from 'serve-favicon';
 import compression from 'compression';
 import morgan from 'morgan';
 
@@ -17,9 +18,7 @@ if (netConfig.useReverseProxy) {
 }
 
 app.use('/uploads', new ServeStatic('./uploads'));
-app.get('/favicon.ico', (req, res) => {
-  res.sendStatus(404);
-});
+app.use(favicon(__dirname + '/assets/favicon.ico'));
 
 if (!__DEVELOPMENT__) {
   // Currently server does nothing but serve static files.
