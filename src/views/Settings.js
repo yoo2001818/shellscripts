@@ -25,11 +25,13 @@ export default class Settings extends Component {
                   <Translated name='authMethods' />
                 </Link>
               </li>
+              {/* One day we'll make this. One day.
               <li>
                 <Link to='/settings/notifications'>
                   <Translated name='notifications' />
                 </Link>
               </li>
+              */}
             </ul>
           </div>
         </div>

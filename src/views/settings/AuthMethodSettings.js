@@ -34,7 +34,7 @@ class AuthMethodSettings extends Component {
         if (provider.identifier === 'local') {
           return (
             <div className='authMethod' key={provider.identifier}>
-              <h2>{provider.name}</h2>
+              <h2><Translated name='password' /></h2>
               <span className='spacing'> </span>
               <div className='actions form'>
                 <LocalMethodEditForm canDelete={methodEnabledCount > 1} />
@@ -66,7 +66,7 @@ class AuthMethodSettings extends Component {
         if (provider.identifier === 'local') {
           return (
             <div className='authMethod' key={provider.identifer}>
-              <h2>{provider.name}</h2>
+              <h2><Translated name='password' /></h2>
               <span className='spacing'> </span>
               <div className='actions form'>
                 <LocalMethodAddForm />
