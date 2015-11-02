@@ -203,7 +203,6 @@ function validateFrom(data) {
 }
 
 function asyncValidateForm(data, dispatch) {
-  console.log(data);
   if (data.id == null) {
     // Check if name exists.
     return dispatch((dispatch, getState) => {

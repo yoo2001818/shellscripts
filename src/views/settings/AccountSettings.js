@@ -9,7 +9,6 @@ import EmailChangeForm from '../../components/forms/EmailChangeForm.js';
 
 class AccountSettings extends Component {
   handleLangChange(e) {
-    console.log(e.target.value);
     this.props.saveLang(e.target.value);
   }
   render() {

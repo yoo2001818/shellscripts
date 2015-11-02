@@ -33,11 +33,9 @@ class ProgressBar extends Component {
       percentage: percentage
     });
     if (this.animInterval == null && percentage < 100) {
-      console.log('Starting animation');
       this.animInterval = setInterval(this.animate.bind(this), 100);
     }
     if (this.animInterval != null && percentage === 100) {
-      console.log('Clearing animation');
       clearInterval(this.animInterval);
       this.animInterval = null;
     }
