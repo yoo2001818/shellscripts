@@ -124,6 +124,7 @@ class EntryCreateForm extends Component {
                    height='30em'
                    width='100%'
                    fontSize={16}
+                   editorProps={{$blockScrolling: Infinity}}
                    {...description}
                    />
                 <InputTip>
@@ -141,6 +142,7 @@ class EntryCreateForm extends Component {
                   height='40em'
                   width='100%'
                   fontSize={16}
+                  editorProps={{$blockScrolling: Infinity}}
                   {...script}
                   />
               </div>

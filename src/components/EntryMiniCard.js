@@ -168,7 +168,7 @@ EntryMiniCard.propTypes = {
   hideUser: PropTypes.bool,
   showFull: PropTypes.bool,
   starable: PropTypes.bool,
-  user: PropTypes.bool,
+  user: PropTypes.object,
   open: PropTypes.func,
   star: PropTypes.func,
   unstar: PropTypes.func,

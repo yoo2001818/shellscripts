@@ -16,7 +16,7 @@ class EntryEdit extends Component {
         <EntryCreateForm author={author}
           entry={entry}
           initialValues={entry} modifying
-          formKey={entry.id} />
+          formKey={'frm'+entry.id} />
       </div>
     );
   }
