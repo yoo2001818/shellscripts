@@ -89,7 +89,7 @@ class EntryMiniCard extends Component {
                 </span>
               )}
               <AddToListCart entry={entry} />
-              { showFull ? (
+              { user && showFull ? (
                 <span className='more'>
                   <DropDownMenu title={null}>
                     <ul>
