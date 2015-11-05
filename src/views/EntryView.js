@@ -84,7 +84,7 @@ class EntryView extends Component {
   getDescription() {
     const { entry } = this.props;
     return {
-      __html: marked(entry.description, { sanitize: true })
+      __html: marked(entry.description || '', { sanitize: true })
     };
   }
   render() {
