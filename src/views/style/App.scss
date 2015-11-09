@@ -145,6 +145,9 @@ input, textarea {
     border-radius: none;
     background-color: transparent !important;
   }
+  &[type="checkbox"] {
+    width: auto;
+  }
   &.code {
     font-family: Droid Sans Mono, NanumGothicCoding, 나눔고딕코딩, monospace;
   }

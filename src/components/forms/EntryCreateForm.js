@@ -43,7 +43,9 @@ class EntryCreateForm extends Component {
     let doAction = create;
     if (this.props.modifying) doAction = edit;
     this.props.dispatch(doAction(Object.assign({}, data, {
-      children: this.props.listCart.list
+      children: this.props.listCart.list,
+      description: data.description || '',
+      script: data.script || ''
     })))
     .then(action => {
       if (!action.payload.result) return;

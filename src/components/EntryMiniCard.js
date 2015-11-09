@@ -4,6 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import moment from 'moment';
+import classNames from 'classnames';
 
 import { star, unstar, report, reportReset } from '../actions/entry.js';
 import { open } from '../actions/toast.js';
@@ -61,7 +62,7 @@ class EntryMiniCard extends Component {
     const permalink = `${author.username}/${entry.name}`;
     if (entry.deleted) return false;
     return (
-      <div className='entry-mini-card'>
+      <div className={classNames('entry-mini-card', this.props.className)}>
         <div className='head'>
             <div className='status'>
               { user && user.isAdmin ? (
@@ -173,7 +174,8 @@ EntryMiniCard.propTypes = {
   star: PropTypes.func,
   unstar: PropTypes.func,
   report: PropTypes.func,
-  reportReset: PropTypes.func
+  reportReset: PropTypes.func,
+  className: PropTypes.string
 };
 
 export default connect(

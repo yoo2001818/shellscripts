@@ -35,6 +35,7 @@ header {
     font-size: 2rem;
     font-weight: bold;
     text-align: right;
+    vertical-align: baseline;
     padding-right: 1rem;
     box-sizing: border-box;
     z-index: 1;
@@ -43,6 +44,7 @@ header {
     }
     img {
       height: 2rem;
+      vertical-align: middle;
     }
   }
   .search-bar {

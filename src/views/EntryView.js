@@ -106,10 +106,14 @@ class EntryView extends Component {
         <Helmet title={title} />
         <div className='header small-content'>
           <EntryMiniCard entry={entry} showFull={true}
-            starable={!!session.login} />
-          <div className='description'>
-            <span dangerouslySetInnerHTML={this.getDescription()} />
-          </div>
+            starable={!!session.login}
+            className={entry.description ? '' : 'noborder'}
+          />
+          { entry.description ? (
+            <div className='description'>
+              <span dangerouslySetInnerHTML={this.getDescription()} />
+            </div>
+          ) : false }
           { this.canEdit() ? (
             <div className='actions'>
               <Link to={editPath} onClick={this.handleEdit.bind(this)}>
